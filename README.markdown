@@ -1,6 +1,6 @@
 #**Mirrors of my favorite sites**
 
-> * <http://mirror.qinix.com/liftgoo.pluskid.org/wiki/>
+> * <http://mirror.qinix.com/lifegoo.pluskid.org/wiki/>
 
 > * <http://mirror.qinix.com/linuxc/>
 
