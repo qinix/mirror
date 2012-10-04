@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>Emacs color-theme</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>Emacs color-theme</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here-->
+
+    <!-- Page published by Emacs Muse begins here -->
+<center>
+<p><img src="image/EmacsColorTheme.png" alt=""></p>
+</center>
+
+<p>这就是 color-theme.el 带给 <a href="Emacs.html">Emacs</a> 的效果，很漂亮吧！Emacs 本身就具有极高
+的可定制性，但是自己定义颜色的工作却有点过于繁琐我无聊，为此，已经有
+hacker 为我们提供了一个现成的 color-theme 扩展包，里面有很多漂亮的颜色
+主题，上面的图片中显示的就是其中的几个。下面我们开始安装 color-theme 包
+吧！</p>
+
+<p>首先下载 color-theme.el <sup><a name="fnr.1" href="#fn.1">1</a></sup>，然后把它放在你的加载路径里面，最后在你的
+<code>~/.emacs</code> 里面加上 <code>(require 'color-theme)</code> 就可以使用了。现在重新启动一
+下 Emacs ，然后就可以用 <code>M-x color-theme-select</code> 来选择你喜欢的颜色主题
+了，它会打开一个列表，在每个列表项目上回车会应用那个颜色主题，如果选上
+了某个主题，按一下 <code>d</code> ，会出现类似：</p>
+
+<pre class="example">
+color-theme-sitaramv-nt is an interactive compiled Lisp function in `color-theme.el'.
+(color-theme-sitaramv-nt)
+Black foreground on white background.
+Includes faces for font-lock, widget, custom, speedbar.
+[back]
+</pre>
+
+<p>的东西，其中那句 <code>(color-theme-sitaramv-nt)</code> 加入到你的 <code>~/.emacs</code> 里面去，
+就可以永久应用这个颜色主题了。</p>
+
+<h2>Footnote</h2>
+<p class="footnote"><a name="fn.1" href="#fnr.1">1.</a> 你可以在这里得到 <a href="lisp/color-theme.el">color-theme 6.5.5</a> ，也可以到 <a href="http://www.emacswiki.org/cgi-bin/wiki/ColorTheme">EmacsWiki</a> 上去找最新
+版的 color-theme.el 。</p>
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

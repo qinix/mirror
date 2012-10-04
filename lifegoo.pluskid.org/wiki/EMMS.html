@@ -1,0 +1,408 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>The Emacs Multimedia System</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>The Emacs Multimedia System</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here--><div class="contents"><h2>Contents</h2>
+<dl>
+<dt>
+<a href="#sec1">简介</a>
+</dt>
+<dt>
+<a href="#sec2">配置与使用</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec3">基本配置</a>
+</dt>
+<dt>
+<a href="#sec4">播放列表</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec5">标签解析</a>
+</dt>
+<dt>
+<a href="#sec6">列表显示</a>
+</dt>
+<dt>
+<a href="#sec7">交互使用</a>
+</dt>
+</dl>
+</dd>
+<dt>
+<a href="#sec8">快捷键</a>
+</dt>
+</dl>
+</dd>
+</dl>
+</div>
+
+
+    <!-- Page published by Emacs Muse begins here -->
+<h2><a name="sec1" id="sec1"></a>
+简介</h2>
+
+<p class="first">EMMS 让你可以在 <a href="Emacs.html">Emacs</a> 里面播放多媒体文件，他被设计的小巧干净，使用外部
+播放器进行播放。是一个小巧、可扩展的完全由 <a href="Elisp">Elisp</a> 写成的多媒体系统，支持
+多种音频、视频格式以及流媒体播放(这事实上由你所使用的播放器决定)，可以
+进行标签操作、方便的播放列表管理以及打分制度，总之，这正是我想要的。</p>
+
+
+<h2><a name="sec2" id="sec2"></a>
+配置与使用</h2>
+
+<h3><a name="sec3" id="sec3"></a>
+基本配置</h3>
+
+<p class="first">EMMS 提供了一个 <code>emms-setup.el</code> 可以方便地进行必要的设置，按照功能需求可
+以使用 minimalistic 、standard 、all 以及包括了各种还在测试中的功能的
+devel 。可以按照他的文档直接使用 <code>emms-setup.el</code> 进行设置。如果对预设的
+几个都不满意的话，可以打开 <code>emms-setup.el</code> 文件，看看他是怎么设置的，然
+后模仿着写出自己的设置。</p>
+
+<p>我并不需要什么 browser 之类的东西，但是我需要一个舒服的播放列表，所以我
+对 standard 的设置进行修改，得到我自己的设置：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .constant {
+        /* font-lock-constant-face */
+        color: #7fffd4;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .underline {
+        /* underline */
+        text-decoration: underline;
+      }
+    --></style><span class="comment-delimiter">;;; </span><span class="comment">setup emms
+</span>(add-to-list 'load-path
+             (expand-file-name <span class="string">"~/emacs/packages/emms"</span>))
+
+(<span class="keyword">require</span> '<span class="constant">emms-source-file</span>)
+(<span class="keyword">require</span> '<span class="constant">emms-source-playlist</span>)
+(<span class="keyword">require</span> '<span class="constant">emms-player-simple</span>)
+(<span class="keyword">require</span> '<span class="constant">emms-player-mplayer</span>)
+(<span class="keyword">require</span> '<span class="constant">emms-playlist-mode</span>)
+(<span class="keyword">require</span> '<span class="constant">emms-info</span>)
+(<span class="keyword">require</span> '<span class="constant">emms-cache</span>)
+(<span class="keyword">require</span> '<span class="constant">emms-mode-line</span>)
+(<span class="keyword">require</span> '<span class="constant">emms-playing-time</span>)
+(<span class="keyword">require</span> '<span class="constant">emms-score</span>)
+(<span class="keyword">require</span> '<span class="constant">emms-volume</span>)
+
+(setq emms-playlist-default-major-mode 'emms-playlist-mode)
+(add-to-list 'emms-track-initialize-functions 'emms-info-initialize-tr<span class="underline">ack)
+</span>(add-to-list 'emms-info-functions 'kid-emms-info-simple)
+(setq emms-track-description-function 'kid-emms-info-track-description<span class="underline">)
+</span>(<span class="keyword">when</span> (fboundp 'emms-cache)
+  (emms-cache 1))
+
+(setq emms-player-list
+      '(emms-player-mpg321
+        emms-player-ogg123
+        emms-player-mplayer))
+
+(setq emms-info-asynchronously nil)
+(setq emms-playlist-buffer-name <span class="string">"*Music*"</span>)
+<span class="comment-delimiter">;; </span><span class="comment">use faster finding facility if you have GNU find
+</span>(setq emms-source-file-directory-tree-function 'emms-source-file-direc<span class="underline">tory-tree-find)
+</span>
+<span class="comment-delimiter">;;; </span><span class="comment">My musics
+</span>(setq emms-source-file-default-directory <span class="string">"~/entertainment/music"</span>)
+
+(add-hook 'emms-player-started-hook 'emms-show)
+
+<span class="comment-delimiter">;; </span><span class="comment">mode line format
+</span>(setq emms-mode-line-format <span class="string">"[ %s "</span>
+      emms-playing-time-display-format <span class="string">"%s ]"</span>)
+(setq global-mode-string
+      '(<span class="string">""</span> emms-mode-line-string <span class="string">" "</span> emms-playing-time-string))
+</pre></div></div></div></div></div></div></div>
+
+
+<h3><a name="sec4" id="sec4"></a>
+播放列表</h3>
+
+<h4><a name="sec5" id="sec5"></a>
+标签解析</h4>
+
+<p class="first">mp3 标签的编码问题总是让我很头痛，乱码问题一直没有一个统一的解决办法，
+所以我在使用播放器的时候总是设定为直接显示文件名而不是去解析里面的标签，
+正好我的音乐整理得也是比较好的，一般都是以歌手作为目录，歌的名字作为文
+件名的，所以我决定在 EMMS 里面也这么做。</p>
+
+<p>EMMS 有 info 解析系统，可以通过 mp3info 等外部程序来解析标签，当然可以
+配置自己的解析函数，我前面的配置里面有一句：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--     --></style>(add-to-list 'emms-info-functions 'kid-emms-info-simple)
+</pre></div></div></div></div></div></div></div>
+
+<p>这里就是我的 <code>kid-emms-info-simple</code> 函数，仅仅根据文件名来解析出歌手和歌
+名，其他信息我也不需要而且也无法直接通过我目前的文件名命名约定解析出来。</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .doc {
+        /* font-lock-doc-face */
+        color: #ffa07a;
+      }
+      .function-name {
+        /* font-lock-function-name-face */
+        color: #87cefa;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .negation-char {
+      }
+      .regexp-grouping-backslash {
+        /* font-lock-regexp-grouping-backslash */
+        font-weight: bold;
+      }
+      .regexp-grouping-construct {
+        /* font-lock-regexp-grouping-construct */
+        font-weight: bold;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>(<span class="keyword">defun</span> <span class="function-name">kid-emms-info-simple</span> (track)
+  <span class="doc">"Get info from the filename.
+mp3 &#26631;&#31614;&#30340;&#20081;&#30721;&#38382;&#39064;&#24635;&#26159;&#24456;&#20005;&#37325;&#65292;&#24184;&#22909;&#25105;&#31995;&#32479;&#37324;&#38754;&#30340;&#38899;&#20048;&#25991;&#20214;
+&#37117;&#25918;&#24471;&#27604;&#36739;&#26377;&#35268;&#24459;&#65292;&#25152;&#20197;&#25105;&#20915;&#23450;&#30452;&#25509;&#20174;&#25991;&#20214;&#21517;&#33719;&#21462;&#26631;&#31614;&#20449;&#24687;&#12290;"</span>
+  (<span class="keyword">when</span> (eq 'file (emms-track-type track))
+    (<span class="keyword">let</span> ((regexp <span class="string">"/</span><span class="string"><span class="regexp-grouping-backslash">\\</span></span><span class="string"><span class="regexp-grouping-construct">(</span></span><span class="string">[</span><span class="string"><span class="negation-char">^</span></span><span class="string">/]+</span><span class="string"><span class="regexp-grouping-backslash">\\</span></span><span class="string"><span class="regexp-grouping-construct">)</span></span><span class="string">/</span><span class="string"><span class="regexp-grouping-backslash">\\</span></span><span class="string"><span class="regexp-grouping-construct">(</span></span><span class="string">[</span><span class="string"><span class="negation-char">^</span></span><span class="string">/]+</span><span class="string"><span class="regexp-grouping-backslash">\\</span></span><span class="string"><span class="regexp-grouping-construct">)</span></span><span class="string">\\.[</span><span class="string"><span class="negation-char">^</span></span><span class="string">.]+$"</span>)
+          (name (emms-track-name track)))
+      (<span class="keyword">if</span> (string-match regexp name)
+          (<span class="keyword">progn</span>
+            (emms-track-set track 'info-artist (match-string 1 name))
+            (emms-track-set track 'info-title (match-string 2 name)))
+          (emms-track-set track
+                          'info-title
+                          (file-name-nondirectory name))))))
+</pre></div></div></div></div></div></div></div>
+
+
+<h4><a name="sec6" id="sec6"></a>
+列表显示</h4>
+
+<p class="first">解析出标签之后 EMMS 会进行相应的格式化再显示出播放列表，当然可以自己定
+制播放列表的显示格式，比如通过设定 <code>emms-track-description-function</code> 来
+指定自己定制的函数：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .doc {
+        /* font-lock-doc-face */
+        color: #ffa07a;
+      }
+      .function-name {
+        /* font-lock-function-name-face */
+        color: #87cefa;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>(<span class="keyword">defun</span> <span class="function-name">kid-emms-info-track-description</span> (track)
+  <span class="doc">"Return a description of the current track."</span>
+  (<span class="keyword">let</span> ((artist (emms-track-get track 'info-artist))
+        (title (emms-track-get track 'info-title)))
+    (format <span class="string">"%-10s +| %s"</span>
+            (or artist
+                <span class="string">""</span>)
+            title)))
+</pre></div></div></div></div></div></div></div>
+
+
+<h4><a name="sec7" id="sec7"></a>
+交互使用</h4>
+
+<p class="first">使用 <code>emms-playlist-mode-go</code> 命令即可进入正在播放的播放列表的 buffer 。
+在这里可以方便地控制播放上一首、下一首、随机的某一首歌等。通过 <code>?</code> 可以
+描述当前 mode ，并得到一份详细的可用命令列表。</p>
+
+<p>我通常使用 <code>emms-play-find</code> 或者 <code>emms-play-directory-tree</code> 来打开一个播放
+列表，然后用 <code>d</code> 删除不想要的曲目，并 <code>C-x C-s</code> 将其保存起来。</p>
+
+<p>EMMS 还提供了打分机制。并可以设置最低分数，如果分数低于最低分数将不会
+被播放。要是能像 Dired 或者 <a href="Mew.html">Mew</a> 的 summary-mode 那样能够方便地贴标签并
+进行批量操作就更舒服了！</p>
+
+
+
+<h3><a name="sec8" id="sec8"></a>
+快捷键</h3>
+
+<p class="first">随着越来越多的扩展加到 <a href="Emacs.html">Emacs</a> 中，好用又好记的快捷键是越来越紧张了，
+EMMS 的快捷键只有绑定到前缀 <code>C-c e</code> 上比较合适了，比较难按，不过如果是在
+EMMS 的播放列表的 buffer 里面的话，就可以直接使用单个字母的快捷键了，
+所以直接定义一个方便的快捷键跳到 EMMS 的播放列表的 buffer 里面也是一个
+不错的办法。以前用 Beep media player 的时候我就是把 <a href="Sawfish.html">Sawfish</a> 窗口管理器
+里面的 <code>H-x</code> 键绑定到显示播放器的窗口上，现在不用它了，这个快捷键自然也解放
+出来了。这样，如果操作比较多的话，使用 <code>H-x</code> 跳到 EMMS 的播放列表，操作
+完之后再 <code>q</code> 回到原来的 buffer ，还是比直接使用 <code>C-c e ...</code> 这一系列的快捷
+键要舒服的。</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .underline {
+        /* underline */
+        text-decoration: underline;
+      }
+    --></style><span class="comment-delimiter">;; </span><span class="comment">global key-map
+</span>(global-set-key (kbd <span class="string">"H-x"</span>) 'emms-playlist-mode-go)
+
+(global-set-key (kbd <span class="string">"C-c e t"</span>) 'emms-play-directory-tree)
+(global-set-key (kbd <span class="string">"C-c e x"</span>) 'emms-start)
+(global-set-key (kbd <span class="string">"C-c e v"</span>) 'emms-stop)
+(global-set-key (kbd <span class="string">"C-c e n"</span>) 'emms-next)
+(global-set-key (kbd <span class="string">"C-c e p"</span>) 'emms-previous)
+(global-set-key (kbd <span class="string">"C-c e o"</span>) 'emms-show)
+(global-set-key (kbd <span class="string">"C-c e h"</span>) 'emms-shuffle)
+(global-set-key (kbd <span class="string">"C-c e e"</span>) 'emms-play-file)
+(global-set-key (kbd <span class="string">"C-c e f"</span>) 'emms-play-playlist)
+(global-set-key (kbd <span class="string">"C-c e SPC"</span>) 'emms-pause)
+(global-set-key (kbd <span class="string">"C-c e a"</span>) 'emms-add-directory-tree)
+
+(global-set-key (kbd <span class="string">"C-c e r"</span>)   'emms-toggle-repeat-track)
+(global-set-key (kbd <span class="string">"C-c e R"</span>)   'emms-toggle-repeat-playlist)
+
+(global-set-key (kbd <span class="string">"C-c e s u"</span>) 'emms-score-up-playing)
+(global-set-key (kbd <span class="string">"C-c e s d"</span>) 'emms-score-down-playing)
+(global-set-key (kbd <span class="string">"C-c e s o"</span>) 'emms-score-show-playing)
+<span class="comment-delimiter">;; </span><span class="comment">playlist-mode-map
+</span>(define-key emms-playlist-mode-map (kbd <span class="string">"SPC"</span>) 'emms-pause)
+(define-key emms-playlist-mode-map (kbd <span class="string">"+"</span>) 'emms-volume-raise)
+(define-key emms-playlist-mode-map (kbd <span class="string">"-"</span>) 'emms-volume-lower)
+(define-key emms-playlist-mode-map (kbd <span class="string">"&lt;right&gt;"</span>)
+  (<span class="keyword">lambda</span> () (interactive) (emms-seek +10)))
+(define-key emms-playlist-mode-map (kbd <span class="string">"&lt;left&gt;"</span>)
+  (<span class="keyword">lambda</span> () (interactive) (emms-seek -10)))
+(define-key emms-playlist-mode-map (kbd <span class="string">"&lt;up&gt;"</span>)
+  (<span class="keyword">lambda</span> () (interactive) (emms-seek +60)))
+(define-key emms-playlist-mode-map (kbd (<span class="string">"&lt;down&gt;"</span>))
+  (<span class="keyword">lambda</span> () (interactive) (emms-seek -60)))
+(define-key emms-playlist-mode-map (kbd <span class="string">"S u"</span>) 'emms-score-up-file-on-<span class="underline">line)
+</span>(define-key emms-playlist-mode-map (kbd <span class="string">"S d"</span>) 'emms-score-down-file-o<span class="underline">n-line)
+</span>(define-key emms-playlist-mode-map (kbd <span class="string">"S o"</span>) 'emms-score-show-file-o<span class="underline">n-line)
+</span>(define-key emms-playlist-mode-map (kbd <span class="string">"S l"</span>) 'emms-score-less-tolera<span class="underline">nt)
+</span>(define-key emms-playlist-mode-map (kbd <span class="string">"S m"</span>) 'emms-score-more-tolera<span class="underline">nt)
+</span>(define-key emms-playlist-mode-map (kbd <span class="string">"S t"</span>) 'emms-score-set-toleran<span class="underline">ce)
+</span>(define-key emms-playlist-mode-map (kbd <span class="string">"S s"</span>) 'emms-score-show-playin<span class="underline">g)
+</span></pre></div></div></div></div></div></div></div>
+
+
+
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

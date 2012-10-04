@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>Slime</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>Slime</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here--><div class="contents"><h2>Contents</h2>
+<dl>
+<dt>
+<a href="#sec1">小技巧</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec2">快速查看定义</a>
+</dt>
+<dt>
+<a href="#sec3">临时的运行环境</a>
+</dt>
+<dt>
+<a href="#sec4">查询 HyperSpec</a>
+</dt>
+</dl>
+</dd>
+</dl>
+</div>
+
+
+    <!-- Page published by Emacs Muse begins here -->
+<p><a href="Emacs.html">Emacs</a> + Slime 简直就是 <a href="CommonLisp.html">Common Lisp</a> 的绝佳编程环境，一个非常好用的 IDE
+。当然，<a href="Emacs.html">Emacs</a> 和 Slime 都没有提供 <a href="CommonLisp.html">Common Lisp</a> 解释器以及编译器，所以还
+需要另外一个搭档，Slime 目前支持的 <a href="CommonLisp.html">Common Lisp</a> 实现包括：CMUCL、SBCL、
+OpenMCL、LispWorks、Allegro Common Lisp、CLISP 。通常选择 SBCL 就可以
+了。</p>
+
+<h2><a name="sec1" id="sec1"></a>
+小技巧</h2>
+
+<h3><a name="sec2" id="sec2"></a>
+快速查看定义</h3>
+
+<p><code>M-.</code> 可以快速查看到某个 symbol 的定义，如果是在 <a href="Debian.html">Debian</a> 系统上使用的
+SBCL 的话，只需要</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--     --></style>apt-get install sbcl-source
+</pre></div></div></div></div></div></div></div>
+
+<p>就可以直接在系统源文件里面跳转而获得系统内部的 symbol 的定义了，非常方
+便。</p>
+
+
+<h3><a name="sec3" id="sec3"></a>
+临时的运行环境</h3>
+
+<p class="first">有时候正在写一大段代码(例如一个 <code>defun</code> )的时候，突然对某一个函数的行为
+不是很确定，想要尝试一下，但又不能直接把这一大段代码扔掉，先复制，待会
+再粘贴回来，都总觉得麻烦。这个时候只需要 <code>M-x slime-scratch</code> 就可以打开
+一个“草稿 buffer”，就像 <a href="Emacs.html">Emacs</a> 自己的 <code>*scratch*</code> buffer 一样，可以通过
+<code>C-j</code> 来对表达式求值。非常方便。</p>
+
+
+<h3><a name="sec4" id="sec4"></a>
+查询 HyperSpec</h3>
+
+<p class="first">在 Slime 里面也可以非常方便地查询 HyperSpec 。 <code>C-c C-d h</code> 可以在
+HyperSpec 里面查询一个 symbol ，而 <code>C-c C-d ~</code> 则可以查询一个 format 字符。
+查询通常会连接到网上，也可以把 HyperSpec <a href="ftp://ftp.lispworks.com/pub/software_tools/reference/HyperSpec-7-0.tar.gz">下载</a>到本地，并设置
+<code>common-lisp-hyperspec-root</code> 变量为本地目录就可以直接在本地查询了，非常
+快捷方便！</p>
+
+<p>如果安装了 Emacs-w3m 的话，直接在 Emacs-w3m 里面打开 HyperSpec 就更方
+便了：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>(setq browse-url-browser-function
+      '((<span class="string">"ebook/computer/lisp/book/HyperSpec/"</span> . w3m-browse-url)
+        (<span class="string">"."</span> . browse-url-default-browser)))
+</pre></div></div></div></div></div></div></div>
+
+<p>直接在 <a href="Emacs.html">Emacs</a> 里面浏览的话，复制、粘贴之类的也要方便得多呢！</p>
+
+
+
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

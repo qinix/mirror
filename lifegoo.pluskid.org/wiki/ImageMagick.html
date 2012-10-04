@@ -1,0 +1,291 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>ImageMagick</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>ImageMagick</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here--><div class="contents"><h2>Contents</h2>
+<dl>
+<dt>
+<a href="#sec1">使用 montage 来产生缩略图</a>
+</dt>
+<dt>
+<a href="#sec2">实例：制作类似相片的效果</a>
+</dt>
+</dl>
+</div>
+
+
+    <!-- Page published by Emacs Muse begins here -->
+<h2><a name="sec1" id="sec1"></a>
+使用 montage 来产生缩略图</h2>
+
+<p class="first">montage 命令可以用来产生缩略图，例如：</p>
+
+<pre class="example">
+montage *.png montage.png
+</pre>
+
+<p>会产生：</p>
+
+
+<center>
+<p><img src="image/ImageMagick_Montage1.png" alt=""></p>
+</center>
+
+<p>这样产生的边距太大了，可以用 <code>-geometry</code> 参数来控制：</p>
+
+<pre class="example">
+montage *.png -geometry +1+1 montage.png
+</pre>
+
+<p>产生的效果为：</p>
+
+<center>
+<p><img src="image/ImageMagick_Montage2.png" alt=""></p>
+</center>
+
+<p><code>-geometry</code> 使用这样的语法： <code>widthxheight{+-}x{+-}y</code> ，可以设定大小和位置。
+默认 montage 会选择合适的行数和列数来产生缩略图，不过你可以用 <code>-tile</code> 参
+数来手工控制：</p>
+
+<pre class="example">
+montage *.png -geometry +1+1 -tile 4x1 montage.png
+</pre>
+
+<p>产生一行的效果：</p>
+
+<center>
+<p><img src="image/ImageMagick_Montage3.png" alt=""></p>
+</center>
+
+<p>如果这儿图形的个数不确定，也可以简略地写成 <code>-tile x1</code> 。还有其他参数，比
+如，可以通过 <code>-shadow</code> 来产生阴影、通过 <code>-frame</code> 来产生边框。也可以为图像加
+上标签，通常加上标签之后要改变一下大小好让标签能够放得下，在 <code>-geometry</code>
+参数后面加的那个 `&gt;' 表示设置 <code>-geometry</code> 的同时并不同时放大原来的图像：</p>
+
+<pre class="example">
+montage -label '%f' *.png -tile x1 -frame 5 \
+        -geometry '60x60+4+4&gt;' montage.png
+</pre>
+
+<p>其中 `%f' 表示文件名，还有其他格式化字符，如 `%w' 表示宽度、`%h' 表示
+高度等。你也可以用 <code>-set</code> 来达到同样的目的：</p>
+
+<pre class="example">
+montage *.png -tile x1 -frame 5 -geometry '90x48+4+4&gt;'
+        -pointsize 10 -set label '%f\n%2x%h' montage.png
+</pre>
+
+<p>你也可以分别为每个图片指定标签，如果使用 <code>-set</code> 来指定，则必须要用括号扩
+上：</p>
+
+<pre class="example">
+montage -label Emacs Emacs.png           \
+        -label eMacs eMacs.png           \
+        \( emAcs.png -set label emAcs \) \
+        \( emaCs.png -set label emaCs \) \
+        -tile x1 -geometry '60x60+2+2&gt;'  \
+        -title 'Emacs Icons' montage.png
+</pre>
+
+<p>如图：</p>
+
+<center>
+<p><img src="image/ImageMagick_Montage4.png" alt=""></p>
+</center>
+
+<p>你可以通过 <code>-label ''</code> 或者 <code>+label</code> ( <code>-set</code> 选项也是类似的)来关掉图片的标签
+显示，但是两者又有一些不同的地方，例如，png 格式的图片通常可以把标签存
+储在图片文件里面：</p>
+
+<pre class="example">
+convert -label 'Emacs' Emacs.png Emacs.png
+convert -label 'eMacs' eMacs.png eMacs.png
+</pre>
+
+<p>默认 montage 会读取图片中的标签并把它显示出来，这和使用 `%l' 参数是一
+样的，这个时候 <code>-label ''</code> 和 <code>+label</code> 的区别就显示出来了：</p>
+
+<pre class="example">
+montage -label '' Emacs.png \
+        +label eMacs.png    \
+        -tile x1 -geometry '60x48+2+2&gt;' montage.png
+</pre>
+
+<center>
+<p><img src="image/ImageMagick_Montage5.png" alt=""></p>
+</center>
+
+<p>可以看到 <code>+label</code> 是把标签设定成从文件读取的默认情况，而 <code>-label ''</code> 则明
+确地关掉了所有标签显示。</p>
+
+
+<h2><a name="sec2" id="sec2"></a>
+实例：制作类似相片的效果</h2>
+
+<p class="first">ImageMagick 的功能实在太多，一时无法讲完，详细的内容可以参见它的文档。
+下面还是让我们来把几个 <a href="EmacsColorTheme.html">Emacs color-theme</a> 的抓图制作成几张叠加的照片的
+效果。首先分别设定几个 color-theme ，然后分别建立抓图：</p>
+
+<pre class="example">
+import -frame 1.png
+import -frame 2.png
+import -frame 3.png
+import -frame 4.png
+</pre>
+
+<p>抓的图片太大了，让我们先把他们缩小一点吧：</p>
+
+<pre class="example">
+for file in *.png; do
+    convert $file -resize 400x $file
+done
+</pre>
+
+<p>好了，现在让我们来制作相片的边框，其实就是先加一个白色的边框，再加一个
+灰色的边框，先用产生一个小一点的图来试验一下吧：</p>
+
+<pre class="example">
+convert 1.png -resize 100x100 -bordercolor white -border 6 \
+        -bordercolor grey60 -border 1 1-border.png
+</pre>
+
+<p>OK！这样就是边框了，如图所示：</p>
+
+<center>
+<p><img src="image/ImageMagick_ExamplePhoto1.png" alt=""></p>
+</center>
+
+<p>这样还不够 cool ，让我们来产生一点阴影：</p>
+
+<pre class="example">
+convert 1-border.png -shadow 60x4+4+4 1-shadow.png
+</pre>
+
+<p>这样就产生了阴影：</p>
+
+<center>
+<p><img src="image/ImageMagick_ExamplePhoto2.png" alt=""></p>
+</center>
+
+<p>接下来要做的是把阴影和原来的图形融合到一起：</p>
+
+<pre class="example">
+convert 1-shadow.png 1-border.png -background none \
+         -mosaic 1-border-shadow.png
+</pre>
+
+<center>
+<p><img src="image/ImageMagick_ExamplePhoto3.png" alt=""></p>
+</center>
+
+<p>把上面的步骤连在一起做就是：</p>
+
+<pre class="example">
+convert 1.png -resize 100x100          \
+        -bordercolor white -border 6   \
+        -bordercolor grey60 -border 1  \
+        \( +clone -shadow 60x4+4+4 \)  \
+        +swap -background none -mosaic \
+        1-border-shadow.png
+</pre>
+
+<p>好了，知道如何制作边框了，现在要把几张“照片”组合在一起，让我们再用同样
+的办法产生一个 2-border-shadow.png ，然后把一张旋转一下，移动一点，然
+后把他们组合在一起：</p>
+
+<pre class="example">
+convert 1-border-shadow.png                 \
+        \( -page 20x30 2-border-shadow.png  \
+           -background none -rotate 30 \)   \
+        -background none -mosaic mosaic.png
+</pre>
+
+<center>
+<p><img src="image/ImageMagick_ExamplePhoto4.png" alt=""></p>
+</center>
+
+<p>好了！这就是基本流程，用类似的办法，我们可以把四张“照片”组合在一起了，
+而且我决定最后才加上阴影，而不是每一张都加阴影：</p>
+
+<pre class="example">
+convert \( -page +0+40 1.png                  \
+           -bordercolor white -border 6       \
+           -bordercolor grey60 -border 1      \
+           -background none -rotate -5   \)   \
+        \( -page +30+0 2.png                  \
+           -bordercolor white -border 6       \
+           -bordercolor grey60 -border 1      \
+           -background none -rotate 20   \)   \
+        \( -page +10+40 3.png                 \
+           -bordercolor white -border 6       \
+           -bordercolor grey60 -border 1      \
+           -background none -rotate 40   \)   \
+        \( -page +20+50 3.png                 \
+           -bordercolor white -border 6       \
+           -bordercolor grey60 -border 1      \
+           -background none -rotate -20   \)  \
+        -background none -mosaic              \
+        \( +clone -shadow 60x4+4+4        \)  \
+        +swap -background none -mosaic mosaic.png
+</pre>
+
+<p>这样就能够得到我们的成品了，这幅图像用来展现 <a href="EmacsColorTheme.html">Emacs color-theme</a> 算是非
+常不错的了。</p>
+
+
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

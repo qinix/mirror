@@ -1,0 +1,196 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>Bug in tooltip handling</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>Bug in tooltip handling</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here--><div class="contents"><h2>Contents</h2>
+<dl>
+<dt>
+<a href="#sec1">Bug in tooltip handling  - Tassilo Horn-2 2006-06-30 16:11</a>
+</dt>
+<dt>
+<a href="#sec2">Re: Bug in tooltip handling  - Nick Roberts 2006-07-02 12:12</a>
+</dt>
+<dt>
+<a href="#sec3">Re: Bug in tooltip handling  - leon-9 2006-07-02 18:47</a>
+</dt>
+</dl>
+</div>
+
+
+    <!-- Page published by Emacs Muse begins here -->
+<p>关于 <a href="Emacs.html">Emacs</a> 的 Tooltip 功能的讨论，是 bug 还是刻意的改变？或者大家的使
+用方法本来就不对？见 <a href="http://www.nabble.com/Bug-in-tooltip-handling-tf1875185.html">nabble</a> 。</p>
+
+<h2><a name="sec1" id="sec1"></a>
+Bug in tooltip handling  - Tassilo Horn-2 2006-06-30 16:11</h2>
+
+<pre class="example">
+Hi all,
+
+I'm not quite sure if this is a bug or a intended change in tooltip
+handling, but here I go.
+
+Supporting own tooltips in Emacs 21 was basically a matter of:
+
+,----
+| (defun my-tooltip-mode (&amp;optional arg)
+|     ;; [snip]
+|     (tooltip-mode 1)
+|     (add-hook 'tooltip-hook 'my-tooltip-function)
+|     (make-local-variable 'track-mouse)
+|     (setq track-mouse on))
+|
+| (defun my-tooltip-function (event)
+|     (interactive &quot;e&quot;)
+|     ;; process event...
+|     (tooltip-show &quot;Huzzah!&quot;))
+`----
+
+This convenient approach (used for example by dictionary-el) doesn't
+work anymore in Emacs 22. If I set `track-mouse' to a non-nil value,
+even the standard tooltips which worked before (e.g. the modeline help
+tooltips) don't work anymore.
+
+I use the CVS HEAD of yesterday.
+
+Bye,
+Tassilo
+--
+[Emacs] is written in Lisp, which is the only computer language that is
+beautiful.  -- Neal Stephenson, _In the Beginning was the Command Line_
+</pre>
+
+
+<h2><a name="sec2" id="sec2"></a>
+Re: Bug in tooltip handling  - Nick Roberts 2006-07-02 12:12</h2>
+
+<pre class="example">
+ &gt; I'm not quite sure if this is a bug or a intended change in tooltip
+ &gt; handling, but here I go.
+ &gt;
+ &gt; Supporting own tooltips in Emacs 21 was basically a matter of:
+ &gt;
+ &gt; ,----
+ &gt; | (defun my-tooltip-mode (&amp;optional arg)
+ &gt; |     ;; [snip]
+ &gt; |     (tooltip-mode 1)
+ &gt; |     (add-hook 'tooltip-hook 'my-tooltip-function)
+ &gt; |     (make-local-variable 'track-mouse)
+ &gt; |     (setq track-mouse on))
+                           ^^^  t?
+
+I don't think this is the right way to use track-mouse anyway
+.
+ &gt; | (defun my-tooltip-function (event)
+ &gt; |     (interactive &quot;e&quot;)
+ &gt; |     ;; process event...
+ &gt; |     (tooltip-show &quot;Huzzah!&quot;))
+ &gt; `----
+
+This didn't seem to work very well on Emacs 21 when I tried it.  Also there's
+no mechanism to remove my-tooltip-function from tooltip-hook.
+
+You can get it to work as before by using:
+
+  (defun my-tooltip-mode (&amp;optional arg)
+       ;; [snip]
+       (gud-tooltip-mode 1)
+        ^^^
+
+ &gt; This convenient approach (used for example by dictionary-el) doesn't
+ &gt; work anymore in Emacs 22.
+
+dictionary-el isn't part of Emacs 22.  I have split GUD tooltips (which use
+track-mouse from ordinary ones (which don't).  This means that they can
+be toggled independently.  At some stage, if other packages want to use
+tooltips in the way GUD does, that part could be split out of gud.el.
+It would need to be documented so that they could be used in a way that
+doesn't interfere with existing use, as your example does.
+
+ &gt;                             If I set `track-mouse' to a non-nil value,
+ &gt; even the standard tooltips which worked before (e.g. the modeline help
+ &gt; tooltips) don't work anymore.
+
+track-mouse is a variable, not a user uption for tooltips.
+
+--
+Nick                                           http://www.inet.net.nz/~nickrob
+</pre>
+
+
+<h2><a name="sec3" id="sec3"></a>
+Re: Bug in tooltip handling  - leon-9 2006-07-02 18:47</h2>
+
+<pre class="example">
+&gt; You can get it to work as before by using:
+&gt;
+&gt;   (defun my-tooltip-mode (&amp;optional arg)
+&gt;        ;; [snip]
+&gt;        (gud-tooltip-mode 1)
+&gt;         ^^^
+
+Simply change (tooltip-mode 1) to (gud-tooltip-mode 1) seems work
+well. Hope someone can make a proper patch for dictionary-el. It's a
+nice feature.
+
+--
+Leon
+</pre>
+
+
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

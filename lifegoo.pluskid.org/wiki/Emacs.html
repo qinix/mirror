@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>Emacs</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>Emacs</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here-->
+
+    <!-- Page published by Emacs Muse begins here -->
+<p>引用 Emacs 手册的一句话：</p>
+
+<blockquote>
+<p class="quoted">Emacs is the extensible, customizable, self-documenting real-time
+display editor.</p>
+</blockquote>
+
+<p>Emacs 是我每天必备的程序，他可以帮助我做很多程序，有人嫌 Emacs 做得太
+大了，不符合 KISS 原则了，然而，当你逐渐习惯了他的快捷键以及方便的操作
+和极高的可定制性的时候，你就越来越想把所有东西都放到 Emacs 里面来完成
+了。</p>
+
+<p>很多人觉得 Emacs 的快捷键很难记，其实他们是很有规律的，从
+<a href="EmacsLayoutOfKeyBoard.html">Emacs 键绑定的格局</a>里面可以看到一些约定，只要你熟悉了这些约定，有很多快
+捷键你甚至可以自己猜出来。而且即使你不知道快捷键，而是通过其他方式，比
+如 <code>M-x</code> 再输入函数名称的形式来执行了某个其实是绑定到一个很方便的快捷键上
+面的命令，Emacs 也会提醒你，说你可以通过什么什么快捷键来达到这个目的。
+即使你不知道确切的函数名，你也可以通过 <code>M-x apropos</code> 等方式来查找函数以及
+其文档，在文档里面也会说明函数被绑定到了什么快捷键(注意这不是硬编码进去
+的，而是 Emacs 根据实际情况动态生成的)。还有一个很有用的技巧就是按了某
+个前缀之后再按 <code>C-h</code> 就可以查询所有这个前缀的快捷键，例如 <code>C-c C-h</code> 查询所
+有以 <code>C-c</code> 为前缀的快捷键。</p>
+
+<p>Emacs 被设计得通过为你隐藏繁琐的重复劳动让你工作变得更轻松，它会为你隐
+藏起很多繁琐的细节，让你专注于你正在进行的工作，比如版本控制，使用
+<a href="EmacsVC.html">EmacsVC</a> ，你甚至不需要了解 RCS 的任何命令就可以方便地对文件进行版本控制，
+当然，虽然<a href="EmacsVC.html">EmacsVC</a> 最初是围绕 RCS 而设计的，但是他不仅仅是可以用于 RCS
+的，他目前支持六个版本控制系统：CVS, GNU Arch, RCS, Meta-CVS,
+<a href="Subversion.html">Subversion</a> , and SCCS. <a href="EmacsSubversion.html">这里</a>有一个 <a href="EmacsVC.html">EmacsVC</a> 和 <a href="Subversion.html">Subversion</a> 配合使用的例子，
+<a href="EmacsVC.html">EmacsVC</a> 目前并不支持 <a href="Subversion.html">Subversion</a> 所有的操作，但是在例子里面可以看到，还
+有其他的扩展比如 <a href="EmacsSubversion.html#PSVN">psvn.el</a> 配合起来使用就非常方便了！又比如对于文件的访问
+和控制，通过 <a href="EmacsTRAMP.html">TRAMP</a> 你可以透明而地访问远程文件，编辑、保存甚至进行编译，
+同时，Emacs 还可以<a href="EmacsFileArchives.html">透明地处理压缩打包文件</a>。</p>
+
+<p>我可以直接在 Emacs 里面查辞典，可以<a href="EmacsStardict.html">连接到 StarDict 的命令行程序</a>通过
+StarDict 来查询，也可以<a href="EmacsDictionary.html">连接到本地的 dictd</a> 来查询。</p>
+
+<p>下面对我的 Emacs 笔记进行一下归类：</p>
+
+<ul>
+<li>编程相关
+<ul>
+<li><a href="EmacsSmartCompile.html">智能编译</a></li>
+<li><a href="EmacsCscope.html">在 Emacs 里使用 Cscope</a></li>
+<li><a href="Slime.html">Slime -- 最好的 Common Lisp IDE</a></li>
+</ul></li>
+<li>版本控制
+<ul>
+<li><a href="EmacsVC.html">EmacsVC</a></li>
+<li><a href="EmacsSubversion.html">Emacs 配合 Subversion 使用</a></li>
+</ul></li>
+<li>文档编辑
+<ul>
+<li><a href="EmacsOutlineMode.html">Outline mode</a></li>
+<li><a href="Muse.html">用 Muse 记笔记</a></li>
+<li><a href="EmacsAbbrev.html">缩写词功能</a></li>
+<li><a href="EmacsEditPicture.html">编辑 Ascii 图片</a></li>
+</ul></li>
+<li>邮件、新闻组、浏览器
+<ul>
+<li><a href="Gnus.html">Gnus -- 新闻阅读器</a></li>
+<li><a href="Mew.html">Mew -- 邮件管理器</a></li>
+</ul></li>
+<li>妆扮 Emacs
+<ul>
+<li><a href="EmacsColorTheme.html">color theme</a></li>
+<li><a href="EmacsAndFont.html">Emacs 的字体配置</a></li>
+</ul></li>
+<li>文件、远程管理
+<ul>
+<li><a href="EmacsAsFileManger.html">Emacs -- 强大的文件管理器</a></li>
+<li><a href="EmacsTRAMP.html">TRAMP</a></li>
+<li><a href="EmacsFileArchives.html">访问、编辑压缩包</a></li>
+<li><a href="EmacsTemplate.html">为新建的文件设定模板</a></li>
+</ul></li>
+<li>日常使用
+<ul>
+<li><a href="EmacsDictionary.html">在 Emacs 里面使用辞典</a></li>
+<li><a href="EmacsStardict.html">在 Emacs 里面使用星际译王</a></li>
+<li><a href="EMMS.html">EMMS - Emacs 的多媒体系统</a></li>
+<li><a href="FasterEmacs.html">加速 Emacs 启动</a></li>
+<li><a href="EmacsSession.html">保存和恢复 Emacs 会话</a></li>
+</ul></li>
+<li>其他小技巧
+<ul>
+<li><a href="EmacsLayoutOfKeyBoard.html">Emacs 键绑定的格局</a></li>
+<li><a href="EmacsMajorMode.html">Emacs Major Mode 的选取</a></li>
+<li><a href="SwapCapsCtrl.html">交换 Control 键和 Caps Lock 键</a></li>
+<li><a href="EmacsTip.html">小技巧</a></li>
+</ul></li>
+<li>其他相关
+<ul>
+<li><a href="EmacsTimeline.html">Emacs Timeline</a></li>
+</ul></li>
+</ul>
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

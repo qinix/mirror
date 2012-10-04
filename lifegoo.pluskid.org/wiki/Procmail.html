@@ -1,0 +1,292 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>Procmail</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>Procmail</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here--><div class="contents"><h2>Contents</h2>
+<dl>
+<dt>
+<a href="#sec1">简介</a>
+</dt>
+<dt>
+<a href="#sec2">配置</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec3">基本配置</a>
+</dt>
+<dt>
+<a href="#sec4">关于 recipe</a>
+</dt>
+<dt>
+<a href="#sec5">一个例子</a>
+</dt>
+</dl>
+</dd>
+<dt>
+<a href="#sec6">运行</a>
+</dt>
+<dt>
+<a href="#sec7">资源</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec8">man 文档</a>
+</dt>
+<dt>
+<a href="#sec9">在线资源</a>
+</dt>
+</dl>
+</dd>
+</dl>
+</div>
+
+
+    <!-- Page published by Emacs Muse begins here -->
+<h2><a name="sec1" id="sec1"></a>
+简介</h2>
+
+<p class="first">Procmail 是一个邮件过滤工具，可以根据邮件的发信人、主题、长度以及关键字
+等对邮件进行排序、分类、整理等工作，特别是在你订阅了邮件列表的时候显得
+非常有用。</p>
+
+
+<h2><a name="sec2" id="sec2"></a>
+配置</h2>
+
+<h3><a name="sec3" id="sec3"></a>
+基本配置</h3>
+
+<p class="first">Procmail 的配置文件是 <code>~/.procmailrc</code> 。配置非常简单，首先是一些选项，后
+面则是一些过滤规则：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #eedd82;
+      }
+    --></style><span class="comment-delimiter"># </span><span class="comment">-*- Conf -*-
+</span><span class="variable-name">MAILDIR</span>=$HOME/Maildir/
+<span class="variable-name">ORGMAIL</span>=/var/mail/$USER
+<span class="variable-name">LOGFILE</span>=$HOME/.maillog
+<span class="variable-name">SHELL</span>=/bin/zsh
+<span class="variable-name">LOCKFILE</span>=$HOME/.lockmail
+<span class="variable-name">VERBOSE</span>=no
+
+<span class="comment-delimiter"># </span><span class="comment">webmaster always sends junk mail~~
+</span>:0
+* ^From: webmaster@st\.zju\.edu\.cn
+/dev/null
+
+<span class="comment-delimiter"># </span><span class="comment">all other mail goes to inbox
+</span>:0:
+inbox/
+</pre></div></div></div></div></div></div></div>
+
+<p>值得注意的是，邮箱末尾的 <code>/</code> 告诉 Procmail 使用 maildir 邮箱格式，而不是
+mbox 格式。</p>
+
+
+<h3><a name="sec4" id="sec4"></a>
+关于 recipe</h3>
+
+<p class="first">Procmail 使用 <code>recipe</code> 来决定处理哪些邮件以及如何处理他们。一个 <code>recipe</code>
+有这种格式：</p>
+
+<pre class="example">
+:0 [flags] [ : [locallockfile] ]
+&lt;zero or more conditions (one per line)&gt;
+&lt;exactly one action line&gt;
+</pre>
+
+<p><code>flags</code> 具体可以参见 <code>man procmailrc</code> ，后面如果加上冒号则表示对文件进行锁
+定，这样可以避免同时运行几个 Procmail 操纵相同的文件的时候造成混乱。</p>
+
+<p><code>conditions</code> 以 <code>*</code> 开头，当然处理使用正则表达式进行匹配，还有其他可用的
+命令，例如以 <code>&lt;</code> 开头可以检查邮件的长度是否小于给定的值。其他具体可以参
+见 <code>man procmailrc</code> 。</p>
+
+<p>接下来是 <code>action line</code> 。如果以 <code>!</code> 开头，则对邮件进行 forward 到指定的地
+址；如果是以 <code>|</code> 开头则是启动相应的程序；以 <code>{</code> 开头则可以指定嵌套的
+<code>recipe</code> ；其他情况则被视为本地邮箱，如果是一个目录，则表示 maildir 格式，
+否则是 mbox 格式。</p>
+
+
+<h3><a name="sec5" id="sec5"></a>
+一个例子</h3>
+
+<p class="first">最近 MSTC 内部组建了一个邮件列表，凡是发送到 <a href="mailto:allmstc@mstczju.org">allmstc@mstczju.org</a> 的邮
+件都会被自动投递给 MSTC 的每一个成员，可是萝卜时常在外网，不方便使用内
+网邮箱，正好我这里有 VPN 连接，可以同时连接到内网和外网，所以我决定对
+邮件进行 forward 。</p>
+
+<p>首先是要把我受到的 allmstc 的邮件列表 forward 到萝卜的外网邮箱，观察
+allmstc 的邮件列表的邮件头可以找出一个合适的匹配的正则表达式：</p>
+
+<pre class="example">
+:0:
+* ^X-MDMailing-List: allmstc@mstczju.org
+{
+	:0 c
+	! yujiazi@gmail.com
+
+	:0:
+	mstc/
+}
+</pre>
+
+<p>可以看到，所有匹配到的邮件进入嵌套的下一轮匹配，首先是 forward 到萝卜
+的外网邮箱，这里使用了 <code>c</code> 这个标志，表示对邮件进行拷贝，这样可以保证接
+下来的 <code>recipe</code> 能够继续处理这个邮件，否则我自己就收不到邮件了，于是下一
+个 <code>recipe</code> 我让 Procmail 把邮件放到我的 mstc 这个本地邮箱里面。</p>
+
+<p>同时，为了让萝卜能够参与邮件列表的讨论，他把邮件发送到我的外网邮箱，并
+保证在主题里面有 <code>[allmstc]</code> 的字样，那么我就把这封邮件转发到
+<a href="mailto:allmstc@mstczju.org">allmstc@mstczju.org</a> 里面去：</p>
+
+<pre class="example">
+:0
+* ^To: pluskid.zju@gmail.com
+* ^Subject.*\[allmstc\].*
+! allmstc@mstczju.org
+</pre>
+
+
+
+<h2><a name="sec6" id="sec6"></a>
+运行</h2>
+
+<p class="first">要让发送给自己的邮件都经过 Procmail 过滤，
+<a href="http://lipas.uwasa.fi/~ts/info/proctips.html">Timo's procmail tips and recipes</a> 上讲了一个方法，只需要在主目录下面建立
+一个 <code>.forward</code> 文件，内容为：</p>
+
+<pre class="example">
+&quot;|IFS=' ' &amp;&amp; exec /usr/bin/procmail || exit 75 #kid&quot;
+</pre>
+
+<p>其中路径替换成自己 procmail 真正的路径，并把 <code>kid</code> 替换成自己真正的用户
+名即可。注意主目录的属性，如果不小心打开了组或者其他人的写属性，那么邮
+件服务器将会拒绝处理 <code>.forward</code> 文件。</p>
+
+<p>这个应该是针对 Sendmail 的语法，我使用 <a href="Exim4.html">Exim4</a> ，试验了一下并不能正常运
+行，而且从 <a href="Exim4.html">Exim4</a> 的日志可以看出有错误。我在 <a href="http://www.google.com">google</a> 上对日志里面的出错
+信息进行了一番搜索以后得到了答案。</p>
+
+<p>那怪异的语法是针对 Sendmail 的各种功能以及安全漏洞的，许多文档都给出那
+样的例子，以至于那甚至被认为是所有 MTA 的“正常行为”了。对于 Sendmail
+，如果两个用户的 <code>.forward</code> 文件的内容是一样的，就会出现问题。因为
+Sendmail 会对邮件的 forward 进行优化，如果一个邮件同时发送到这两个用户，
+并且他们的 forward 地址都是一样的，就删除一个重复的。这样的行为对于
+<code>.forward</code> 内容为电子邮件地址的情况是好的，但是对于用管道输出到程序的情
+况就不行了。因此人们总是在命令末尾加上一些“垃圾信息”(例如自己的用户名)
+来避免重复。</p>
+
+<p>而其他的 MTA 总是能够区分不同用户的管道命令，因为除了对命令行进行比较
+以外，他们还对程序运行的 UID 进行比较。</p>
+
+<p>Sendmail 调用一个 shell 来执行管道命令，这有可能出现安全漏洞，所以大家
+添加 <code>IFS=' '</code> 一类的东西，试图控制局面。 <a href="Exim4.html">Exim4</a> 自己进行命
+令行解析，所以不需要这个。</p>
+
+<p>因此，在使用 <a href="Exim4.html">Exim4</a> 的时候， <code>.forward</code> 里面的内容很简单：</p>
+
+<pre class="example">
+|/usr/bin/procmail
+</pre>
+
+
+<h2><a name="sec7" id="sec7"></a>
+资源</h2>
+
+<h3><a name="sec8" id="sec8"></a>
+man 文档</h3>
+
+<ul>
+<li><code>man procmail</code> 是 Procmail 的手册</li>
+<li><code>main procmailrc</code> 可以得到 <code>~/.procmail</code> 文件的详细解释</li>
+<li><code>man procmailex</code> 可以得到许多例子</li>
+</ul>
+
+
+<h3><a name="sec9" id="sec9"></a>
+在线资源</h3>
+
+<ul>
+<li><a href="http://www.procmail.org/">主页</a></li>
+<li><a href="http://pm-doc.sourceforge.net/">Procmail Documentation Project</a></li>
+<li><a href="http://www.rosat.mpe-garching.mpg.de/mailing-lists/procmail/">a searchable archive of the procmail mailing list</a></li>
+<li><a href="http://www.uwasa.fi/~ts/info/proctips.html">Timo Salmi's procmail tips and recipes</a></li>
+<li><a href="http://www.iki.fi/era/procmail/mini-faq.html">Era Eriksson's Procmail Mini-FAQ</a></li>
+</ul>
+
+
+
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

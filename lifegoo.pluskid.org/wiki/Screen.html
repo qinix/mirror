@@ -1,0 +1,225 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>GNU Screen</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>GNU Screen</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here--><div class="contents"><h2>Contents</h2>
+<dl>
+<dt>
+<a href="#sec1">定制 screen</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec2">快捷键定制</a>
+</dt>
+<dt>
+<a href="#sec3">Caption 定制</a>
+</dt>
+<dt>
+<a href="#sec4">其他定制</a>
+</dt>
+</dl>
+</dd>
+<dt>
+<a href="#sec5">使用 screen</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec6">日常使用</a>
+</dt>
+<dt>
+<a href="#sec7">分割屏幕</a>
+</dt>
+<dt>
+<a href="#sec8">复制粘贴</a>
+</dt>
+</dl>
+</dd>
+</dl>
+</div>
+
+
+    <!-- Page published by Emacs Muse begins here -->
+<p>GNU Screen 是一个非常不错的东西，GNU 称之为一个全屏窗口管理器，用他可
+以轻松在一个物理终端上获得多个虚拟终端的效果，当然也就可以在自己喜欢的
+<a href="XTerminal.html">X 终端模拟器</a>上面用了，可以弥补有些终端模拟器没有标签功能的缺陷，而且，
+screen 的强大之处远远不止提供标签功能。</p>
+
+<h2><a name="sec1" id="sec1"></a>
+定制 screen</h2>
+
+<p class="first">强大的软件通常都有很灵活的可定制性， screen 的定制文件通常是
+<code>~/.screenrc</code> 。各种参数设定可以放到定制文件里面，也可以通过参数传递或者
+是在运行期间通过命令动态指定。</p>
+
+<p><a name="KeyBinding" id="KeyBinding"></a></p>
+
+<h3><a name="sec2" id="sec2"></a>
+快捷键定制</h3>
+
+<p class="first">screen 的各个快捷键有一个通用的前缀，默认是 <code>C-a</code> ，这对于要在终端里面使
+用 <a href="Emacs.html">Emacs</a> 的用户来说是不可忍受的，可以通过 <code>escape</code> 命令来重新设定这个值。
+我使用的是 <code>C-l</code> 这个命令，这个快捷键在 <a href="Emacs.html">Emacs</a> 里面并不常用，而且也比较好
+按：</p>
+
+<pre class="example">
+escape ^L^L
+</pre>
+
+<p>注意 screen 并不认识 `<code>C-a'</code> 这种语法的快捷键，而是要使用 <code>`^L'</code> 这种形式，
+或者是一个 <code>`\'</code> 后面跟着八进制数值的形式用于表示对应的 ASCII 字符。而这
+儿的后面那个 <code>^L</code> 表示如果我按了 <code>C-l C-l</code> 那么，就将 <code>C-l</code> 直接发送到正在运
+行的程序那里，而不是作为 screen 的快捷键处理，这样，我在 screen 里面运
+行 <a href="Emacs.html">Emacs</a> 的时候就可以通过连按两次 <code>C-l</code> 来执行 <code>recenter</code> 命令了<sup><a name="fnr.1" href="#fn.1">1</a></sup>。</p>
+
+<p>设定了快捷键前缀，接下来就该设定各个快捷键了。由于前缀都是统一的，所以
+提到快捷键的时候通常不提前缀。例如，对于 region 的操纵函数，我把他们梆
+定得和 <a href="Emacs.html">Emacs</a> 很类似，以方便记忆<sup><a name="fnr.4" href="#fn.4">4</a></sup>：</p>
+
+<pre class="example">
+bind 2 split
+bind o focus
+bind 1 only
+bind 0 remove
+</pre>
+
+
+<h3><a name="sec3" id="sec3"></a>
+Caption 定制</h3>
+
+<p><code>caption</code> 命令可以用于定制显示的 caption ，通过指定 <code>always</code> 参数，可以让
+她始终显示，而不仅仅是在分割的时候才显示出来。显示的内容里面可以使用的
+特殊命令详细请参见 screen 的 info 文档里面 String Escapes 一节。我在网
+上看到一个好像是 FreeWizard@newsmth 的配置，非常不错：</p>
+
+<pre class="example">
+caption always &quot;%?%F%{-b 4w}%:%{-b bb}%? %H | %l | %m-%d %c |%?%F%{-b 4w}%?%L=%-Lw%45&gt;%{-b w4}%n%f* %t%{-}%+Lw%-0&lt;&quot;
+</pre>
+
+<p>显示了时间、系统负荷以及各个窗口的标签等很实用的内容。</p>
+
+
+<h3><a name="sec4" id="sec4"></a>
+其他定制</h3>
+
+<p><code>startup_message off</code> 可以关闭烦人的启动画面。</p>
+
+
+
+<h2><a name="sec5" id="sec5"></a>
+使用 screen</h2>
+
+<h3><a name="sec6" id="sec6"></a>
+日常使用</h3>
+
+<p class="first">在终端里面运行 screen 即可启动，之后可以用 <code>C-l d</code> <sup><a name="fnr.2" href="#fn.2">2</a></sup>来 `detach' 它。之
+后(可以是在重新登录之后，或者是再到一个完全不同的终端里面)你可以再连接
+到刚才的那个 screen 会话。命令 <code>screen -list</code> 可以列出你目前的所有
+screen 会话。</p>
+
+<p>事实上，我使用 <a href="Sawfish.html">Sawfish</a> 的 <code>jump-or-exec</code> 功能，把 <code>W-t</code> 绑定到启动 <a href="XTerminal.html#urxvt">urxvt</a>
+并在其中启动或者连接到以前存在的一个 screen 会话。由于我同时为
+<a href="FasterEmacs.html#OneInitPerStartup">emacs--multi-tty</a> 使用一个 screen 会话，为了避免不小心连接到那个会话上，
+我为这个 <a href="XTerminal.html#urxvt">urxvt</a> 也进行命名，使用这个命令来启动 <a href="XTerminal.html#urxvt">urxvt</a></p>
+
+<pre class="example">
+urxvt -e screen -xRRS urxvt &amp;
+</pre>
+
+<p>在一个 screen 会话里面也可以启动多个窗口进行工作。 <code>C-l c</code> 可以创建一个
+新的窗口，之后可以通过 <code>C-l n</code> 和 <code>C-l p</code> 在窗口之间来回切换，也可以直接使
+用 <code>C-l N</code> 跳到第 <code>N</code> 个窗口。另外 <code>C-a &quot;</code> 可以列出所有的窗口，就像 <a href="Emacs.html">Emacs</a> 里
+面的 <code>C-x C-b</code> 一样。</p>
+
+
+<h3><a name="sec7" id="sec7"></a>
+分割屏幕</h3>
+
+<p><code>C-l S</code> 可以把当前屏幕进行水平划分，就类似于 <a href="Emacs.html">Emacs</a> 的 <code>C-x 2</code> 。然后可以通
+过 <code>C-l &lt;TAB&gt;</code> 在各个分割的区域<sup><a name="fnr.3" href="#fn.3">3</a></sup>之间切换焦点。其他的命令详细可以参见
+screen 的 info 文档，为了和更便于记忆，我把他们设定成了和 <a href="Emacs.html">Emacs</a> 很类似
+的快捷键。见<a href="#KeyBinding">快捷键定制</a>。</p>
+
+
+<h3><a name="sec8" id="sec8"></a>
+复制粘贴</h3>
+
+<p class="first">screen 的另外一个强大功能就是在各个窗口和区域之间进行复制、粘贴。 <code>C-l
+[</code> 即可进入选取状态，这里可以使用 vi 的那种 hjkl 等命令进行光标的移动，
+并使用空格键分别标记要拷贝的区段的首部和尾部位置，还可以通过 <code>C</code> 和 <code>c</code> 设
+定左右边界以实现矩形拷贝。另外，在这个状态还可以进行文本搜索。</p>
+
+<p>复制之后，用 <code>C-l ]</code> 即可进行粘贴。</p>
+
+<h2>Footnote</h2>
+<p class="footnote"><a name="fn.1" href="#fnr.1">1.</a> &quot;C-a C-l&quot; 在 screen 里面原来是 redisplay 命令，我觉得这个命令没有什么
+用处，况且我仍然可以通过 &quot;C-a l&quot; (在被我设定过命令前缀之后，是
+&quot;C-l l&quot;) 来调用这个 screen 命令。</p>
+
+<p class="footnote"><a name="fn.2" href="#fnr.2">2.</a> 注意我的快捷键和默认的快捷键前缀不一样，如果是默认快捷键，应该把
+&quot;C-l&quot; 替换成 &quot;C-a&quot; ，以下同。</p>
+
+<p class="footnote"><a name="fn.3" href="#fnr.3">3.</a> 在这里用 screen 的术语，称作 `region' 。</p>
+
+<p class="footnote"><a name="fn.4" href="#fnr.4">4.</a> 事实上我现在并没有这么绑定，因为我通常开很多窗口，用 &quot;C-l N&quot; 来切
+换到第 N 个窗口通常更常用。</p>
+
+
+
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

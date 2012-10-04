@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>Mutt</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>Mutt</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here--><div class="contents"><h2>Contents</h2>
+<dl>
+<dt>
+<a href="#sec1">小技巧</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec2">命令行工作</a>
+</dt>
+</dl>
+</dd>
+<dt>
+<a href="#sec3">在线资源</a>
+</dt>
+</dl>
+</div>
+
+
+    <!-- Page published by Emacs Muse begins here -->
+<h2><a name="sec1" id="sec1"></a>
+小技巧</h2>
+
+<h3><a name="sec2" id="sec2"></a>
+命令行工作</h3>
+
+<p class="first">Mutt 可以不启动交互界面直接由命令行参数指定的信息来发送邮件，这个在脚本
+里面很有用。因为 Unix 自带的 mail 命令不会帮你处理附件，所以有时候在脚
+本里面要发送附件就比较麻烦<sup><a name="fnr.1" href="#fn.1">1</a></sup>，这时可以直接用 mutt 来发送。例如，我的系
+统每隔一段时间会自动运行这个脚本，把我的 wiki 备份起来发送到我的专门用
+于备份资料的邮箱里面去：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .builtin {
+        /* font-lock-builtin-face */
+        color: #b0c4de;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .sh-escaped-newline {
+        /* sh-escaped-newline */
+        color: #ffa07a;
+      }
+      .sh-heredoc {
+        /* sh-heredoc */
+        color: #ffff00;
+        font-weight: bold;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #eedd82;
+      }
+    --></style><span class="comment-delimiter">#</span><span class="comment">!/bin/zsh
+</span>
+<span class="comment-delimiter"># </span><span class="comment">my wiki source ,published html along with the
+</span><span class="comment-delimiter"># </span><span class="comment">config files and send it to my gmail
+</span>
+<span class="variable-name">MAILTO</span>=<span class="string">"pluskid.archive@gmail.com"</span>
+<span class="variable-name">SUBJECT</span>=kid-wiki-$(date +<span class="string">"%G-%m-%d"</span>)
+<span class="variable-name">ATTACH</span>=${<span class="variable-name">SUBJECT</span>}.tar.bz2
+
+
+<span class="builtin">cd</span> /tmp
+tar cjf ${<span class="variable-name">ATTACH</span>} -C ${<span class="variable-name">HOME</span>} <span class="sh-escaped-newline">\</span>
+    web/wiki/{src,publish} emacs/init.d/{50muse.el,60muse-latex2png.el,60muse-srctag.el}
+mutt -a ${<span class="variable-name">ATTACH</span>} -s $<span class="variable-name">SUBJECT</span> $<span class="variable-name">MAILTO</span> &lt;&lt;EOF<span class="sh-heredoc">
+pluskid's wiki backup file in attachement
+EOF
+</span></pre></div></div></div></div></div></div></div>
+
+
+
+
+<h2><a name="sec3" id="sec3"></a>
+在线资源</h2>
+
+<ul>
+<li><a href="http://www.mutt.org/">主页</a></li>
+<li><a href="http://wiki.mutt.org/">MuttWiki</a></li>
+<li><a href="http://wiki.mutt.org/index.cgi?MuttGuide">MuttGuide</a></li>
+</ul>
+
+
+<h2>Footnote</h2>
+<p class="footnote"><a name="fn.1" href="#fnr.1">1.</a>  <a href="http://www.panix.com/~kylet/unix-att.html">这里</a>介绍了很多种在命令行里发送邮件时添加附件的方法。</p>
+
+
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

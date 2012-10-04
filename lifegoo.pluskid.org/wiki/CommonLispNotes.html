@@ -1,0 +1,287 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>Common Lisp 笔记</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>Common Lisp 笔记</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here--><div class="contents"><h2>Contents</h2>
+<dl>
+<dt>
+<a href="#sec1">《On Lisp》</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec2">On Lisp, P31(3.1 Functional Design)</a>
+</dt>
+<dt>
+<a href="#sec3">On Lisp, P36(3.4 Functional Interface)</a>
+</dt>
+<dt>
+<a href="#sec4">On Lisp, P87(7.2 Backquote)</a>
+</dt>
+<dt>
+<a href="#sec5">On Lisp, P102(7.9 Dependence On Macros)</a>
+</dt>
+<dt>
+<a href="#sec6">On Lisp, P129(9.7 Avoiding Capture with Gensyms)</a>
+</dt>
+</dl>
+</dd>
+</dl>
+</div>
+
+
+    <!-- Page published by Emacs Muse begins here -->
+<h2><a name="sec1" id="sec1"></a>
+《On Lisp》</h2>
+
+<h3><a name="sec2" id="sec2"></a>
+On Lisp, P31(3.1 Functional Design)</h3>
+
+<p class="first">A destructive function is one that can alter the arguments passed to
+it. However, even destructive functions usually work by returning
+values: you have to assume that <code>nreverse</code> will recycle lists you give
+to it as arguments, but you still can't assume that ti will reverse
+them. As before, the reversed list has to be found in return
+value. You still can't write</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--     --></style>(nreverse lst)
+</pre></div></div></div></div></div></div></div>
+
+<p>in the middle of a function and assume that afterwards <code>lst</code> will be
+reversed. This is what happens in most implementations:</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--     --></style>&gt; (setq lst '(a b c))
+(A B C)
+&gt; (nreverse lst)
+(C B A)
+&gt; lst
+(A)
+</pre></div></div></div></div></div></div></div>
+
+<p>To reverse <code>lst</code> , you would have to set <code>lst</code> to the return value, as
+with plain <code>reverse</code> .</p>
+
+
+<h3><a name="sec3" id="sec3"></a>
+On Lisp, P36(3.4 Functional Interface)</h3>
+
+<p class="first">A corollary of convention above is that functions shouldn't return
+anything that isn't safe to modify. Thus one should avoid writing
+functions whose return values incorporate quoted objects. If we define
+<code>exclaim</code> so that its return value incorporates a quoted list,</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .function-name {
+        /* font-lock-function-name-face */
+        color: #87cefa;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+    --></style>(<span class="keyword">defun</span> <span class="function-name">exclaim</span> (expression)
+  (append expression '(oh my)))
+</pre></div></div></div></div></div></div></div>
+
+<p>Then any later destructive modification of the return value</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--     --></style>&gt; (exclaim '(lions and tigers and bears))
+(LIONS AND TIGERS AND BEARS OH MY)
+&gt; (nconc * '(goodness))
+(LIONS AND TIGERS AND BEARS OH MY GOODNESS)
+</pre></div></div></div></div></div></div></div>
+
+<p>could alter the list within the function:</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--     --></style>&gt; (exclaim '(fixnums and bignums and floats))
+(FIXNUMS AND BIGNUMS AND FLOATS OH MY GOODNESS)
+</pre></div></div></div></div></div></div></div>
+
+<p>To make <code>exclaim</code> proof against such proglems, it should be written:</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .function-name {
+        /* font-lock-function-name-face */
+        color: #87cefa;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+    --></style>(<span class="keyword">defun</span> <span class="function-name">exclaim</span> (expression)
+  (append expression (list 'oh 'my)))
+</pre></div></div></div></div></div></div></div>
+
+<p>There is one major exception to the rule that functions shouldn't
+return quoted lists: the functions which generate macro
+expansions. Macro expanders can safely incorporate quoted lists in the
+expansions they generate, if the expansions are going straight to the
+compiler.</p>
+
+
+<h3><a name="sec4" id="sec4"></a>
+On Lisp, P87(7.2 Backquote)</h3>
+
+<p class="first">The comma causes the list <code>(1 2 3)</code> to be inserted in place of <code>b</code> , while
+the comma-at causes the elements of the list to be inserted
+there. There are some additional restrictions on the use of comma-at:</p>
+
+<ol>
+<li>In order for its argument to be spliced, comma-at must occur
+within a sequence. It's an error to say something like <code>`,@b</code>
+because there is nowhere to splice the value of b.</li>
+<li>The object to be spliced must be a list, unless it occurs
+last. The expression <code>`(a ,@1)</code> will evaluate to <code>(a . 1)</code> , but
+attempting to splice an atom into the middle of a list, as in <code>`(a
+,@1 b)</code> , will cause an error.</li>
+</ol>
+
+<p>...The effect of comma-at can be achieved without using backquote. The
+expression <code>`(a ,@b c)</code> is equal to <code>(cons 'a (append b (list 'c)))</code> , for
+example. Comma-at exists only to make such expression-generating
+expressions more readable.</p>
+
+
+<h3><a name="sec5" id="sec5"></a>
+On Lisp, P102(7.9 Dependence On Macros)</h3>
+
+<p class="first">CLTL2 Says that “a macro definition must be seen by the compiler
+before the first use of the macro.” Implementations vary in how they
+respond to violations of this rule. Fortunately it's easy to avoid
+both types of problem. If you adhere to the following two principles,
+you need never worry about state or nonexistent macro definitions:</p>
+
+<ol>
+<li>Define macros before functions (or macros) which call them.</li>
+<li>When a macro is redefined, also recompile all the functions (or
+macros) which call it &mdash; directly or via other macors.</li>
+</ol>
+
+<p>It has been suggested that all the macros in a program be put in a
+separate file, to make it easier to ensure that macro definitions are
+compiled first. That's taking things too far. It would be resonable to
+put general-purpose macros like <code>while</code> into a separate file, but
+general-purpose utilities ought to be separated from the rest of a
+program anyway, whether they're functions or macros.</p>
+
+<p>Some macros are written just for use in one specific part of a
+program, and these should be defined with the code which uses them. So
+long as the definition of each macro appears before any calls to it,
+your programs will compile fine. Collecting together all your macros,
+simply because they're macros, would do nothing but make your code
+harder to read.</p>
+
+
+<h3><a name="sec6" id="sec6"></a>
+On Lisp, P129(9.7 Avoiding Capture with Gensyms)</h3>
+
+<p class="first">In CLTL2 Common Lisp, the number in a gensym's printed representation
+comes from <code>*gensym-counter*</code> , a global variable always bound to an
+integer. By resetting this counter we can cause two gensyms to print
+the same</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .builtin {
+        /* font-lock-builtin-face */
+        color: #b0c4de;
+      }
+    --></style>&gt; (setq x (gensym))
+#<span class="builtin">:G48</span>
+&gt; (setq *gensym-counter* 48 y (gensym))
+#<span class="builtin">:G48</span>
+&gt; (eq x y)
+NIL
+</pre></div></div></div></div></div></div></div>
+
+<p>but they won't be identical.</p>
+
+
+
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

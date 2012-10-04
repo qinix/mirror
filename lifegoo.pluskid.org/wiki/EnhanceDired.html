@@ -1,0 +1,1035 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>增强 Dired</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>增强 Dired</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here--><div class="contents"><h2>Contents</h2>
+<dl>
+<dt>
+<a href="#sec1">dired 扩展列表</a>
+</dt>
+<dt>
+<a href="#sec2">使用单个 buffer</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec3">不用任何扩展</a>
+</dt>
+<dt>
+<a href="#sec4">对内置的函数进行 advice</a>
+</dt>
+<dt>
+<a href="#sec5">使用 dired+.el</a>
+</dt>
+<dt>
+<a href="#sec6">使用 dired-single.el</a>
+</dt>
+</dl>
+</dd>
+<dt>
+<a href="#sec7">跳转到当前 buffer 对应文件所在目录</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec8">使用 dired-x.el</a>
+</dt>
+<dt>
+<a href="#sec9">使用 dired-single.el</a>
+</dt>
+</dl>
+</dd>
+<dt>
+<a href="#sec10">快速定位到某个文件</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec11">使用 dired-details.el 和 dired-details+.el</a>
+</dt>
+<dt>
+<a href="#sec12">使用 dired-view.el</a>
+</dt>
+<dt>
+<a href="#sec13">使用 dired-isearch.el</a>
+</dt>
+</dl>
+</dd>
+<dt>
+<a href="#sec14">忽略不感兴趣的文件</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec15">使用 dired-x.el</a>
+</dt>
+<dt>
+<a href="#sec16">使用 dired+.el</a>
+</dt>
+</dl>
+</dd>
+<dt>
+<a href="#sec17">以合适的程序打开文件</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec18">使用 dired-x.el</a>
+</dt>
+<dt>
+<a href="#sec19">使用 run-assoc.el</a>
+</dt>
+<dt>
+<a href="#sec20">使用 trivial-mode.el</a>
+</dt>
+</dl>
+</dd>
+<dt>
+<a href="#sec21">排序</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec22">使用 dired-sort-menu.el 和 dired-sort-menu+.el</a>
+</dt>
+<dt>
+<a href="#sec23">自己对 dired 进行扩展</a>
+</dt>
+<dt>
+<a href="#sec24">使用 dired 自身的功能</a>
+</dt>
+</dl>
+</dd>
+</dl>
+</div>
+
+
+    <!-- Page published by Emacs Muse begins here -->
+<h2><a name="sec1" id="sec1"></a>
+dired 扩展列表</h2>
+
+<p class="first">这里列举一下我们后面要用到的 dired 的扩展，他们都是单个 <a href="Elisp">Elisp</a> 文件，安
+装方法都可以在文件头部的注释部分找到。</p>
+
+<ul>
+<li><a href="http://www.emacswiki.org/cgi-bin/wiki/dired-single.el">dired-single.el</a> 让 dired 只使用一个 buffer 。</li>
+<li><a href="http://www.emacswiki.org/cgi-bin/wiki/DiredPlus">dired+.el</a> 扩展 dired.el 、 dired-x.el 和 dired-aux.el 的功能。</li>
+<li>dired-x.el 这是 <a href="Emacs.html">Emacs</a> 自带的扩展，安装方法可以查看 <a href="Emacs.html">Emacs</a> 的 info 文
+档。</li>
+<li><a href="http://www.emacswiki.org/cgi-bin/emacs/download/dired-isearch.el">dired-isearch.el</a> 在 dired 里面只针对文件名做 i-search 。</li>
+<li><a href="http://www.emacswiki.org/cgi-bin/wiki/dired-details.el">dired-details.el</a> 隐藏多余的信息，显示简洁的文件列表。</li>
+<li><a href="http://www.emacswiki.org/cgi-bin/wiki/dired-details.el">dired-details+.el</a> dired-details.el 的扩展。</li>
+<li><a href="http://www.emacswiki.org/cgi-bin/wiki/dired-view.el">dired-view.el</a> 输入文件名的首字母快速跳转。</li>
+<li><a href="http://www.emacswiki.org/cgi-bin/wiki/DiredSortMenu">dired-sort-menu.el</a> 方便地使用各种方式进行排序，并提供一个菜单用于执
+行操作。</li>
+<li><a href="http://www.emacswiki.org/cgi-bin/wiki/dired-sort-menu%2b.el">dired-sort-menu+.el</a> dired-sort-menu.el 的扩展。</li>
+</ul>
+
+
+
+<h2><a name="sec2" id="sec2"></a>
+使用单个 buffer</h2>
+
+<p class="first">dired 在每打开一个新的目录之后总会打开一个新的 buffer ，这样，在浏览了
+很多目录之后，<a href="Emacs.html">Emacs</a> 里面就会充满了目录的 buffer ，很不舒服，不过有很多
+方法可以解决这个问题。</p>
+
+<h3><a name="sec3" id="sec3"></a>
+不用任何扩展</h3>
+
+<p class="first">在 <a href="Emacs.html">Emacs</a> 22 里面，可以使用 <code>a</code> 来访问目录，这样可以避免打开多余的buffer
+，不过使用回车或者鼠标点击打开目录的话，还是会产生多出来的 buffer 。</p>
+
+
+<h3><a name="sec4" id="sec4"></a>
+对内置的函数进行 advice</h3>
+
+<p class="first">可以通过对 <a href="Emacs.html">Emacs</a> 内置的函数进行 advice 也可以达到这个目的，其实就是对
+进入其他目录的动作进行截获，判断如果进入了一个目录，则把原来目录的那个
+buffer 删掉：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .doc {
+        /* font-lock-doc-face */
+        color: #ffa07a;
+      }
+      .function-name {
+        /* font-lock-function-name-face */
+        color: #87cefa;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .underline {
+        /* underline */
+        text-decoration: underline;
+      }
+    --></style>(<span class="keyword">defadvice</span> <span class="function-name">dired-find-file</span> (around dired-find-file-single-buffer activ<span class="underline">ate)
+</span>  <span class="doc">"Replace current buffer if file is a directory."</span>
+  (interactive)
+  (<span class="keyword">let</span> ((orig (current-buffer))
+        (filename (dired-get-file-for-visit)))
+    ad-do-it
+    (<span class="keyword">when</span> (and (file-directory-p filename)
+               (not (eq (current-buffer) orig)))
+      (kill-buffer orig))))
+(<span class="keyword">defadvice</span> <span class="function-name">dired-up-directory</span> (around dired-up-directory-single-buffer<span class="underline"> activate)
+</span>  <span class="doc">"Replace current buffer if file is a directory."</span>
+  (interactive)
+  (<span class="keyword">let</span> ((orig (current-buffer)))
+    ad-do-it
+    (kill-buffer orig)))
+</pre></div></div></div></div></div></div></div>
+
+
+<h3><a name="sec5" id="sec5"></a>
+使用 dired+.el</h3>
+
+<p class="first">dired+.el 提供 <code>toggle-dired-find-file-reuse-dir</code> ，用于打开和关闭默认按
+键是否重用当前 buffer ，如果你不想影响默认新闻，它还提供了了两个函数，
+<code>diredp-find-file-reuse-dir-buffer</code> 和
+<code>diredp-mouse-find-file-reuse-dir-buffer</code> ，你可以把他们绑定到其他的按键
+上面。不过，使用 <code>^</code> 跳到上一级目录的时候仍然是没有重用当前的 buffer 的，当
+然，你可以使用在 <code>..</code> 上按回车跳到上一级的办法。</p>
+
+
+<h3><a name="sec6" id="sec6"></a>
+使用 dired-single.el</h3>
+
+<p><code>dired-single.el</code> 专门为这个问题而设计，他可以保证所有的 dired buffer 都
+使用同一个名字，换句话说，总是只会有一个 dired buffer 存在，并且我们可
+以方便地跳到那个 buffer ，如果 buffer 不存在的话， <code>dired-single.el</code> 会自
+动帮我们创建。</p>
+
+<p>作为基本使用，在 dired 里面重新绑定 回车、鼠标点击和 <code>^</code> 键：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .constant {
+        /* font-lock-constant-face */
+        color: #7fffd4;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .underline {
+        /* underline */
+        text-decoration: underline;
+      }
+    --></style>(<span class="keyword">require</span> '<span class="constant">dired-single</span>)
+(add-hook 'dired-mode-hook
+          (<span class="keyword">lambda</span> ()
+            (define-key dired-mode-map (kbd <span class="string">"RET"</span>) 'joc-dired-single-b<span class="underline">uffer)
+</span>            (define-key dired-mode-map (kbd <span class="string">"&lt;mouse-1&gt;"</span>) 'joc-dired-si<span class="underline">ngle-buffer-mouse)
+</span>            (define-key dired-mode-map (kbd <span class="string">"^"</span>)
+              (<span class="keyword">lambda</span> ()
+                (interactive)
+                (joc-dired-single-buffer <span class="string">".."</span>)))))
+</pre></div></div></div></div></div></div></div>
+
+<p>另外，如果想使用单一的 dired buffer 模式，首先要固定住 dired buffer 的
+名字，这样才能方便地在任何时候跳转到原来存在的 dired buffer 那里。定制
+<code>joc-dired-magic-buffer-name</code> 可以设定这个值，他的默认值为 <code>*dired*</code> 。然后
+要把 <code>joc-dired-use-magic-buffer</code> 设定为 <code>t</code> 以启用 magic-buffer 机制。最后
+我们绑定 <code>C-x d</code> 到 <code>joc-dired-magic-buffer</code> 上，这样，就可以使用 <code>C-x d</code> 来
+跳转回存在的 dired buffer ，如果事先没有这个 buffer 存在，他会询问你要
+访问的目录并自动创建这个 buffer 。</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .constant {
+        /* font-lock-constant-face */
+        color: #7fffd4;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .underline {
+        /* underline */
+        text-decoration: underline;
+      }
+    --></style>(<span class="keyword">require</span> '<span class="constant">dired-single</span>)
+(add-hook 'dired-load-hook
+          (<span class="keyword">lambda</span> ()
+            (define-key dired-mode-map (kbd <span class="string">"RET"</span>) 'joc-dired-single-b<span class="underline">uffer)
+</span>            (define-key dired-mode-map (kbd <span class="string">"&lt;mouse-1&gt;"</span>) 'joc-dired-si<span class="underline">ngle-buffer-mouse)
+</span>            (define-key dired-mode-map (kbd <span class="string">"^"</span>)
+              (<span class="keyword">lambda</span> ()
+                (interactive)
+                (joc-dired-single-buffer <span class="string">".."</span>)))
+            (setq joc-dired-use-magic-buffer t)
+            (setq joc-dired-magic-buffer-name <span class="string">"*dired*"</span>)))
+(global-set-key (kbd <span class="string">"C-x d"</span>)
+                'joc-dired-magic-buffer)
+</pre></div></div></div></div></div></div></div>
+
+<p>但是由于 dired-single 的实现方法的原因，现在不能在 <code>..</code> 上回车跳到上一级
+目录了，不过这不是什么大问题，可以使用 <code>^</code> 键直接跳到上一级目录。但是如
+果觉得不爽，可以把这个 patch 打到 <code>dired-single.el</code> 上去以修复这个问题：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .diff-changed {
+      }
+      .diff-context {
+        /* diff-context */
+        color: #b3b3b3;
+      }
+      .diff-file-header {
+        /* diff-file-header */
+        background-color: #999999;
+        font-weight: bold;
+      }
+      .diff-header {
+        /* diff-header */
+        background-color: #737373;
+      }
+      .diff-hunk-header {
+        /* diff-hunk-header */
+        background-color: #737373;
+      }
+      .diff-indicator-changed {
+      }
+    --></style><span class="diff-header">*** </span><span class="diff-header"><span class="diff-file-header">dired-single.el</span></span><span class="diff-header">     2006-10-02 23:47:52.000000000 +0800
+--- </span><span class="diff-header"><span class="diff-file-header">dired-single.el.new</span></span><span class="diff-header"> 2006-10-03 14:19:42.000000000 +0800
+</span><span class="diff-hunk-header">***************</span>
+<span class="diff-hunk-header">*** 244,250 ****</span>
+<span class="diff-context">     its name will not change every time a new directory is entered)."
+    (interactive)
+    ;; use arg passed in or find name of current line
+</span><span class="diff-indicator-changed">!</span><span class="diff-changed">   (let ((name (or default-dirname (dired-get-filename))))
+</span><span class="diff-context">          (save-excursion
+            (save-match-data
+                  ;; See if the selection is a directory or not.
+</span><span class="diff-hunk-header">--- 244,250 ----</span>
+<span class="diff-context">     its name will not change every time a new directory is entered)."
+    (interactive)
+    ;; use arg passed in or find name of current line
+</span><span class="diff-indicator-changed">!</span><span class="diff-changed">   (let ((name (or default-dirname (dired-get-file-for-visit))))
+</span><span class="diff-context">          (save-excursion
+            (save-match-data
+                  ;; See if the selection is a directory or not.
+</span></pre></div></div></div></div></div></div></div>
+
+<p>另外， <code>dired-single.el</code> 是根据 dired 列出的文件类型那个 <code>d</code> 来判断是否是
+目录的，这样对于处理软链接的目录就不行了，我们可以使用 <a href="Emacs.html">Emacs</a> 提供的
+<code>file-directory-p</code> 来判断，这个函数会跟踪软链接，只要把这个 patch 打到
+<code>dired-single.el</code> 上就可以解决这个问题：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .diff-changed {
+      }
+      .diff-context {
+        /* diff-context */
+        color: #b3b3b3;
+      }
+      .diff-file-header {
+        /* diff-file-header */
+        background-color: #999999;
+        font-weight: bold;
+      }
+      .diff-header {
+        /* diff-header */
+        background-color: #737373;
+      }
+      .diff-hunk-header {
+        /* diff-hunk-header */
+        background-color: #737373;
+      }
+      .diff-indicator-changed {
+      }
+    --></style><span class="diff-header">*** </span><span class="diff-header"><span class="diff-file-header">dired-single.el</span></span><span class="diff-header">     2006-10-05 11:17:06.000000000 +0800
+--- </span><span class="diff-header"><span class="diff-file-header">dired-single.el.new</span></span><span class="diff-header"> 2006-10-05 11:17:06.000000000 +0800
+</span><span class="diff-hunk-header">***************</span>
+<span class="diff-hunk-header">*** 252,258 ****</span>
+<span class="diff-context">                  (let ((eol (point)))
+                    (beginning-of-line)
+                    ;; assume directory if arg passed in
+</span><span class="diff-indicator-changed">!</span><span class="diff-changed">                   (if (or default-dirname (re-search-forward "^  d" eol t))
+</span><span class="diff-context">                            ;; save current buffer's name
+                            (let ((current-buffer-name (buffer-name)))
+                                  ;; go ahead and read in the directory
+</span><span class="diff-hunk-header">--- 252,258 ----</span>
+<span class="diff-context">                  (let ((eol (point)))
+                    (beginning-of-line)
+                    ;; assume directory if arg passed in
+</span><span class="diff-indicator-changed">!</span><span class="diff-changed">                   (if (or default-dirname (file-directory-p name))
+</span><span class="diff-context">                            ;; save current buffer's name
+                            (let ((current-buffer-name (buffer-name)))
+                                  ;; go ahead and read in the directory
+</span></pre></div></div></div></div></div></div></div>
+
+
+
+<h2><a name="sec7" id="sec7"></a>
+跳转到当前 buffer 对应文件所在目录</h2>
+
+<h3><a name="sec8" id="sec8"></a>
+使用 dired-x.el</h3>
+
+<p><code>dired-x.el</code> 提供了两个函数可以用于跳转到当前 buffer 所对应的文件的目录：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>(define-key global-map (kbd <span class="string">"C-x C-j"</span>) 'dired-jump)
+(define-key global-map (kbd <span class="string">"C-x 4 C-j"</span>) 'dired-jump-other-window)
+</pre></div></div></div></div></div></div></div>
+
+
+<h3><a name="sec9" id="sec9"></a>
+使用 dired-single.el</h3>
+
+<p class="first">既然 <code>dired-single.el</code> 可以让 dired 使用单一的 buffer ，并随时方便跳转到
+那个 buffer ，我们也可以稍微扩展一下让它能做到跳转到当前 buffer 说对应
+的文件的目录。</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>(global-set-key (kbd <span class="string">"C-x d"</span>)
+                'joc-dired-magic-buffer)
+(global-set-key (kbd <span class="string">"C-x 4 d"</span>)
+                (<span class="keyword">lambda</span> (directory)
+                  (interactive <span class="string">"D"</span>)
+                  (<span class="keyword">let</span> ((win-list (window-list)))
+                    (<span class="keyword">when</span> (null (cdr win-list)) <span class="comment-delimiter">; </span><span class="comment">only one window
+</span>                      (split-window-vertically))
+                    (other-window 1)
+                    (joc-dired-magic-buffer directory))))
+</pre></div></div></div></div></div></div></div>
+
+
+
+<h2><a name="sec10" id="sec10"></a>
+快速定位到某个文件</h2>
+
+<h3><a name="sec11" id="sec11"></a>
+使用 dired-details.el 和 dired-details+.el</h3>
+
+<p class="first">这两个扩展提供把 dired buffer 里面除了文件名以外的其他信息隐藏起来的功
+能，隐藏起来之后可以做普通的 i-search ，就能达到只搜索文件的功能。</p>
+
+
+<h3><a name="sec12" id="sec12"></a>
+使用 dired-view.el</h3>
+
+<p><code>dired-view.el</code> 提供一个方便的功能，在打开 dired-view-minor-mode 之后，
+可以输入文件名的首字母快速定位到文件。通常这个 minor-mode 并不是一直打
+开，事实上，他是重新定义了所有的字母以及数字键说绑定的函数，所以如果文
+件名是中文的话也没有办法，而且按键会和 dired 本身的很多按键冲突，于是
+他提供了方便的打开和关闭的函数：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .constant {
+        /* font-lock-constant-face */
+        color: #7fffd4;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>(<span class="keyword">require</span> '<span class="constant">dired-view</span>)
+(define-key dired-mode-map (kbd <span class="string">";"</span>) 'dired-view-minor-mode-toggle)
+</pre></div></div></div></div></div></div></div>
+
+
+<h3><a name="sec13" id="sec13"></a>
+使用 dired-isearch.el</h3>
+
+<p><code>dired-isearch.el</code> 让你能够在 dired 里面使用只对文件名部分执行 i-search
+，非常方便：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .constant {
+        /* font-lock-constant-face */
+        color: #7fffd4;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .underline {
+        /* underline */
+        text-decoration: underline;
+      }
+    --></style>(<span class="keyword">require</span> '<span class="constant">dired-isearch</span>)
+(define-key dired-mode-map (kbd <span class="string">"C-s"</span>) 'dired-isearch-forward)
+(define-key dired-mode-map (kbd <span class="string">"C-r"</span>) 'dired-isearch-backward)
+(define-key dired-mode-map (kbd <span class="string">"M-C-s"</span>) 'dired-isearch-forward-regexp<span class="underline">)
+</span>(define-key dired-mode-map (kbd <span class="string">"M-C-r"</span>) 'dired-isearch-backward-regex<span class="underline">p)
+</span></pre></div></div></div></div></div></div></div>
+
+<p>可是这个东西并不能和 <code>dired+.el</code> 共同工作，默认情况下，dired 在文件显示
+的地方可以用鼠标进行点击，而 <code>dired-isearch.el</code> 也正是依靠这个进行判断
+的，可是 <code>dired+.el</code> 让整行都处于可用鼠标点击进行操作(事实上， <code>dired+.el</code>
+提供了很强大的鼠标操作功能，例如，可以像常见的文件管理器那样区域选择、
+用 <code>Shift</code> 加鼠标来选择以及用 <code>Ctrl</code> 加鼠标来选择等)， <code>dired-isearch.el</code> 的
+方法就不管用了，不过其实只要一点小小的改动，把 <code>dired-isearch.el</code> 里面的
+所有的 <code>help-echo</code> 改为 <code>dired-filename</code> 就可以正常使用了。</p>
+
+
+
+<h2><a name="sec14" id="sec14"></a>
+忽略不感兴趣的文件</h2>
+
+<h3><a name="sec15" id="sec15"></a>
+使用 dired-x.el</h3>
+
+<p><code>dired-x.el</code> 允许忽略不感兴趣的文件，不让他们显示出来，并且可以使用
+<code>M-o</code> 来方便地切换忽略与显示。有两个变量可以控制究竟忽略哪些文件：</p>
+
+<ul>
+<li><code>dired-omit-files</code> 是一个正则表达式，凡是匹配这个正则表达式的文件就会
+被忽略掉，默认情况下会忽略自动保存的文件(以 <code>#</code> 开头)，当前目录和父目
+录(也就是 <code>.</code> 和 <code>..</code> )。</li>
+<li><code>dired-omit-extensions</code> 是一个字符串列表，凡是文件名结尾是这个列表中
+的某一个的时就会被忽略。</li>
+</ul>
+
+<p>我通常把 <code>dired-omit-files</code> 设置为 <code>&quot;^#\\|^\\..*&quot;</code> ，这样可以忽略掉以 <code>.</code> 开
+头的文件，在 <a href="Linux.html">Linux</a> 下面这通常表示隐藏文件， <code>ls</code> 默认情况下也不会显示他
+们，而且主目录下面通常有一大堆这样的文件，显示出来看起来非常恐怖。</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .regexp-grouping-backslash {
+        /* font-lock-regexp-grouping-backslash */
+        font-weight: bold;
+      }
+      .regexp-grouping-construct {
+        /* font-lock-regexp-grouping-construct */
+        font-weight: bold;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .underline {
+        /* underline */
+        text-decoration: underline;
+      }
+    --></style>(add-hook 'dired-mode-hook
+          (<span class="keyword">lambda</span> ()
+            (setq dired-omit-files <span class="string">"^#</span><span class="string"><span class="regexp-grouping-backslash">\\</span></span><span class="string"><span class="regexp-grouping-construct">|</span></span><span class="string">^\\..*"</span>) <span class="comment-delimiter">; </span><span class="comment">omit all hidden fi</span><span class="comment"><span class="underline">le which starts with `.'
+</span></span>            (dired-omit-mode 1)))                 <span class="comment-delimiter">; </span><span class="comment">initially omit uni</span><span class="comment"><span class="underline">ntrested files
+</span></span></pre></div></div></div></div></div></div></div>
+
+
+<h3><a name="sec16" id="sec16"></a>
+使用 dired+.el</h3>
+
+<p class="first">事实上 <code>dired+.el</code> 这里提供了用一种“让你觉得不重要”的颜色来显示不感兴趣的
+文件的功能，他们由 <code>dired-omit-extensions</code> 和
+<code>completion-ignored-extensions</code> 这两个变量来控制。</p>
+
+<p><a name="GuessShell" id="GuessShell"></a></p>
+
+<h2><a name="sec17" id="sec17"></a>
+以合适的程序打开文件</h2>
+
+<p class="first">在 Windows 上，文件相关联的程序都是在系统那里注册了的，可以直接执行相
+关程序而不用自己再去定义关联列表。我没有在 Windows 下用这个，所以没有
+办法做什么测试，也不多说，<a href="http://www.emacswiki.org/cgi-bin/wiki/MsShellExecute">EmacsWiki</a> 上有比较详细的介绍。这里我说一下几
+种在 <a href="Linux.html">Linux</a> 下实现使用关联的程序打开文件的方法，都是需要自己定义关联关
+系的，因为 <a href="Linux.html">Linux</a> 下并没有统一的关联程序的标准，而且，如果只是使用
+dired 作为文件管理器的话，自己定义一些自己最常用的关联关系也是很方便的。</p>
+
+<h3><a name="sec18" id="sec18"></a>
+使用 dired-x.el</h3>
+
+<p><code>dired-x.el</code> 提供猜测 shell command 的功能，在某一个文件上按 <code>!</code>
+， <code>dired-x.el</code> 会把猜测的命令在方括号中显示出来，可以直接回车执行，也可
+以用 <code>M-p</code> 来取得默认命令，并进行适当的编辑再执行，如果有几个可选的默认
+命令，可以用 <code>M-p</code> 、 <code>M-n</code> 来进行轮换选择。</p>
+
+<p><code>dired-x.el</code> 根据 <code>dired-guess-shell-alist-default</code> 变量里面定义的命令来进
+行猜测，另外还有一个 <code>dired-guess-shell-alist-user</code> 用于自定义猜测的命
+令，这里面的命令会覆盖掉 <code>dired-guess-shell-alist-default</code> 里面的命令。</p>
+
+<p>这个变量是一个列表，表的每一项格式为 <code>(REGEXP COMMAND ...)</code> ，其中每一个
+<code>COMMAND</code> 都可以是一个字符串或者是一个可以求值得到一个字符串的 <a href="Elisp">Elisp</a> 表
+达式。在字符串里面如果有 <code>*</code> 出现则会被替换成文件名，另外，也可以直接在
+<a href="Elisp">Elisp</a> 表达式里面使用 <code>file</code> 这个变量，查看
+<code>dired-guess-shell-alist-default</code> 就可以得到很多例子，例如：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .regexp-grouping-backslash {
+        /* font-lock-regexp-grouping-backslash */
+        font-weight: bold;
+      }
+      .regexp-grouping-construct {
+        /* font-lock-regexp-grouping-construct */
+        font-weight: bold;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>(<span class="string">"\\.t</span><span class="string"><span class="regexp-grouping-backslash">\\</span></span><span class="string"><span class="regexp-grouping-construct">(</span></span><span class="string">ar\\.</span><span class="string"><span class="regexp-grouping-backslash">\\</span></span><span class="string"><span class="regexp-grouping-construct">)</span></span><span class="string">?gz$"</span>
+ (concat <span class="string">"mkdir "</span>
+         (file-name-sans-extension file)
+         <span class="string">"; "</span> dired-guess-shell-gnutar <span class="string">" -C "</span>
+         (file-name-sans-extension file)
+         <span class="string">" -zxvf"</span>)
+ (concat <span class="string">"mkdir "</span>
+         (file-name-sans-extension file)
+         <span class="string">"; gunzip -qc * | tar -C "</span>
+         (file-name-sans-extension file)
+         <span class="string">" -xvf -"</span>))
+</pre></div></div></div></div></div></div></div>
+
+<p>不足的地方是只能对单个文件进行猜测，如果 mark 了一堆文件的话，这个功能
+就不太好用了。</p>
+
+<p>另外，对于 X 下的应用程序，我们通常不希望它把 <a href="Emacs.html">Emacs</a> 阻塞掉，而是同步执
+行，只需要在末尾加上 <code>&amp;</code> 即可同步执行，同时 <a href="Emacs.html">Emacs</a> 会收集程序输出，例如：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .regexp-grouping-backslash {
+        /* font-lock-regexp-grouping-backslash */
+        font-weight: bold;
+      }
+      .regexp-grouping-construct {
+        /* font-lock-regexp-grouping-construct */
+        font-weight: bold;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>(<span class="string">"\\.[rR][mM]</span><span class="string"><span class="regexp-grouping-backslash">\\</span></span><span class="string"><span class="regexp-grouping-construct">(?:</span></span><span class="string">[vV][bB]</span><span class="string"><span class="regexp-grouping-backslash">\\</span></span><span class="string"><span class="regexp-grouping-construct">)</span></span><span class="string">?"</span> <span class="string">"mplayer * &amp;"</span>)
+</pre></div></div></div></div></div></div></div>
+
+<p>可是有些程序的输出含有很多终端控制字符，mplayer 就是一个例子，我在这样
+运行 mplayer 的时候显得十分卡，我想可能是输出被 <a href="Emacs.html">Emacs</a> 捕获到 buffer 里
+面的原因。这些输出本身就没有什么用，如果还会让程序运行缓慢的话，就更可
+恶了。</p>
+
+<p>一个办法是直接在 shell 命令那里下手，例如：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .regexp-grouping-backslash {
+        /* font-lock-regexp-grouping-backslash */
+        font-weight: bold;
+      }
+      .regexp-grouping-construct {
+        /* font-lock-regexp-grouping-construct */
+        font-weight: bold;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>(<span class="string">"\\.[rR][mM]</span><span class="string"><span class="regexp-grouping-backslash">\\</span></span><span class="string"><span class="regexp-grouping-construct">(?:</span></span><span class="string">[vV][bB]</span><span class="string"><span class="regexp-grouping-backslash">\\</span></span><span class="string"><span class="regexp-grouping-construct">)</span></span><span class="string">?"</span> <span class="string">"mplayer * &gt;/dev/null 2&gt;&amp;1 &amp;"</span>)
+</pre></div></div></div></div></div></div></div>
+
+<p>就不会因为大量输出而阻塞了，不过这样仍然会打开一个空的叫做 <code>*Async
+Shell Command*</code> 的 buffer 。另外一个办法是修改代码，把所有以 <code>&amp;</code> 结尾的
+后台程序的输出都直接丢弃掉。</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .constant {
+        /* font-lock-constant-face */
+        color: #7fffd4;
+      }
+      .doc {
+        /* font-lock-doc-face */
+        color: #ffa07a;
+      }
+      .function-name {
+        /* font-lock-function-name-face */
+        color: #87cefa;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .underline {
+        /* underline */
+        text-decoration: underline;
+      }
+    --></style>(<span class="keyword">defadvice</span> <span class="function-name">dired-run-shell-command</span> (around kid-dired-run-shell-command<span class="underline"> (command))
+</span>  <span class="doc">"run a shell command COMMAND .
+If the COMMAND ends with `&amp;' then run it in background and *discard* t</span><span class="doc"><span class="underline">he
+</span></span><span class="doc">output, otherwise simply let the original `</span><span class="doc"><span class="constant">dired-run-shell-command</span></span><span class="doc">' ru</span><span class="doc"><span class="underline">n it."</span></span><span class="underline">
+</span>  (<span class="keyword">if</span> (string-match <span class="string">"&amp;[[:blank:]]*$"</span> command)
+        (<span class="keyword">let</span> ((proc (start-process <span class="string">"kid-shell"</span> nil shell-file-name
+                                   shell-command-switch
+                                   (substring command 0 (match-beginni<span class="underline">ng 0)))))
+</span>          (set-process-sentinel proc 'shell-command-sentinel))
+      ad-do-it))
+(ad-activate 'dired-run-shell-command)
+</pre></div></div></div></div></div></div></div>
+
+<p>这个缺点就是所有以 <code>&amp;</code> 结尾的程序的输出都直接被丢弃了，但是我觉得几乎这
+样的程序输出都是不需要的，而且常规的文件管理器也通常都直接丢弃这些输出
+吧。如果实在是不愿意，可以另外定义一种语法(比如末尾是 <code>&amp;!</code> 的才丢弃输出)
+并修改那个函数里面相应的匹配的正则表达式就可以了。</p>
+
+<p>另外，其实有许多不同的类型的文件使用相同的命令打开，可以把他们归到一组
+(例如，各种 video 文件都用 mplayer 打开)，但是 dired-x.el 并不提供这个
+功能，所以我写了一个宏来从“表面”上实现这个功能：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .doc {
+        /* font-lock-doc-face */
+        color: #ffa07a;
+      }
+      .function-name {
+        /* font-lock-function-name-face */
+        color: #87cefa;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #98fb98;
+      }
+      .underline {
+        /* underline */
+        text-decoration: underline;
+      }
+    --></style>(<span class="keyword">defmacro</span> <span class="function-name">kid-dired-define-assoc-group</span> (patterns actions <span class="type">&amp;optional</span> nam<span class="underline">e)
+</span>  <span class="doc">"define an assoc entry to help dired guess the shell command.
+PATTERN is a list of regexps used to match the filename.
+NAME is a list of string or expression which eval to a string
+to denote what shell command to execute. Optional NAME is
+the name of this group , just for documentation purpose."</span>
+  (<span class="keyword">let</span> ((item (gensym)))
+    `(<span class="keyword">dolist</span> (,item ',patterns)
+       (setq dired-guess-shell-alist-user
+             (cons (list ,item ,@actions) dired-guess-shell-alist-user<span class="underline">)))))
+</span>
+(add-hook 'dired-load-hook
+          (<span class="keyword">lambda</span> ()
+            (setq dired-guess-shell-alist-user nil)
+            (kid-dired-define-assoc-group
+             (<span class="string">"rm"</span> <span class="string">"rmvb"</span> <span class="string">"RM"</span> <span class="string">"RMVB"</span> <span class="string">"avi"</span> <span class="string">"mpg"</span> <span class="string">"mpeg"</span>)
+             (<span class="string">"mplayer * &amp;"</span>)
+             video)
+            (kid-dired-define-assoc-group
+             (<span class="string">"pdf"</span> <span class="string">"PDF"</span>)
+             (<span class="string">"acroread * &amp;"</span> <span class="string">"xpdf * &amp;"</span>)
+             pdf-document)
+            (kid-dired-define-assoc-group
+             (<span class="string">"png"</span> <span class="string">"jpg"</span> <span class="string">"jpeg"</span> <span class="string">"gif"</span>)
+             (<span class="string">"xloadimage * &amp;"</span> <span class="string">"gqview * &amp;"</span>)
+             image)
+            (kid-dired-define-assoc-group
+             (<span class="string">"chm"</span> <span class="string">"CHM"</span>)
+             (<span class="string">"xchm * &amp;"</span>)
+             chm-document)
+            (kid-dired-define-assoc-group
+             (<span class="string">"html"</span> <span class="string">"HTML"</span> <span class="string">"htm"</span> <span class="string">"HTML"</span>)
+             (<span class="string">"firefox * &amp;"</span>))))
+</pre></div></div></div></div></div></div></div>
+
+
+
+<h3><a name="sec19" id="sec19"></a>
+使用 run-assoc.el</h3>
+
+<p class="first">事实上这个功能非常简单，同样是定义一个关联列表，比 <code>dired-x.el</code> 要简单，
+而且也不够灵活。<a href="http://www.emacswiki.org/cgi-bin/wiki/RunAssoc">EmacsWiki</a> 上有相关介绍。</p>
+
+
+<h3><a name="sec20" id="sec20"></a>
+使用 trivial-mode.el</h3>
+
+<p><code>trivial-mode.el</code> 允许你定义一个 &quot;trivial mode&quot; ，并把他添加到
+<code>auto-mode-alist</code> 里面去，比如，定义了一个所有 pdf 文件用 xpdf 打开的
+trivial mode ，那么当在 <a href="Emacs.html">Emacs</a> 里面打开 pdf 的时候会自动调用 xpdf 打开
+这个文件。当然这个扩展可以完全独立于 dired 而使用，还是比较方便的。</p>
+
+<p><a name="Sort" id="Sort"></a></p>
+
+<h2><a name="sec21" id="sec21"></a>
+排序</h2>
+
+<p class="first">方便的排序功能自然是一个好的文件管理器所比不可少的了。</p>
+
+<h3><a name="sec22" id="sec22"></a>
+使用 dired-sort-menu.el 和 dired-sort-menu+.el</h3>
+
+<p><code>dired-sort-menu.el</code> 提供了强大的排序功能，可以按照名称、修改时间、访问时
+间、大小、扩展名等进行排序，还可以逆序排序和递归排序。同时，它还提供了
+一个菜单以及一个对话框(使用 <a href="Emacs.html">Emacs</a> 的 widget 库来实现的，就是说，在终端
+下面也是可以用的)来选择排序功能。可以使用 <code>C-d</code> 来打开这个对话框，或者用
+<code>Shift+mouse-2</code> 来打开弹出菜单选择排序项目。 <code>dired-sort-menu+.el</code> 对
+<code>dired-sort-menu.el</code> 做了一定的修改。</p>
+
+
+<h3><a name="sec23" id="sec23"></a>
+自己对 dired 进行扩展</h3>
+
+<p class="first">我们可以通过 <code>dired-sort-other</code> 给 ls 程序传递参数来达到排序的目的， gnu
+的 ls 程序有很多选项可用： <code>[tSXUucrR]</code> 。</p>
+
+<p>我们这里使用 dired 提供的 <code>dired-sort-other</code> 来调用 gnu ls 来进行排序，
+为了方便记忆，我覆盖掉 dired 的 <code>s</code> 键(原本用于切换按照时间还是文件名进
+行排序)，作为一个前缀，然后后面的键着直接对应于 ls 的相关参数，例如 <code>s
+X</code> 则是对扩展名进行排序。另外，还定义了两个开关， <code>s r</code> 用于打开或关闭逆
+序排序，而 <code>s R</code> 用于打开或关闭递归排序。</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .doc {
+        /* font-lock-doc-face */
+        color: #ffa07a;
+      }
+      .function-name {
+        /* font-lock-function-name-face */
+        color: #87cefa;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .underline {
+        /* underline */
+        text-decoration: underline;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #eedd82;
+      }
+    --></style>(<span class="keyword">defmacro</span> <span class="function-name">kid-dired-define-sort</span> (key switch)
+  <span class="doc">"define the key `s KEY' to sort use switch to ls."</span>
+  `(define-key dired-mode-map ,(concat <span class="string">"s"</span> key)
+     (<span class="keyword">lambda</span> ()
+       (interactive)
+       (dired-sort-other (concat dired-listing-switches
+                                 ,switch
+                                 (<span class="keyword">if</span> kid-dired-sort-reverse
+                                     <span class="string">"r"</span>
+                                     <span class="string">""</span>)
+                                 (<span class="keyword">if</span> kid-dired-sort-recursive
+                                     <span class="string">"R"</span>
+                                     <span class="string">""</span>))))))
+(<span class="keyword">defmacro</span> <span class="function-name">kid-dired-define-toggle</span> (key var)
+  `(define-key dired-mode-map ,(concat <span class="string">"s"</span> key)
+     (<span class="keyword">lambda</span> ()
+       (interactive)
+       (setq ,var (not ,var))
+       (message <span class="string">"%s %s."</span>
+                (get ',var 'variable-documentation)
+                (<span class="keyword">if</span> ,var
+                    <span class="string">"enabled"</span>
+                    <span class="string">"disabled"</span>)))))
+(add-hook 'dired-mode-hook
+          (<span class="keyword">lambda</span> ()
+            <span class="comment-delimiter">;; </span><span class="comment">dired use `s' to switch sort by name/time, we undefine </span><span class="comment"><span class="underline">it so
+</span></span>            <span class="comment-delimiter">;; </span><span class="comment">that it can be used as prefix
+</span>            (define-key dired-mode-map
+                (kbd <span class="string">"s"</span>)
+              nil)
+            (<span class="keyword">defvar</span> <span class="variable-name">kid-dired-sort-reverse</span> nil
+              <span class="doc">"sort reversely"</span>)
+            (<span class="keyword">defvar</span> <span class="variable-name">kid-dired-sort-recursive</span> nil
+              <span class="doc">"sort recursively"</span>)
+            (kid-dired-define-sort <span class="string">"X"</span> <span class="string">"X"</span>)
+            (kid-dired-define-sort <span class="string">"t"</span> <span class="string">"t"</span>)
+            (kid-dired-define-sort <span class="string">"S"</span> <span class="string">"S"</span>)
+            (kid-dired-define-sort <span class="string">"U"</span> <span class="string">"U"</span>)
+            (kid-dired-define-sort <span class="string">"u"</span> <span class="string">"ut"</span>) <span class="comment-delimiter">; </span><span class="comment">sort by access time
+</span>            (kid-dired-define-sort <span class="string">"c"</span> <span class="string">"ct"</span>) <span class="comment-delimiter">; </span><span class="comment">sort by ctime
+</span>            (kid-dired-define-sort <span class="string">"n"</span> <span class="string">""</span>)   <span class="comment-delimiter">; </span><span class="comment">sort by name :)
+</span>            (kid-dired-define-toggle <span class="string">"r"</span> kid-dired-sort-reverse)
+            (kid-dired-define-toggle <span class="string">"R"</span> kid-dired-sort-recursive)))
+</pre></div></div></div></div></div></div></div>
+
+
+<h3><a name="sec24" id="sec24"></a>
+使用 dired 自身的功能</h3>
+
+<p class="first">我是在作了那个扩展之后才知道 dired 自己就有这个功能的，都怪自己不仔细
+看文档，导致了重复劳动！ <code>C-u s</code> 就可以编辑 dired 的
+<code>dired-listing-switches</code> 这个变量，从而达到控制排序的方法的目的。</p>
+
+
+
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

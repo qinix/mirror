@@ -1,0 +1,273 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>find 实用程序</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>find 实用程序</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here--><div class="contents"><h2>Contents</h2>
+<dl>
+<dt>
+<a href="#sec1">使用简介</a>
+</dt>
+<dt>
+<a href="#sec2">查找特定名称的文件</a>
+</dt>
+<dt>
+<a href="#sec3">理解 find</a>
+</dt>
+<dt>
+<a href="#sec4">理解 find 指定的时间</a>
+</dt>
+<dt>
+<a href="#sec5">小技巧</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec6">-exec 参数中文件名替换</a>
+</dt>
+<dt>
+<a href="#sec7">使用自定义的测试</a>
+</dt>
+</dl>
+</dd>
+</dl>
+</div>
+
+
+    <!-- Page published by Emacs Muse begins here -->
+<p>find 是 Unix 系统里面最强大和最有用的实用程序之一。他可以匹配文件名称、
+类型以及修改时间等并对匹配到的文件执行相关操作。事实上，很多时候，find
+都不是单纯用来查找文件的。如果仅仅要查找文件，通常用一个更快速的
+locate 工具。</p>
+
+<h2><a name="sec1" id="sec1"></a>
+使用简介</h2>
+
+<pre class="example">
+find path operators
+</pre>
+
+<p><code>path</code> 是指定一个或者多个 find 将在其中进行查找的目录。而 <code>operator</code> 可以
+有很多选择，比如：</p>
+
+<dl>
+<dt><strong>-name filename</strong></dt><dd>
+查找匹配 <code>filename</code> 的文件。</dd>
+
+<dt><strong>-perm mode</strong></dt><dd>
+查找指定权限的文件，文件权限必须以八进制形式给出。</dd>
+
+<dt><strong>-type c</strong></dt><dd>
+查找指定类型的文件， <code>c</code> 可以是代表普通文件的 'f' 、代表块设备的 'b' 或者
+代表软链接的 'l' 等。</dd>
+
+<dt><strong>-user name</strong></dt><dd>
+查找属于用户 <code>name</code> 的文件。 <code>name</code> 可以通过用户名或者用户 id 来指定。</dd>
+
+<dt><strong>-group name</strong></dt><dd>
+查找属于组 <code>name</code> 的文件。 <code>name</code> 可以通过组名称或者组 id 来指定。</dd>
+
+<dt><strong>-size n</strong></dt><dd>
+查找 <code>n</code> 块那么大的文件，每一块通常是 512 字节。 <code>+n</code> 表示大于 <code>n</code> 块，而 <code>nc</code>
+表示 <code>n</code> 个字符那么长。</dd>
+
+<dt><strong>-inum n</strong></dt><dd>
+查找 inode 号为 <code>n</code> 的文件。</dd>
+
+<dt><strong>-atime n</strong></dt><dd>
+查找 <code>n</code> 天前访问过的文件。 <code>+n</code> 表示``超过 <code>n</code> 天''而 <code>-n</code> 表示``小于 <code>n</code> 天''
+。</dd>
+
+<dt><strong>-mtime n</strong></dt><dd>
+和 <code>-atime</code> 类似，不过检查文件内容被修改的时间。</dd>
+
+<dt><strong>-ctime n</strong></dt><dd>
+类似于 <code>-atime</code> ，不过检查 inode 状态上一次被改变的时间。</dd>
+
+<dt><strong>-newer file</strong></dt><dd>
+查找修改时间比 <code>file</code> 要新的文件。</dd>
+</dl>
+
+<p>可以把多个 <code>operator</code> 组合起来：</p>
+
+<dl>
+<dt><strong>operator1 -a operator2</strong></dt><dd>
+查找满足 <code>operator1</code> 和 <code>operator2</code> 的文件。事实上， <code>-a</code> 是可以省略的，因为
+他是 <code>operator</code> 之间的默认连接关系。</dd>
+
+<dt><strong>operator1 -o operator2</strong></dt><dd>
+查找满足 <code>operator1</code> 或者 <code>operator2</code> 的文件。</dd>
+
+<dt><strong>!operator</strong></dt><dd>
+查找不满足 <code>operator</code> 的文件。</dd>
+
+<dt><strong>\( expression \)</strong></dt><dd>
+把一些东西组合起来当作一个单元来看待。这儿的 <code>\</code> 主要是用于转义，以免被
+shell 解释掉括号了。</dd>
+</dl>
+
+<p>另外，还有一些 <code>operator</code> 用于告诉 find 如何对待找到的文件。</p>
+
+<dl>
+<dt><strong>-print</strong></dt><dd>
+在标准输出打印文件名。这通常是默认的操作。</dd>
+
+<dt><strong>-ls</strong></dt><dd>
+用一个类似与 <code>ls -l</code> 的格式列在标准输出出文件名。</dd>
+
+<dt><strong>-exec command</strong></dt><dd>
+执行 <code>command</code> 。使用 <code>{}</code> 来表示匹配到的文件名。 <code>command</code> 必须以 <code>\;</code> 来标记
+结束。如 <code>find . -name '*.o' -exec rm -f {} \;</code> 。</dd>
+
+<dt><strong>-ok command</strong></dt><dd>
+和 <code>-exec</code> 一样，不过他在执行命令之前会先向你询问是否要执行。</dd>
+</dl>
+
+
+<h2><a name="sec2" id="sec2"></a>
+查找特定名称的文件</h2>
+
+<p class="first">在匹配文件名的时候可以使用通配符。比如：</p>
+
+<pre class="example">
+find . -name '*.o' -print
+</pre>
+
+<p>注意 <code>-name</code> 选项指定的通配符只是匹配文件名的部分，而不管路径部分，如果
+要指定路径部分的匹配模式，可以用 <code>-wholename</code> 或者 <code>-path</code> 选项。如果是要
+跳过某个目录以及其子目录的所有文件，可以使用 <code>-prune</code> 选项，而不是检查那
+个目录下面的所有文件，例如：</p>
+
+<pre class="example">
+find . -wholename './src/emacs' -prune -o -print
+</pre>
+
+
+<h2><a name="sec3" id="sec3"></a>
+理解 find</h2>
+
+<p class="first">其实只要把每一个查找的参数看成 find 将要进行求值的``逻辑表达式''就很容
+易理解了。同时，作为一个逻辑表达式， <code>-print</code> 总是为真，而 <code>-exec</code> 和
+<code>-ok</code> 在他们执行的程序返回非零的时候就为真。例如：</p>
+
+<pre class="example">
+find . \! \( -atime +5 \( -name '*.o' -o -name '*.tmp' \) \) -print
+</pre>
+
+<p>首先看括号里面的 <code>-name '*.o' -o -name '*.tmp'</code> 表示文件名以 <code>.o</code> 或者
+<code>.tmp</code> 结尾的文件，记为 <code>exp1</code> 。然后再外一层 <code>-atime +5 exp1</code> ，两个表达式
+之间没有指定连接符，因此默认为 <code>-a</code> ，所以表示访问时间大于5天或者满足
+<code>exp1</code> 的，记为 <code>exp2</code> 。然后是 <code>\! exp2</code> ，这个就表示不满足 <code>exp2</code> 的，记为
+<code>exp3</code> 。最后就是 <code>exp3 -print</code> 了，两者之间采用默认的 <code>-a</code> 连接，即，只有在
+<code>exp3</code> 求值为真的时候才对 <code>-print</code> 进行求值(永远为真)。这样就很好理解了。</p>
+
+
+<h2><a name="sec4" id="sec4"></a>
+理解 find 指定的时间</h2>
+
+<p class="first">时间是以天为单位指定的，它有下面三种形式：</p>
+
+<ul>
+<li>数字。比如 <code>3</code> 表示刚好三天以前的那24个小时的时间区域，或者，换句话说
+，在96个小时以前和72小时以前的那段时间。</li>
+<li>以减号开头的数字。比如 <code>-3</code> 表示三天以前到现在这个时间段，或者说，72
+小时以前到现在这段时间。</li>
+<li>以加号开头的数字。比如 <code>+3</code> 表示大于3天以前的时间，或者说，比96小时以
+前更久远的时间段。</li>
+</ul>
+
+<p>要进行更精确的时间匹配，可以使用 touch 来创建一个指定时间的文件，并使
+用 <code>-newer</code> 参数。一个例子：</p>
+
+<pre class="example">
+touch -t 199907031046 /tmp/file1
+touch -t 200106042137 /tmp/file2
+find . -newer /tmp/file1 \! -newer /tmp/file2 -print
+</pre>
+
+<p>事实上，现在 gnu find 还提供了 <code>-mmin</code> 、 -<code>amin</code> 之类的参数用于更精确的时
+间匹配。</p>
+
+
+<h2><a name="sec5" id="sec5"></a>
+小技巧</h2>
+
+<h3><a name="sec6" id="sec6"></a>
+-exec 参数中文件名替换</h3>
+
+<p class="first">在 <code>-exec</code> 中，通常 find 只会替换单独的 {} ，比如 <code>-exec mv {} {}.bak
+\;</code> 通常是不会如期望的那样工作，这个时候不得不使用一个脚本。不过， gnu
+find 则会不管是否是单独的 {} 都会替换，这样通常会比较方便。</p>
+
+
+<h3><a name="sec7" id="sec7"></a>
+使用自定义的测试</h3>
+
+<p class="first">注意 <code>-exec</code> 在程序返回非零的时候才为真，于是，你可以使用自己的测试，例
+如：</p>
+
+<pre class="example">
+find . -name '*.[ch]' -exec my_test {} \; -print
+</pre>
+
+<p>通常 <code>-exec</code> 放得越靠后越好，因为每一次测试都会启动一个新的进程，而有多
+个条件的时候按照逻辑运算的特性很多时候前面的结果可以直接影响是否有必要
+对后面的 <code>-exec</code> 进行求值。</p>
+
+
+
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

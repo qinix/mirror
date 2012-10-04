@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>Outline mode</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>Outline mode</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here-->
+
+    <!-- Page published by Emacs Muse begins here -->
+<p><a href="Emacs.html">Emacs</a> 对于结构化文档(如 HTML 文档)有个非常舒服的 mode 就是 outline
+mode ，他可以隐藏不必要的细节，只显示出骨干以及你关心的部分，让你在写
+大文档的时候更加轻松。不过通常各种结构化文档都有自己专门的 major mode
+，所以通常 outline minor mode 比 outline mode 更常用。</p>
+
+<p>outline minor mode 默认的快捷键前缀是 <code>C-c @</code> ，按起来确实非常麻烦，可以
+把他改成其他的，比如不常用的 <code>C-o</code></p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>(setq outline-minor-mode-prefix (kbd <span class="string">"C-o"</span>))
+</pre></div></div></div></div></div></div></div>
+
+<p>下面是一些常用的功能，其他的功能可以查看 <a href="Emacs.html">Emacs</a> 的 info 文档，或者，如
+果你启用了菜单栏，就会发现菜单栏里面多了一项 Outline 菜单，里面也列出
+了各种操作。</p>
+
+<dl>
+<dt><strong>Hide Sublevels</strong></dt>
+<dd><code>C-o C-q</code> 可以隐藏文档的所有子结构，只剩下最上面一层。</dd>
+<dt><strong>Show All</strong></dt>
+<dd><code>C-o C-a</code> 可以显示所有结构，完全恢复文档本来的样子。</dd>
+<dt><strong>Hide Body</strong></dt>
+<dd><code>C-o C-t</code> 可以隐藏文档的所有 Entry ，只显示骨干(例如，在
+<a href="Muse.html">Muse</a> 文档里面，只显示各级标题，而标题下面的内容都被隐藏起来)。</dd>
+<dt><strong>Hide Entry</strong></dt>
+<dd><code>C-o C-c</code> 可以隐藏当前的 Entry 部分。</dd>
+<dt><strong>Show Entry</strong></dt>
+<dd><code>C-o C-e</code> 可以显示出当前的 Entry 部分。</dd>
+<dt><strong>Hide Leaves</strong></dt>
+<dd><code>C-o C-l</code> 可以隐藏子树的所有 Entry 部分，Hide Body 就相当
+于对文档树的根进行了 Hide Leaves 操作。</dd>
+<dt><strong>Show Branches</strong></dt>
+<dd><code>C-o C-k</code> 可以把子树及一下的骨干结构显示出来。这和上者似
+乎没有什么区别，其实 Hide 和 Show 还是有区别的，例如，如果某些子树以下
+的结构是隐藏着的，那么用 Hide Leaves 就不会让他们显示出来，类似的，如果
+某些 Entry 是显示着的，那么 Show Branches 就不会把他们隐藏起来。</dd>
+<dt><strong>Hide Subtree</strong></dt>
+<dd><code>C-o C-d</code> 可以把子树整个隐藏起来，Hide Sublevels 就相当于
+对文档树的根执行了 Hide Subtree 操作。</dd>
+<dt><strong>Show Subtree</strong></dt>
+<dd><code>C-o C-s</code> 可以把子树整个展开。Show All 就相当于对文档树的
+根执行了 Show Subtree 操作。</dd>
+<dt><strong>Next</strong></dt>
+<dd><code>C-o C-n</code> 用于移动到下一个可见标题。</dd>
+<dt><strong>Previous</strong></dt>
+<dd><code>C-o C-p</code> 用于移动到上一个可见标题。</dd>
+</dl>
+
+<p>虽然设定了前缀为 <code>C-o</code> ，但是仍然比较难按，比如 <code>C-o C-c</code> ，要分别用左手和
+右手按下 <code>Control</code> 键，速度很慢，反正原本以 <code>C-o</code> 作为前缀的命令是没有的，
+还不如把常用的那几个操作绑定为一个字母的按键， <code>C-o c</code> 还是比 <code>C-o C-c</code> 要
+好按一点：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>(mapc (<span class="keyword">lambda</span> (bind)
+        (define-key outline-minor-mode-map
+            (car bind)
+          (cdr bind)))
+      `((,(kbd <span class="string">"C-o q"</span>) . hide-sublevels)
+        (,(kbd <span class="string">"C-o a"</span>) . show-all)
+        (,(kbd <span class="string">"C-o t"</span>) . hide-body)
+        (,(kbd <span class="string">"C-o c"</span>) . hide-entry)
+        (,(kbd <span class="string">"C-o e"</span>) . show-entry)
+        (,(kbd <span class="string">"C-o l"</span>) . hide-leaves)
+        (,(kbd <span class="string">"C-o k"</span>) . show-branches)
+        (,(kbd <span class="string">"C-o d"</span>) . hide-subtree)))
+</pre></div></div></div></div></div></div></div>
+
+<p>其实有一些比如 <code>C-o C-l</code> 因为两次 <code>Control</code> 键都会是左边的手指头，所以一直
+按着 <code>Control</code> 键不放下把这个序列按完更方便一些，这里仍然两者都定义了，
+这样至少可以避免无意按错的情况。</p>
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

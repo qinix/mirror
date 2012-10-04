@@ -1,0 +1,514 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>Emacs 配合 Subversion 使用</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>Emacs 配合 Subversion 使用</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here--><div class="contents"><h2>Contents</h2>
+<dl>
+<dt>
+<a href="#sec1">使用 Emacs 的 VC minor mode</a>
+</dt>
+<dt>
+<a href="#sec2">使用 psvn.el</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec3">psvn &mdash; Subversion interface for Emacs</a>
+</dt>
+<dt>
+<a href="#sec4">psvn 使用简介</a>
+</dt>
+</dl>
+</dd>
+</dl>
+</div>
+
+
+    <!-- Page published by Emacs Muse begins here -->
+<h2><a name="sec1" id="sec1"></a>
+使用 Emacs 的 VC minor mode</h2>
+
+<p><a href="Emacs.html">Emacs</a> 有一个 VC minor mode ，让各种版本控制的操作可以在 <a href="Emacs.html">Emacs</a> 里面非常
+方便地进行。最新的 cvs 版的 <a href="Emacs.html">Emacs</a> 已经支持 <a href="Subversion.html">Subversion</a> 了。</p>
+
+<p>比较详细的文档请看<a href="EmacsVC.html#AnchorBasicUnderstanding">基本的Emacs VC操作</a>。下面我们来看一个简单的例子，来简
+要的说明最常用的几个功能。首先创建一个<a href="Subversion.html">Subversion</a>仓库:</p>
+
+<pre class="example">
+svnadmin create /tmp/svnrepo
+</pre>
+
+<p>创建一个空工程，导入仓库：</p>
+
+<pre class="example">
+mkdir test
+svn import test file:///tmp/svnrepo -m &quot;initial import test&quot;
+</pre>
+
+<p>然后check out出自己的一个工作目录：</p>
+
+<pre class="example">
+svn co file:///tmp/svnrepo working
+</pre>
+
+<p>现在，用 <a href="Emacs.html">Emacs</a> 在 <code>working</code> 目录下面新建一个文件 <code>test1.c</code> ，输入如下内容：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .function-name {
+        /* font-lock-function-name-face */
+        color: #87cefa;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .preprocessor {
+        /* font-lock-preprocessor-face */
+        color: #b0c4de;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #98fb98;
+      }
+    --></style><span class="preprocessor">#include</span> <span class="string">&lt;stdio.h&gt;</span>
+
+<span class="type">int</span> <span class="function-name">main</span>()
+{
+     puts(<span class="string">"hello"</span>);
+     <span class="keyword">return</span> 0;
+}
+</pre></div></div></div></div></div></div></div>
+
+<p>保存，然后按 <code>C-x v v</code> ，VC 会把 <code>test1.c</code> 注册到 svn 仓库里面去，注意看
+mode line 上面的 <a href="EmacsVC.html#ModeIndicator">VC Mode指示器</a>显示了“SVN:0”。现在在执行一次 <code>C-x v v</code>
+，<a href="Emacs.html">Emacs</a> 会弹出一个 buffer 让你输入提交日志，现在输入</p>
+
+<pre class="example">
+first commit test1
+</pre>
+
+<p>并按 <code>C-c C-c</code> ，于是 <a href="Emacs.html">Emacs</a> 用你输入的日志把 <code>test1.c</code> 提交到 svn 仓库中。
+注意现在 mode line 上显示了“SVN-0”，说明这个文件自从你上次提交之后都没
+有变过。现在修改源文件，把</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>     puts(<span class="string">"hello"</span>);
+</pre></div></div></div></div></div></div></div>
+
+<p>改为</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>     printf(<span class="string">"hello"</span>);
+</pre></div></div></div></div></div></div></div>
+
+<p>保存，看到 mode line 上面的 <a href="EmacsVC.html#ModeIndicator">VC Mode指示器</a>的改变了吗？变成了“SVN:0”，说
+明文件自从上一次 commit 之后有所改变。那么现在让我们来看看究竟改变了什
+么，按 <code>C-x v =</code> ，<a href="Emacs.html">Emacs</a> 会弹出一个 buffer 显示你自从上次
+commit 之后所做的改变。你也可以用 <code>M-x ediff-revision</code> 来使用<a href="EmacsEdiff">Ediff</a>来获得
+更灵活方便的交互式的比较和更cool的显示。假如你觉得这样的改变不好，那么
+丢弃自从上一次提交以来的所有更改吧： <code>C-x v u</code> ，<a href="Emacs.html">Emacs</a> 会显示出
+<code>C-x v =</code> 显示的那个画面，告诉你你所做的更改，并问你是否确认
+要丢弃所做的更改。好吧，我们先不丢弃更改，选择否。然后，在用 <code>C-x v d</code> 来
+打开 <code>working</code> 目录，看看当前的状态，哦，显示：</p>
+
+<pre class="example">
+-rw-r--r-- (modified) 2006-05-01 20:09 test1.c
+</pre>
+
+<p>就是说 <code>test1.c</code> 更改了，那我们就把他提交到仓库吧，让光标到 <code>test1.c</code> 上或者给
+他做上 mark ，并按 <code>v v</code> ，OK！<a href="Emacs.html">Emacs</a> 又弹出了那个输入日志的 buffer ，现在输入</p>
+
+<pre class="example">
+change puts to printf
+</pre>
+
+<p>并按 <code>C-c C-c</code> 提交。现在变成了：</p>
+
+<pre class="example">
+-rw-r--r--            2006-05-01 20:09 test1.c
+</pre>
+
+<p>按 <code>q</code> 退出 <a href="EmacsDired">Dired</a> ，再回到了 <code>test1.c</code> 的 buffer。再注意到 mode line 的改变。
+现在，假如我忘记了刚才做了什么更改，想看看日志，没问题： <code>C-x v l</code> ，现在
+<a href="Emacs.html">Emacs</a> 弹出了日志 buffer：</p>
+
+<pre class="example">
+Working file: test1.c
+------------------------------------------------------------------------
+r2 | kid | 2006-05-01 20:19:37 +0800 (Mon, 01 May 2006) | 2 lines
+
+change puts to printf
+
+------------------------------------------------------------------------
+r1 | kid | 2006-05-01 20:08:10 +0800 (Mon, 01 May 2006) | 2 lines
+
+first commit test1
+
+------------------------------------------------------------------------
+</pre>
+
+<p>哦，现在知道了，是把 <code>puts</code> 变成了 <code>printf</code> 。仅仅是这样的改变吗？这只是日
+志提供的信息，万一我写日志的时候漏掉了某些内容呢？我还是来看看这两个版
+本的区别吧：<code>C-u C-x v = RET RET RET</code> 这么多 <code>RET</code> 是因为都是
+<a href="Emacs.html">Emacs</a> 所提供的默认选项，OK！现在看到了版本号 1 和版本号 2 之间的区别了
+吧？确实是只是修改了 <code>puts</code> 到 <code>printf</code> 。要看 cool 的 <a href="EmacsEdiff">Ediff</a> 的效果，请使用
+<code>M-x ediff-revision RET 1 RET 2 RET</code> 。或者，你不习惯看 diff，想看看版本
+1 的完整的样子，也没有问题： <code>C-x v ~ 1 RET</code> ，<a href="Emacs.html">Emacs</a> 会打开一个 buffer，
+并在里面显示版本 1 的内容。现在，让我们来制造一点混乱，再编辑文件，把</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>     printf(<span class="string">"hello"</span>);
+</pre></div></div></div></div></div></div></div>
+
+<p>改为</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>     printf(<span class="string">"hello world!"</span>);
+</pre></div></div></div></div></div></div></div>
+
+<p>保存文件。然后在其他地方在 check out 一个工作副本：</p>
+
+<pre class="example">
+svn co file:///tmp/svnrepo working1
+</pre>
+
+<p>然后进入 working1 目录，修改文件，把</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>     printf(<span class="string">"hello"</span>);
+</pre></div></div></div></div></div></div></div>
+
+<p>改为</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>     printf(<span class="string">"hello world!\n"</span>);
+</pre></div></div></div></div></div></div></div>
+
+<p>保存，并提交到仓库：</p>
+
+<pre class="example">
+svn ci -m 'change &quot;hello&quot; to &quot;hello world\n&quot;'
+</pre>
+
+<p>好了，现在再回到 <a href="Emacs.html">Emacs</a> 的 <code>test1.c</code> ，现在用 <code>C-x v v</code> 提交。<a href="Emacs.html">Emacs</a> 弹出
+buffer 让你输入日志，记住你以前输入的日志都被 <a href="Emacs.html">Emacs</a> 暂时记住了，按一下
+<code>M-p</code> ，上一次输入的日志会出现：</p>
+
+<pre class="example">
+change puts to printf
+</pre>
+
+<p>现在，改成</p>
+
+<pre class="example">
+change &quot;hello&quot; to &quot;hello world!&quot;
+</pre>
+
+<p>并按 <code>C-c C-c</code> 提交，不出所料，这次就没有那么顺利了，提交不成功，<a href="Emacs.html">Emacs</a> 显示
+了错误的原因：</p>
+
+<pre class="example">
+svn: Commit failed (details follow):
+svn: Out of date: 'test1.c' in transaction '3-1'
+Sending        test1.c
+</pre>
+
+<p>原来是“别人”提交了 <code>test1.c</code> 的新版本呀。那我们更新一下吧！ <code>M-x
+vc-update</code> 呵呵！看到 <a href="Emacs.html">Emacs</a> 说什么？*vc* buffer 里面显示：</p>
+
+<pre class="example">
+C    test1.c
+Updated to revision 3.
+</pre>
+
+<p>但是 minibuffer 里面有一句：</p>
+
+<pre class="example">
+vc-svn-merge-news: Couldn't analyze svn update result
+</pre>
+
+<p>呵呵！我目前用的 Emacs 22.0.50.1 出现这样的错误，不知道是bug还是没有实
+现的功能，因为 <a href="Subversion.html">Subversion</a> 是新出现的东西，所以 VC 的 <a href="Subversion.html">Subversion</a> 接口也
+是还在开发中的。不过，现在查看 <code>working</code> 目录，发现已经多了几个文件：
+<code>test1.c.mine</code> 之类的，这正是 <a href="Subversion.html">Subversion</a> 出现冲突的迹象，重新打开一下
+<code>test1.c</code> ，发现里面有 <a href="Subversion.html">Subversion</a> 插入的冲突标记：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .function-name {
+        /* font-lock-function-name-face */
+        color: #87cefa;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .preprocessor {
+        /* font-lock-preprocessor-face */
+        color: #b0c4de;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #98fb98;
+      }
+    --></style><span class="preprocessor">#include</span> <span class="string">&lt;stdio.h&gt;</span>
+
+<span class="type">int</span> <span class="function-name">main</span>()
+{
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; .mine
+     printf(<span class="string">"hello world!"</span>);
+=======
+     printf(<span class="string">"hello world!\n"</span>);
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; .r2
+     <span class="keyword">return</span> 0;
+}
+</pre></div></div></div></div></div></div></div>
+
+<p>发现原来忘记假换行符了，于是，可以手工修改，或者用 <code>M-x
+vc-resolve-conflicts</code> 来调用 <a href="EmacsEdiff">Ediff</a> 来华丽地修改。之后怎么办呢？我还不知
+道 VC 目前支持不支持这个东西，也不知道 <code>vc-resolve-conflicts</code> 会不会自动
+去除conflict 标记，现在先让我们手工运行一下 <a href="Subversion.html">Subversion</a> 的命令吧： <code>M-!
+svn resolved test1.c</code> 去除 conflict 标记。</p>
+
+<p>好啦！到目前为止，我们的例子结束！因为我已经把我目前知道的大部分功能都
+展示了一下，希望 VC 的 <a href="Subversion.html">Subversion</a> 接口将来做得更好！:)</p>
+
+<p><a name="PSVN" id="PSVN"></a></p>
+
+<h2><a name="sec2" id="sec2"></a>
+使用 psvn.el</h2>
+
+<h3><a name="sec3" id="sec3"></a>
+psvn &mdash; Subversion interface for Emacs</h3>
+
+<p class="first">psvn.el 是 <a href="Emacs.html">Emacs</a> 的一个 Subversion 接口。他提供类似于 pcl-cvs 的功能：</p>
+
+<ul>
+<li>显示Subversion工作拷贝的状态</li>
+<li>显示不同的版本之间的差别</li>
+<li>显示版本日志</li>
+<li>编辑文件属性</li>
+<li>提交工作拷贝的更改</li>
+</ul>
+
+<p>它包含了用于工作在一个已经 check out 出来的 Subversion 的工作拷贝上的各
+种功能。如果你缺少了某种功能或者是发现了一个 Bug，请发送 Email 到
+<a href="mailto:stefan@xsteve.at">stefan@xsteve.at</a> 。一个详细的 <a href="http://svn.collab.net/viewcvs/svn/trunk/contrib/client-side/psvn/psvn.el?view=log">ChangeLog</a> 可以在 svn ViewCvs server 获得。
+最新版的 psvn 可以从 <a href="http://www.xsteve.at/prg/emacs/psvn.el">http://www.xsteve.at/prg/emacs/psvn.el</a> 获得，或者通
+过 Subversion 仓库得到：</p>
+
+<pre class="example">
+svn co http://svn.collab.net/repos/svn/trunk/contrib/client-side/psvn psvn
+</pre>
+
+
+<h3><a name="sec4" id="sec4"></a>
+psvn 使用简介</h3>
+
+<p class="first">下载 <a href="lisp/psvn.el">psvn.el</a> ，并添加其路径你的 <a href="Emacs.html">Emacs</a> 的 LoadPath 里面。然后在自己的
+.emacs 里面加入：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .constant {
+        /* font-lock-constant-face */
+        color: #7fffd4;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+    --></style>(<span class="keyword">require</span> '<span class="constant">psvn</span>)
+</pre></div></div></div></div></div></div></div>
+
+<p>用 <code>M-x svn-status</code> 来打开一个 <code>svn-status</code> 的 buffer，这个 buffer 处于
+<code>svn-status mode</code> 中，可用的命令如下：</p>
+
+<pre class="example">
+g     - svn-status-update:               run 'svn status -v'
+M-s   - svn-status-update:               run 'svn status -v'
+C-u g - svn-status-update:               run 'svn status -vu'
+=     - svn-status-show-svn-diff         run 'svn diff'
+l     - svn-status-show-svn-log          run 'svn log'
+i     - svn-status-info                  run 'svn info'
+r     - svn-status-revert                run 'svn revert'
+X v   - svn-status-resolved              run 'svn resolved'
+U     - svn-status-update-cmd            run 'svn update'
+M-u   - svn-status-update-cmd            run 'svn update'
+c     - svn-status-commit                run 'svn commit'
+a     - svn-status-add-file              run 'svn add --non-recursive'
+A     - svn-status-add-file-recursively  run 'svn add'
++     - svn-status-make-directory        run 'svn mkdir'
+R     - svn-status-mv                    run 'svn mv'
+D     - svn-status-rm                    run 'svn rm'
+M-c   - svn-status-cleanup               run 'svn cleanup'
+b     - svn-status-blame                 run 'svn blame'
+X e   - svn-status-export                run 'svn export'
+RET   - svn-status-find-file-or-examine-directory
+^     - svn-status-examine-parent
+~     - svn-status-get-specific-revision
+E     - svn-status-ediff-with-revision
+X X   - svn-status-resolve-conflicts
+s     - svn-status-show-process-buffer
+e     - svn-status-toggle-edit-cmd-flag
+?     - svn-status-toggle-hide-unknown
+_     - svn-status-toggle-hide-unmodified
+m     - svn-status-set-user-mark
+u     - svn-status-unset-user-mark
+$     - svn-status-toggle-elide
+w     - svn-status-copy-filename-as-kill
+DEL   - svn-status-unset-user-mark-backwards
+* !   - svn-status-unset-all-usermarks
+* ?   - svn-status-mark-unknown
+* A   - svn-status-mark-added
+* M   - svn-status-mark-modified
+* D   - svn-status-mark-deleted
+* *   - svn-status-mark-changed
+.     - svn-status-goto-root-or-return
+f     - svn-status-find-file
+o     - svn-status-find-file-other-window
+v     - svn-status-view-file-other-window
+I     - svn-status-parse-info
+V     - svn-status-svnversion
+P l   - svn-status-property-list
+P s   - svn-status-property-set
+P d   - svn-status-property-delete
+P e   - svn-status-property-edit-one-entry
+P i   - svn-status-property-ignore-file
+P I   - svn-status-property-ignore-file-extension
+P C-i - svn-status-property-edit-svn-ignore
+P k   - svn-status-property-set-keyword-list
+P y   - svn-status-property-set-eol-style
+P x   - svn-status-property-set-executable
+h     - svn-status-use-history
+q     - svn-status-bury-buffer
+
+C-x C-j - svn-status-dired-jump
+</pre>
+
+<p>它和 <a href="EmacsVC.html">EmacsVC</a> 配合起来用就非常完美了！ ;)</p>
+
+
+
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

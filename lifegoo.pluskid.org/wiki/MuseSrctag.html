@@ -1,0 +1,320 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>在 Muse 里使用源代码高亮</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>在 Muse 里使用源代码高亮</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here-->
+
+    <!-- Page published by Emacs Muse begins here -->
+<p><a href="Muse.html">Muse</a> 不像 emacs-wiki 那样只是输出为 html 格式，它支持很多输出格式，因
+此目前还无法实现 emacs-wiki 的那样使用 table.el 来产生表格，并使用
+htmlize.el 来产生语法高亮。但是我自己使用 Muse 的时候几乎都是输出为
+html 格式，所以这个时候我也想弄个语法高亮的东西。我的第一反应就是移植
+emacs-wiki 里面的那个。不过我还是先到网上搜索了一下，我发现虽然没有出
+现在 Muse 的包里面，但是好像有人提交过类似的东西，下载下来试用了一下，
+不是很理想，有些地方没有高亮，也不知道是怎么回事。于是干脆自己也照着写
+一个算啦！</p>
+
+<p>于是就有了这个东西，我觉得还不错吧，还考虑到了 <a href="EmacsColorTheme.html">color-theme</a> 的背景色和
+前景色。使用方法是这样：</p>
+
+<pre class="example">
+&lt;src type=&quot;c&quot;&gt;
+#include &lt;stdio.h&gt;
+
+int main()
+{
+    printf(&quot;hello\n&quot;);
+}
+&lt;/src&gt;
+</pre>
+
+<p>效果为：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .function-name {
+        /* font-lock-function-name-face */
+        color: #87cefa;
+      }
+      .preprocessor {
+        /* font-lock-preprocessor-face */
+        color: #b0c4de;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #98fb98;
+      }
+    --></style><span class="preprocessor">#include</span> <span class="string">&lt;stdio.h&gt;</span>
+
+<span class="type">int</span> <span class="function-name">main</span>()
+{
+    printf(<span class="string">"hello\n"</span>);
+}
+</pre></div></div></div></div></div></div></div>
+
+<p>当然，具体的样子还要取决于你发布的时候正在使用的 <a href="EmacsColorTheme.html">color-theme</a> 和你定义
+的 css 文件。下面附上源代码<sup><a name="fnr.1" href="#fn.1">1</a></sup>：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .builtin {
+        /* font-lock-builtin-face */
+        color: #b0c4de;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .constant {
+        /* font-lock-constant-face */
+        color: #7fffd4;
+      }
+      .doc {
+        /* font-lock-doc-face */
+        color: #ffa07a;
+      }
+      .function-name {
+        /* font-lock-function-name-face */
+        color: #87cefa;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .underline {
+        /* underline */
+        text-decoration: underline;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #eedd82;
+      }
+    --></style><span class="comment-delimiter">;; </span><span class="comment">&#22312; Muse &#36755;&#20986;&#20026; html &#30340;&#26684;&#24335;&#37324;&#38754;&#20351;&#29992;&#35821;&#27861;&#39640;&#20142;
+</span>
+(<span class="keyword">require</span> '<span class="constant">htmlize</span>)
+(<span class="keyword">require</span> '<span class="constant">muse</span>)
+
+<span class="comment-delimiter">;; </span><span class="comment">&#35753;&#32534;&#36753;&#30340;&#26102;&#20505; src &#26631;&#31614;&#26174;&#31034;&#24471;&#21644; example &#26631;&#31614;&#19968;&#26679;&#65292;&#24182;&#19988;&#37324;&#38754;&#19981;&#36827;&#34892;&#26684;&#24335;&#35299;</span><span class="comment"><span class="underline">&#26512;
+</span></span>(<span class="keyword">require</span> '<span class="constant">muse-colors</span>)
+(add-to-list 'muse-colors-tags
+             '(<span class="string">"src"</span> t t t muse-colors-example-tag))
+
+(<span class="keyword">defvar</span> <span class="variable-name">kid-muse-srctag-output-method</span> 'css
+  <span class="doc">"&#25511;&#21046;&#26159;&#20197; css &#26041;&#24335;&#36755;&#20986;&#36824;&#26159;&#20197;&#32769;&#24335;&#30340;&#30452;&#25509;&#20351;&#29992; &lt;font&gt;&#12289;&lt;i&gt; &#31561;&#26631;&#31614;&#30340;&#26041;&#24335;&#36755;</span><span class="doc"><span class="underline">&#20986;"</span></span><span class="underline">)
+</span>(<span class="keyword">defvar</span> <span class="variable-name">kid-muse-srctag-css-output-styles</span> t
+  <span class="doc">"&#22914;&#26524;&#20351;&#29992; css &#26041;&#24335;&#30340;&#35805;&#65292;&#26159;&#21542;&#22312;&#24403;&#21069; tag &#22788;&#36755;&#20986;&#26681;&#25454;&#24403;&#21069; color-theme &#29983;</span><span class="doc"><span class="underline">&#25104;&#30340; style &#12290;
+</span></span><span class="doc">&#22240;&#20026;&#26377;&#21487;&#33021;&#22312;&#19968;&#20010;&#32479;&#19968;&#30340; css &#25991;&#20214;&#37324;&#38754;&#25163;&#24037;&#23450;&#20041;&#21508;&#31181;&#31867;&#22411;&#30340;&#20851;&#38190;&#23383;&#26174;&#31034;&#25928;&#26524;&#12290;"</span><span class="underline">)
+</span>
+(setq kid-muse-srctag-modes-alist
+  '((<span class="string">"c"</span> . c-mode)
+    (<span class="string">"cpp"</span> . c++-mode)
+    (<span class="string">"elisp"</span> . emacs-lisp-mode)
+    (<span class="string">"common-lisp"</span> . lisp-mode)
+    (<span class="string">"scheme"</span> . scheme-mode)
+    (<span class="string">"python"</span> . python-mode)
+    (<span class="string">"sawfish-lisp"</span> . sawfish-mode)
+    (<span class="string">"shell-script"</span> . shell-script-mode)
+    (<span class="string">"html"</span> . html-mode)
+    (<span class="string">"css"</span> . css-mode)
+    (<span class="string">"mail"</span> . mail-mode)
+    (<span class="string">"conf"</span> . conf-mode)
+    (<span class="string">"patch"</span> . diff-mode)
+    (<span class="string">"conf"</span> . conf-mode)
+    (<span class="string">"latex"</span> . latex-mode)              <span class="comment-delimiter">; </span><span class="comment">not the heavy AuCTeX's LaTeX</span><span class="comment"><span class="underline">-mode
+</span></span>    (<span class="string">"skribe"</span> . skribe-mode)
+    (<span class="string">"makefile"</span> . makefile-mode)))
+
+<span class="comment-delimiter">;; </span><span class="comment">&#26032;&#29256;&#26412;&#30340; Muse &#24050;&#32463;&#20855;&#26377;&#20102;&#22788;&#29702; src tag &#30340;&#21151;&#33021;&#65292;&#20294;&#26159;&#35821;&#27861;&#21644;&#25105;&#33258;&#24049;&#30340;&#36825;&#20010;
+</span><span class="comment-delimiter">;; </span><span class="comment">&#26377;&#19968;&#20123;&#21306;&#21035;&#65292;&#20026;&#20102;&#20445;&#25345;&#21521;&#21518;&#20860;&#23481;&#24615;&#65292;&#20351;&#29992;&#25105;&#33258;&#24049;&#30340;&#20989;&#25968;&#36827;&#34892;&#22788;&#29702;&#12290;
+</span>(<span class="keyword">if</span> (assoc <span class="string">"src"</span> muse-html-markup-tags)
+    (setcdr (assoc <span class="string">"src"</span> muse-html-markup-tags)
+            '(t t nil kid-muse-srctag))
+  (add-to-list 'muse-html-markup-tags
+               '(<span class="string">"src"</span> t t nil kid-muse-srctag)))
+
+(<span class="keyword">defun</span> <span class="function-name">kid-muse-srctag</span> (beg end attrs)
+  <span class="doc">"generate html representation of source code with syntax
+  highlighting using htmlize.el."</span>
+  (goto-char beg)
+  (<span class="keyword">let*</span> ((mode (or (cdr (assoc <span class="string">"type"</span> attrs)) <span class="string">"nil"</span>))
+         (mode-func (or (cdr (assoc mode kid-muse-srctag-modes-alist))
+                        (cdr (find-if (<span class="keyword">lambda</span> (pair)
+                                        (<span class="keyword">save-match-data</span>
+                                          (string-match (car pair) mod<span class="underline">e)))
+</span>                                      auto-mode-alist))
+                        'fundamental-mode))
+         (text (delete-and-extract-region beg end)))
+    (<span class="keyword">save-restriction</span>
+      (narrow-to-region (point) (point))
+      (insert
+       (<span class="keyword">with-temp-buffer</span>
+         (insert text)
+         (funcall mode-func)
+         <span class="comment-delimiter">;; </span><span class="comment">the following is copy and modified from htmlize.el
+</span>         (font-lock-fontify-buffer)
+         (run-hooks 'htmlize-before-hook)
+         (htmlize-ensure-fontified)
+         (clrhash htmlize-extended-character-cache)
+         (<span class="keyword">let*</span> ((buffer-faces (htmlize-faces-in-buffer))
+                 (face-map (htmlize-make-face-map
+                            (adjoin 'default
+                                    buffer-faces)))
+                 (htmlbuf (get-buffer-create
+                           (generate-new-buffer-name <span class="string">" *temp"</span>)))
+                next-change text face-list fstruct-list)
+           (goto-char (point-min))
+           (<span class="keyword">with-current-buffer</span> htmlbuf
+             (<span class="keyword">let</span> ((fstruct (gethash 'default face-map)))
+               (insert <span class="string">"&lt;pre class=\"src\""</span>
+                       (<span class="keyword">if</span> kid-muse-srctag-css-output-styles
+                           (concat <span class="string">" style=\"background-color:"</span>
+                                   (htmlize-fstruct-background fstruct<span class="underline">)
+</span>                                   <span class="string">";color:"</span>
+                                   (htmlize-fstruct-foreground fstruct<span class="underline">)
+</span>                                   <span class="string">";\"&gt;"</span>)
+                           <span class="string">"&gt;"</span>))
+               (<span class="keyword">when</span> (and (eq kid-muse-srctag-output-method 'css)
+                          kid-muse-srctag-css-output-styles)
+                 (insert <span class="string">"&lt;style type=\"text/css\"&gt;&lt;!-- "</span>)
+                 (<span class="keyword">dolist</span> (face (sort* (copy-list buffer-faces) #'strin<span class="underline">g-lessp
+</span>                                      <span class="builtin">:key</span> (<span class="keyword">lambda</span> (f)
+                                             (htmlize-fstruct-css-name<span class="underline"> (gethash f face-map)))))
+</span>                   (<span class="keyword">let*</span> ((fstruct (gethash face face-map))
+                          (cleaned-up-face-name
+                           (<span class="keyword">let</span> ((s
+                                  <span class="comment-delimiter">;; </span><span class="comment">Use `</span><span class="comment"><span class="constant">prin1-to-string</span></span><span class="comment">' rather than</span><span class="comment"><span class="underline"> `</span></span><span class="comment"><span class="underline"><span class="constant">symbol-name</span></span></span><span class="comment"><span class="underline">'
+</span></span>                                  <span class="comment-delimiter">;; </span><span class="comment">to get the face name because the </span><span class="comment"><span class="underline">"face" can also
+</span></span>                                  <span class="comment-delimiter">;; </span><span class="comment">be an attrlist, which is not a sy</span><span class="comment"><span class="underline">mbol.
+</span></span>                                  (prin1-to-string face)))
+                             <span class="comment-delimiter">;; </span><span class="comment">If the name contains `</span><span class="comment"><span class="constant">--</span></span><span class="comment">' or `</span><span class="comment"><span class="constant">*/</span></span><span class="comment">', rem</span><span class="comment"><span class="underline">ove them.
+</span></span>                             (<span class="keyword">while</span> (string-match <span class="string">"--"</span> s)
+                               (setq s (replace-match <span class="string">"-"</span> t t s)))
+                             (<span class="keyword">while</span> (string-match <span class="string">"\\*/"</span> s)
+                               (setq s (replace-match <span class="string">"XX"</span> t t s)))
+                             s))
+                          (specs (htmlize-css-specs fstruct)))
+                     (insert <span class="string">"      ."</span> (htmlize-fstruct-css-name fstru<span class="underline">ct))
+</span>                     (<span class="keyword">if</span> (null specs)
+                         (insert <span class="string">" {"</span>)
+                         (insert <span class="string">" {\n        /* "</span> cleaned-up-face-nam<span class="underline">e </span><span class="string"><span class="underline">" */\n        "</span></span><span class="underline">
+</span>                                 (mapconcat #'identity specs <span class="string">"\n      </span><span class="string"><span class="underline">  "</span></span><span class="underline">)))
+</span>                     (insert <span class="string">"\n      }\n"</span>)))
+                 (insert  <span class="string">"    --&gt;&lt;/style&gt;"</span>))))
+           <span class="comment-delimiter">;; </span><span class="comment">&#32769;&#24335;&#30340; &lt;font&gt;&#12289;&lt;i&gt; &#31561;&#26041;&#24335;&#36755;&#20986;&#26080;&#27861;&#25903;&#25345;&#23450;&#20041;&#20851;&#38190;&#23383;&#30340;&#32972;&#26223;&#33394;&#65292;
+</span>           <span class="comment-delimiter">;; </span><span class="comment">&#22240;&#27492;&#25105;&#20915;&#23450;&#20877;&#25903;&#25345;&#19968;&#31181; css &#26041;&#24335;&#65292;&#20294;&#26159;&#36825;&#37324;&#26377;&#19968;&#20010;&#32570;&#28857;&#23601;&#26159;
+</span>           <span class="comment-delimiter">;; </span><span class="comment">css &#23450;&#20041;&#20889;&#22312;&#21738;&#37324;&#65292;&#22914;&#26524;&#32479;&#19968;&#20889;&#21040;&#19968;&#20010; css &#25991;&#20214;&#37324;&#38754;&#65292;&#32500;&#25252;&#36215;
+</span>           <span class="comment-delimiter">;; </span><span class="comment">&#26469;&#24456;&#40635;&#28902;&#65292;&#22240;&#20026; css &#20851;&#38190;&#23383;&#26681;&#25454; face &#30340;&#21517;&#23383;&#26469;&#21629;&#21517;&#65292;&#32780;&#22312;
+</span>           <span class="comment-delimiter">;; </span><span class="comment">Emacs &#37324;&#38754;&#28155;&#21152;&#26032;&#30340; package &#25110;&#32773;&#20854;&#20182;&#25805;&#20316;&#37117;&#21487;&#33021;&#24341;&#36827;&#26032;&#30340;
+</span>           <span class="comment-delimiter">;; </span><span class="comment">face &#12290;&#22914;&#26524;&#26159;&#33258;&#21160;&#26681;&#25454;&#24403;&#21069;&#38656;&#35201;&#29983;&#25104; css &#20195;&#30721;&#30340;&#35805;&#65292;&#25554;&#20837;&#30340;&#22320;
+</span>           <span class="comment-delimiter">;; </span><span class="comment">&#26041;&#21448;&#19981;&#22909;&#36873;&#25321;&#20102;&#12290;&#25105;&#30475; css &#30340;&#25991;&#26723;&#37324;&#38754;&#37117;&#26159;&#35762;&#30340;&#35201;&#25554;&#20837;&#21040;
+</span>           <span class="comment-delimiter">;; </span><span class="comment">&lt;header&gt; &#20013;&#65292;&#20294;&#26159;&#22312;&#21457;&#24067;&#21333;&#20010; src tag &#30340;&#26102;&#20505;&#26080;&#27861;&#23450;&#20301;&#21040;
+</span>           <span class="comment-delimiter">;; </span><span class="comment">header &#37027;&#37324;&#65292;&#32780;&#19988;&#21508;&#20010; src tag &#20043;&#38388; css &#25972;&#21512;&#20063;&#26159;&#19968;&#20010;&#38382;&#39064;&#12290;
+</span>           <span class="comment-delimiter">;; </span><span class="comment">&#25152;&#20197;&#25105;&#36825;&#37324;&#30452;&#25509;&#25554;&#20837;&#21040;&#24403;&#21069;&#36825;&#20010; &lt;pre&gt; &#26631;&#31614;&#20043;&#21518;&#65292;&#30830;&#23454;&#26159;&#33021;&#22815;
+</span>           <span class="comment-delimiter">;; </span><span class="comment">&#27491;&#24120;&#26174;&#31034;&#30340;&#65292;&#19981;&#36807;&#21069;&#38754;&#22810;&#20986;&#26469;&#20102;&#19968;&#34892;&#65292;&#25152;&#20197;&#22312;&#36825;&#37324;&#21024;&#38500;&#19968;&#20010;&#25442;&#34892;</span><span class="comment"><span class="underline">&#31526;
+</span></span>           (<span class="keyword">when</span> (looking-at <span class="string">"\n"</span>)
+             (delete-char 1))
+           (<span class="keyword">while</span> (not (eobp))
+             (setq next-change (htmlize-next-change (point) 'face))
+             (setq face-list (htmlize-faces-at-point)
+                   fstruct-list (delq nil (mapcar (<span class="keyword">lambda</span> (f)
+                                                    (gethash f face-ma<span class="underline">p))
+</span>                                                  face-list)))
+             (setq text (htmlize-buffer-substring-no-invisible
+                         (point) next-change))
+             (setq text (htmlize-untabify text (current-column)))
+             (setq text (htmlize-protect-string text))
+             (<span class="keyword">when</span> (&gt; (length text) 0)
+               (<span class="keyword">if</span> (eq kid-muse-srctag-output-method 'css)
+                   (htmlize-css-insert-text text fstruct-list htmlbuf)
+                   (htmlize-font-insert-text text fstruct-list htmlbuf<span class="underline">)))
+</span>             (goto-char next-change))
+           (run-hooks 'htmlize-after-hook)
+           (setq text (<span class="keyword">with-current-buffer</span> htmlbuf (buffer-string)))
+           (kill-buffer htmlbuf)
+           text)))
+      (insert <span class="string">"&lt;/pre&gt;"</span>)
+      (muse-publish-mark-read-only (point-min) (point-max))
+      (goto-char (point-max)))))
+
+<span class="comment-delimiter">;; </span><span class="comment">60muse-srctag.el ends here
+</span></pre></div></div></div></div></div></div></div>
+
+<h2>Footnote</h2>
+<p class="footnote"><a name="fn.1" href="#fnr.1">1.</a> 依赖于 htmlize.el 和 muse 。新版本的 muse 自己已经可以处理 src 的
+tag 了，但是语法和我的有一些不一样，为了保持向后兼容性，仍然使用我
+自己的 src tag 的处理函数。由于 muse 添加 tag 的方式做了一些更改，
+所以代码也做了相应的更改以适应最新版本的 muse 。</p>
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

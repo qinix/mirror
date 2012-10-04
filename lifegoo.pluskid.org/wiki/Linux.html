@@ -1,0 +1,561 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>Linux</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>Linux</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here--><div class="contents"><h2>Contents</h2>
+<dl>
+<dt>
+<a href="#sec1">发行版</a>
+</dt>
+<dt>
+<a href="#sec2">桌面环境</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec3">X server</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec4">Key repeat rate</a>
+</dt>
+<dt>
+<a href="#sec5">屏幕录制</a>
+</dt>
+</dl>
+</dd>
+<dt>
+<a href="#sec6">窗口管理器</a>
+</dt>
+<dt>
+<a href="#sec7">编辑器</a>
+</dt>
+<dt>
+<a href="#sec8">网页浏览器</a>
+</dt>
+<dt>
+<a href="#sec9">文件管理器</a>
+</dt>
+<dt>
+<a href="#sec10">终端模拟器</a>
+</dt>
+<dt>
+<a href="#sec11">pdf 阅读器</a>
+</dt>
+<dt>
+<a href="#sec12">音乐播放器</a>
+</dt>
+<dt>
+<a href="#sec13">BBS 客户端</a>
+</dt>
+<dt>
+<a href="#sec14">面板</a>
+</dt>
+<dt>
+<a href="#sec15">影音播放器</a>
+</dt>
+<dt>
+<a href="#sec16">图片浏览</a>
+</dt>
+<dt>
+<a href="#sec17">图像处理</a>
+</dt>
+<dt>
+<a href="#sec18">中文输入</a>
+</dt>
+</dl>
+</dd>
+<dt>
+<a href="#sec19">工作环境</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec20">shell</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec21">bash</a>
+</dt>
+<dt>
+<a href="#sec22">zsh</a>
+</dt>
+<dt>
+<a href="#sec23">scsh</a>
+</dt>
+</dl>
+</dd>
+<dt>
+<a href="#sec24">我的 shell 工具箱</a>
+</dt>
+<dt>
+<a href="#sec25">编程工具箱</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec26">通用工具</a>
+</dt>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt>
+<a href="#sec27">后台环境</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec28">Web 服务器</a>
+</dt>
+<dt>
+<a href="#sec29">邮件系统</a>
+</dt>
+</dl>
+</dd>
+</dl>
+</div>
+
+
+    <!-- Page published by Emacs Muse begins here -->
+<h2><a name="sec1" id="sec1"></a>
+发行版</h2>
+
+<p class="first">刚开始使用接触 Linux 的时候，我尝试了一些发行版：RedHat、SUSE、Fedora
+Core、Ubuntu、<a href="Debian.html">Debian</a>、RedFlag、ArchLinux、Gentoo 以及具有更纯正 Unix
+血统的 FreeBSD (当然这不能作为一个 Linux 发行版)，在不断地安装、卸载、
+出错、重装的过程中慢慢稳定下来，现在我一直使用 <a href="Debian.html">Debian</a> 系统，并且已经很
+久没有重装过了，也不希望再重新架设一遍当前舒适的环境。</p>
+
+<p>事实上，我并没有什么特殊的原因让我选择 <a href="Debian.html">Debian</a> ，只是最后当我发觉我不再
+疯狂地尝试各种发行版之后，自己的电脑里面留下的是他而已。</p>
+
+
+<h2><a name="sec2" id="sec2"></a>
+桌面环境</h2>
+
+<h3><a name="sec3" id="sec3"></a>
+X server</h3>
+
+<p class="first">现在自然是使用 Xorg 作为 X server 了。Xorg 的配置文件在
+<code>/etc/X11/xorg.conf</code> ，在 <a href="Debian.html">Debian</a> 下一般直接使用</p>
+
+<pre class="example">
+dpkg-reconfigure xserver-xorg
+</pre>
+
+<p>进行配置就可以了。有一些配置需要手工修改配置文件，例如 <a href="EmacsTip.html#DontZap">DontZap</a> ，或者
+使用 xset 进行实时配置。</p>
+
+<h4><a name="sec4" id="sec4"></a>
+Key repeat rate</h4>
+
+<p class="first">这个是指按下一个键不放，出现重复按键的事件的情况，可以使用 <code>xset</code> 来控
+制，主要由两个变量来控制，一个是按下一个键之后到直到开始重复之前等待的
+毫秒数，一个是开始重复的时候每秒重复的次数。以这样的方法来设定：</p>
+
+<pre class="example">
+xset r rate 150 35
+</pre>
+
+<p>尝试到自己喜欢的值之后，就可以把它写到你的 X 启动脚本里面去了，例如，
+如果通过 startx 方式启动，通常是 <code>~/.xinitrc</code> 文件。</p>
+
+
+<h4><a name="sec5" id="sec5"></a>
+屏幕录制</h4>
+
+<p class="first">屏幕录制可以使用 xvidcap ，非常方便，在<a href="http://switch.dl.sourceforge.net/sourceforge/xvidcap/xvidcap_1.1.4rc1_i386.deb">这里</a>可以下载到 deb 包，装上就可
+以用了。选中一个屏幕区域，然后就可以录制了。</p>
+
+
+
+<h3><a name="sec6" id="sec6"></a>
+窗口管理器</h3>
+
+<p class="first">对于桌面环境，我非常喜欢 <a href="KDE.html">KDE</a> ，虽然一直想跟着大家一起折腾一下 fvwm、
+wmaker 之类的，但是总是被那些配置文件语法击退了。后来我听说 <a href="Sawfish.html">Sawfish</a> 可
+以用类似于 <a href="Elisp">Elisp</a> 的语法进行配置，便逐渐开始折腾起 <a href="Sawfish.html">Sawfish</a> 来。</p>
+
+<p>现在我在 <a href="Sawfish.html">Sawfish</a> 下面工作，自然需要一套完全代替 <a href="KDE.html">KDE</a> 下相应的软件的东
+西，所幸的是替代品几乎都已经找到，工作得也不错。现在我的桌面非常干净耐
+用，在这样的桌面环境下工作起来效率非常高，<a href="MyDesktop.html">这里</a>讲述了我是如何休整我的桌
+面的。</p>
+
+<p>我觉得许多窗口方面的操作用快捷键来完成的话会方便许多，比如常用的窗口切
+换，我非常喜欢 <a href="JumpOrExec.html">jump-or-exec</a> 这个功能。</p>
+
+
+<h3><a name="sec7" id="sec7"></a>
+编辑器</h3>
+
+<p class="first">编辑器无疑在 <a href="KDE.html">KDE</a> 还是在 <a href="Sawfish.html">Sawfish</a> 下面都是使用 <a href="Emacs.html">Emacs</a> 。而且在 <a href="Sawfish.html">Sawfish</a> 下
+面使用 <a href="Sawfish.html#SmarterEmacsClient">jump-or-exec</a> 让我在切换 <a href="Emacs.html">Emacs</a> 方面显得更方便了。</p>
+
+
+<h3><a name="sec8" id="sec8"></a>
+网页浏览器</h3>
+
+<p class="first">在 <a href="KDE.html">KDE</a> 里面使用 Konqueror 作为浏览器。在 <a href="Sawfish.html">Sawfish</a> 里面则使用 Seamonkey ，
+Seamonkey 也是 Mozilla 社区的作品，速度比 Firefox 要快，虽然不像
+Firefox 那样有丰富的插件，但是他自身的功能就已经很强大了。</p>
+
+<p>对于 Firefox 有一个小技巧，按 <code>F7</code> 可以启动或者停止“插入浏览模式”。在插入
+浏览模式里面可以方便地使用键盘来控制。不过对于现在大多数网页来说，完全
+使用键盘来总是有些痛苦的。:p</p>
+
+<p><a name="FileManger" id="FileManger"></a></p>
+
+<h3><a name="sec9" id="sec9"></a>
+文件管理器</h3>
+
+<p class="first">在 <a href="KDE.html">KDE</a> 里面使用 Konqueror 这个一流的文件管理器。在 <a href="Sawfish.html">Sawfish</a> 里面则使用
+emelFM2 这个文件管理器，emelFM2 更适合快捷键操作，从某种角度来说更为方
+便。</p>
+
+
+<h3><a name="sec10" id="sec10"></a>
+终端模拟器</h3>
+
+<p class="first">在 <a href="KDE.html">KDE</a> 里面使用 <a href="KDE.html#yakuake">yakuake</a> 作为终端非常方便。而在 <a href="Sawfish.html">Sawfish</a> 里面，则使用
+<a href="XTerminal.html#urxvt">urxvt</a> ，再配合 <a href="Screen.html">Screen</a> 可以实现多标签等操作，并使用 <a href="Sawfish.html">Sawfish</a> 的
+<code>jump-or-exec</code> 扩展使终端切换也变得非常方便，这样就和 <a href="KDE.html#yakuake">yakuake</a> 不相上下了。</p>
+
+
+<h3><a name="sec11" id="sec11"></a>
+pdf 阅读器</h3>
+
+<p class="first">在 <a href="KDE.html">KDE</a> 里面使用 Kpdf 这个小巧的 pdf 阅读器，有一个非常人性化的功能就是
+下次打开 pdf 文件的时候会自动定位到上次关闭这个文件的时候正在浏览的那
+个位置。在 <a href="Sawfish.html">Sawfish</a> 里面我使用 Adobe Reader ，把它的
+<code>Reader/intellinux/plug_ins</code> 目录下面的东西全部删掉之后启动速度也变得很
+快，而且在设置对话框里面 Startup 一栏里面让 “Reopen Documents to Last
+Viewed Page”设置为“All Files”的话，也可以实现像 Kpdf 那样的跳到上次关
+闭时候的页面的功能。另外，Adobe Reader 的显示效果无疑比 Kpdf 要好。</p>
+
+
+<h3><a name="sec12" id="sec12"></a>
+音乐播放器</h3>
+
+<p class="first">在 <a href="KDE.html">KDE</a> 里面使用 amaroK 来放音乐，用起来是非常舒服了。在 <a href="Sawfish.html">Sawfish</a> 里面使
+用 beep-media-player 来作为播放器，算是一个简单的播放器了，媒体库的管理
+功能自然不如 amaroK ，而且听说已经停止开发了，原来的团队现在分别开发
+xmms2、bmpx、audacious 等项目，但是我觉得 BMP 已经很不错了。</p>
+
+<p>不过，我现在已经转到 <a href="Emacs.html">Emacs</a> 里面的 <a href="EMMS.html">EMMS</a> 了，很不错的东西呢。</p>
+
+
+<h3><a name="sec13" id="sec13"></a>
+BBS 客户端</h3>
+
+<p class="first">在 <a href="KDE.html">KDE</a> 里面使用 QTerm 。在 <a href="Sawfish.html">Sawfish</a> 里面也仍然是使用 QTerm ，QTerm 是
+Qt 程序而不是 KDE 程序，所以不会需要启动一大堆 KDE 服务之类的，而且其
+他的像 pcmanx 或者直接用终端上都有各自的不舒服的地方。</p>
+
+
+<h3><a name="sec14" id="sec14"></a>
+面板</h3>
+
+<p class="first">在 <a href="KDE.html">KDE</a> 里面当然是使用自带的 Kicker 。在 <a href="Sawfish.html">Sawfish</a> 里面其实没有什么必要使
+用面板，菜单、快速启动、以及任务栏这些几乎都没有作用，几乎全部都可以通
+过快捷键操作来完成。不过其实面板还是有存在的必要的，任务栏虽然不用来切
+换窗口，但是可以随时看到自己现在开启了哪些窗口，而且面板上显示着时钟有
+时候也是非常方便的。不过 <a href="Sawfish.html">Sawfish</a> 比 fvwm 更加一无所有，连任务栏也没有，只
+有使用第三方的面板。经过挑选，我发现两个不错的：fspanel 和 fbpanel 。</p>
+
+<p>fspanel 是一个只有几十 kB 的小巧的程序，功能也比较有限，不过任务栏、时
+间显示两个重要的功能倒是都有了，唯一不足的是好像对中文支持不好，如果标
+题栏里面有中文的话，好像整个标题就显示不出来。</p>
+
+<p>fbpanel 是一个功能非常全的面板，支持显示桌面、虚拟桌面切换、面板菜单、
+快速启动、任务栏、系统托盘和时间显示，而且速度也并不慢，也比 fspanel
+要漂亮一些，我目前就是使用的它。它还有一个比较不错的功能是可以设定特定
+程序在任务栏里面的图标，通常情况下有些程序没有提供图标，就会用一个默认
+图标代替，如果有多个这样的程序，就无法一下子区分开，所以这个功能其实也
+是非常人性化的。</p>
+
+
+<h3><a name="sec15" id="sec15"></a>
+影音播放器</h3>
+
+<p class="first">在 <a href="KDE.html">KDE</a> 里面并没有专门使用那个播放器，通常是混合使用 Kaffeine、Noatun
+之类的播放器。转到 <a href="Sawfish.html">Sawfish</a> 下之后碰巧得到了一个别人做好的 MPlayer 的
+deb 包，于是就装上了，虽然这个包编译的时候没有加进图形界面支持，不过也
+基本上没有那个必要，man 了一下，熟悉了常用的快捷键，使用起来就很顺手
+了，而且几乎可以播放所有的格式。另外，在 <code>~/.mplayer/config</code> 里面加入
+<code>stop-xscreensaver=yes</code> 可以让 MPlayer 在播放的时候禁用掉屏
+保，并在退出的时候恢复，这样可以避免正在播放的过程中屏保跑出来捣乱。</p>
+
+<p>如果要在 MPlayer 播放的时候截图，可以使用 <code>-vf screenshot</code> 参数来启动
+MPlayer ，并在播放的时候按 <code>s</code> 键，就可以将截图保存在当前目录下了。</p>
+
+<p>另外，有些 rm 或者 rmvb 的文件用 mplayer 放不了，还是只能用 realplay
+来放了。如果播放的时候很卡，有一个解决办法就是安装 alsa-oss ，然后用
+<code>aoss realplay file</code> 这样来播放。</p>
+
+
+
+<h3><a name="sec16" id="sec16"></a>
+图片浏览</h3>
+
+<p class="first">我并不经常浏览大量图片，在 <a href="KDE.html">KDE</a> 里面多是直接用 Konqueror 自己的预览功能
+或者是使用 Kview 来浏览。在 <a href="Sawfish.html">Sawfish</a> 里面我找了一个比较轻量级的图片浏览
+器 GQview ，用起来还不错。</p>
+
+
+<h3><a name="sec17" id="sec17"></a>
+图像处理</h3>
+
+<p class="first">我并不常进行复杂的图像处理，抓图一般用 scrot 、<a href="ImageMagick.html">ImageMagick</a> 里面的
+import 或者在 <a href="KDE.html">KDE</a> 里面就直接用 Ksnapshot 。简单的图像处理就用
+<a href="ImageMagick.html">ImageMagick</a> 或者是 GIMP 。</p>
+
+
+<h3><a name="sec18" id="sec18"></a>
+中文输入</h3>
+
+<p class="first">目前 Linux 下面比较好用的输入法主要有 fcitx 和 SCIM 这两个，两个都有一
+定的缺点，并不如 Windows 下面那些输入法好用，不过也还是很不错的。主要
+是词库、以及字的排列以及词频调整等问题，fcitx 一开始那些字的排列顺序就
+是非常奇怪的，有时候一个常用的字要翻好几页才能找到。</p>
+
+<p>另外，对于拼音输入法来说，有一个非常不错的方法，就是对于重码汉字，一次
+显示三个，分别采用左右 <code>Shift</code> 和空格来输入这三个汉字，比起一次显示八、
+九个，并用数字来输入要高效。因为只有三个汉字，一眼就能看出汉字是否在里
+面，并判断是否要翻下一页，如果是八、九个的话，一眼扫过去，还有可能会怀
+疑自己是否会看漏了。另外，左右 <code>Shift</code> 也比数字键好按，也不容易按错。
+fcitx 支持这个功能，而目前 SCIM 还不支持，我本来是养成了这个习惯了的，
+但是后来用 SCIM ，又花了一段时间强制改掉了这个习惯。用 SCIM 还有一个原
+因就是我在<a href="SwapCapsCtrl.html">交换了 Ctrl 键和 Caps Lock 键</a>之后，fcitx 仍然不承认我已经交
+换了这两个键，我不清楚他是怎么弄的，难道他接收键序列是直接跳过 X 而接
+收的？</p>
+
+<p>总之，现在我在 <a href="KDE.html">KDE</a> 下和在 <a href="Sawfish.html">Sawfish</a> 下面都使用 SCIM 输入法。</p>
+
+
+
+<h2><a name="sec19" id="sec19"></a>
+工作环境</h2>
+
+<h3><a name="sec20" id="sec20"></a>
+shell</h3>
+
+<h4><a name="sec21" id="sec21"></a>
+bash</h4>
+
+<p class="first">bash 是 Linux 的默认 shell ，一开始就接触的是 bash ，自然对他最熟悉
+了，bash 默认的编辑功能是类 <a href="Emacs.html">Emacs</a> 的(也可以设置成类 vi 的)也非常上手。
+不过我不太喜欢 bash 默认的那个提示符，如果目录一深入，就会显得太长了。
+通常提示符只显示当前目录名就可以了，不用显示完整路径：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #eedd82;
+      }
+    --></style><span class="variable-name">PS1</span>=<span class="string">"\W \$ "</span>
+</pre></div></div></div></div></div></div></div>
+
+<p>关于提示符里面的各种特殊字符的意义详细可以参考 <code>man bash</code> 里面的
+<code>PROMPTING</code> 一节。</p>
+
+
+<h4><a name="sec22" id="sec22"></a>
+zsh</h4>
+
+<p><a href="ZShell.html">ZShell</a> 是一个主要设计用于交互使用的 shell ，不过他的脚本功能也很强大。</p>
+
+
+<h4><a name="sec23" id="sec23"></a>
+scsh</h4>
+
+<p><a href="Scsh.html">Scsh</a> 是基于 <a href="Scheme.html">Scheme</a> 语言的一个 shell ，目前主要用于脚本编程方面，交互方
+面的功能很差，几乎没有任何行编辑功能，不过也可以配合其他专门的编辑器或
+者具有编辑功能的终端使用。</p>
+
+
+
+<h3><a name="sec24" id="sec24"></a>
+我的 shell 工具箱</h3>
+
+<p class="first">shell 本身所能做的事情并不多，但是使用管道和重定向结合起大量的工具，就
+显得威力无比了。我常用的工具有：</p>
+
+<ul>
+<li><strong>sed</strong> 进行一些批量自动编辑工作，现在的 GNU sed 有一个 <code>-i</code> 选项，在经过
+测试无误之后，加上这个选项可以让编辑直接在原文件上进行，而不只是输
+出到屏幕上。</li>
+<li><strong><a href="UtilFind.html">find</a></strong> 一个超级工具，通常配合 xargs 使用为其他程序提供参数。虽然名为
+find ，但是事实上很少用于“查找文件”这个单纯的任务上。</li>
+<li><strong>locate/updatedb</strong> 快速查找文件的工具，使用 updatedb 建立索引，用
+locate 来查找文件。虽然支持正则表达式，但是并不能像 Google Desktop
+Search 那样能搜索文件内容，而只能搜索文件名，不过这已经很够用了。通
+常我自己的文件都归类放好，很少出现找不到的情况，使用 locate 多是用
+于定位某些系统文件而已，一般对内容并不关心。</li>
+<li><strong>tar</strong> 最爱的文件打包工具。tarball 几乎是 Linux 下发布源代码的标准格
+式，而且配合 bz2 格式可以得到很高的压缩比。</li>
+<li><strong>apt-get/apt-cache</strong> 软件包管理的黄金搭档。速度快、软件仓库大、自动解
+决依赖关系、操作简便……太多的优点让 apt 系列成为 Debian 最大的亮点之
+一。</li>
+<li><strong>sudo</strong> 虽然大家推荐 sudo 都是出于安全的原因。但是我却更多的是因为方便
+而选择了 sudo &mdash; 是的，我觉得 sudo 比 su 方便，虽然 sudo 比 su 要多
+两个字符，但是我通常只是以 root 身份执行一条命令即可，用了 su 之后
+还要 exit 出来，而且 su 和 sudo 不同的是，每次都需要输入密码的。:p</li>
+<li><strong>less</strong> 作为分页工具，less 比 more 更强大，翻页、搜索等功能都非常实用
+方便。</li>
+<li><strong>man</strong> 通常并不是能够记住所有程序的用法(或者是程序的所有用法)，这个时
+候就需要查阅 man 了，通常你会得到最权威最简介的答案。</li>
+<li><strong>wget</strong> 这是我见过的最稳定的下载工具，而且可以抓取整个网站，对于某些在
+线版的电子书下载起来非常方便。</li>
+<li><strong>lftp</strong> 我觉得最舒服的 ftp 客户端，支持很多类似 bash 的操作，让 ftp 操
+作就像在操作本地文件一样。他的配置文件在 <code>~/.lftp/rc</code> ，我觉得最有用
+的两个配置选项是：
+<ul>
+<li><code>ftp:charset &quot;GBK&quot;</code> 通常远程 ftp 服务器都是 GBK 编码的，这样设置之
+后可以解决乱码问题。</li>
+<li><code>debug 3</code> 这样设置可以让 lftp 把登录信息等显示出来，默认是不显示的，
+而有些 ftp 站会在登录信息里面告诉你可用的用户名和密码等信息，所以
+让他显示出来会更方便。</li>
+</ul></li>
+<li><strong>rename</strong> 非常方便实用的文件重命名工具，可以使用 Perl 格式的正则表达式。
+事实上，它通常就是一个 Perl 脚本。</li>
+<li><strong>grep</strong> 这个算是一个非常著名的工具了吧，自然也非常实用。我最常用的几个
+选项是：
+<ul>
+<li><code>-C NUM</code> 显示出匹配行附近的 <code>NUM</code> 行上下文。</li>
+<li><code>-n</code> 显示行号。 <code>-H</code> 显示文件名。这两个选项对于在一大堆文件里面搜索东
+西非常有用。</li>
+<li><code>-o</code> 只显示匹配的部分，这对于从一大堆东西中提取某些特殊信息非常有用。</li>
+<li><code>-v</code> 反向匹配，即显示不匹配的行。</li>
+</ul></li>
+<li><strong>xsel</strong> 这个是非常方便的程序，但是要在 X 下使用，他的作用是和剪切板进行
+交互。一些操作，比如把一个文本文件的内容放到剪切板；在终端里面粘贴剪
+切板的内容；等这些操作多少有些麻烦，前者要打开一个编辑器，后者还要动
+鼠标(一般使用中键粘贴吧)。用 xsel 就少了这么多麻烦。 <code>xsel -b -i &lt;
+file</code> 就把 file 的内容拷贝到剪切板了。 <code>wget `xsel -o`</code> 也是很常用的，
+因为剪切板里面时常放了拷贝的 URL 了吧。不过，美中不足的地方是中文支
+持还不行。</li>
+<li><strong>fortune</strong> 随机显示一些有趣的言论，用于产生随机的邮件签名非常不错。你
+可以生成自己的 fortune 的数据库，通常，我建立一个 <code>~/.fortune</code> 目录，
+在里面为每一个分类建立一个文件，文件的格式很简单，以一个单行的 <code>%</code> 表
+示分隔。文件编辑之后可以使用 <code>strfile -r computer.txt computer.dat</code>
+来生成数据库，然后使用 <code>fortune ~/.fortune</code> 来选择自己定义的数据库来
+显示。</li>
+</ul>
+
+<p>其他一些著名的工具我没有提到，因为我几乎没有使用过它们：</p>
+
+<ul>
+<li><strong>awk</strong> awk 通常和 sed 一起作为最常用的 shell 工具之一，不过我并不熟悉
+awk ，也不准备去学习。事实上，awk 处于一种夹缝之中，因为更简单一些
+的工作可以用 sed 来完成，而稍微复杂一点的事情，则直接用 perl 或者
+python 一类的脚本语言来完成更加舒服，这样 awk 几乎就没有什么用武之
+地了。</li>
+<li><strong>info</strong> info 作为 GNU 标准文档格式，确实是非常不错的一种文档。不过通常
+许多程序都不带 info 文档，在命令行里面键入 info 则直接显示 man 文档。
+而且，即使有 info 文档，也通常是非常详细，不是一下子就可以看完的，
+所以，我通常是在 <a href="Emacs.html">Emacs</a> 里面查看一些 info 文档。</li>
+</ul>
+
+
+<h3><a name="sec25" id="sec25"></a>
+编程工具箱</h3>
+
+<h4><a name="sec26" id="sec26"></a>
+通用工具</h4>
+
+<ul>
+<li><strong>auto toolset</strong> <a href="Autotoolset.html">auto toolset</a> 用于在工程比较大的时候比较智能地生成配置
+脚本和 Makefile ，省去了不少麻烦。</li>
+</ul>
+
+
+
+
+<h2><a name="sec27" id="sec27"></a>
+后台环境</h2>
+
+<h3><a name="sec28" id="sec28"></a>
+Web 服务器</h3>
+
+<p><a href="Apache.html">Apache</a></p>
+
+
+<h3><a name="sec29" id="sec29"></a>
+邮件系统</h3>
+
+<ul>
+<li>邮件服务器：<a href="Exim4.html">Exim4</a></li>
+<li>通过 POP 方式获取邮件：<a href="Fetchmail">Fetchmail</a></li>
+<li>对邮件进行过滤以及分类处理：<a href="Procmail.html">Procmail</a></li>
+<li>邮件阅读器：<a href="Mutt.html">Mutt</a> 或 <a href="Mew.html">Mew</a></li>
+</ul>
+
+
+
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

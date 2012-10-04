@@ -1,0 +1,829 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>ZShell</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>ZShell</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here--><div class="contents"><h2>Contents</h2>
+<dl>
+<dt>
+<a href="#sec1">配置</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec2">提示符</a>
+</dt>
+<dt>
+<a href="#sec3">与 TRAMP 配合使用</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec4">一种解决办法</a>
+</dt>
+<dt>
+<a href="#sec5">更好的解决办法</a>
+</dt>
+</dl>
+</dd>
+<dt>
+<a href="#sec6">单词分界</a>
+</dt>
+<dt>
+<a href="#sec7">键绑定</a>
+</dt>
+</dl>
+</dd>
+<dt>
+<a href="#sec8">交互使用</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec9">通配符</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec10">否定匹配</a>
+</dt>
+<dt>
+<a href="#sec11">整数范围匹配</a>
+</dt>
+<dt>
+<a href="#sec12">分组功能</a>
+</dt>
+<dt>
+<a href="#sec13">递归匹配</a>
+</dt>
+<dt>
+<a href="#sec14">去除特例</a>
+</dt>
+<dt>
+<a href="#sec15">类型限定</a>
+</dt>
+</dl>
+</dd>
+<dt>
+<a href="#sec16">命令替换</a>
+</dt>
+<dt>
+<a href="#sec17">别名</a>
+</dt>
+<dt>
+<a href="#sec18">历史</a>
+</dt>
+<dt>
+<a href="#sec19">重定向</a>
+</dt>
+<dt>
+<a href="#sec20">命令行编辑</a>
+</dt>
+</dl>
+</dd>
+<dt>
+<a href="#sec21">脚本编程</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec22">使用 Emacs 编辑 zsh 脚本</a>
+</dt>
+</dl>
+</dd>
+</dl>
+</div>
+
+
+    <!-- Page published by Emacs Muse begins here -->
+<h2><a name="sec1" id="sec1"></a>
+配置</h2>
+
+<p class="first">zsh 的配置文件是 <code>$ZDOTDIR</code> 目录下的 <code>.zshenv</code> 、 <code>.zprofile</code> 、 <code>.zshrc</code> 、
+<code>.zlogin</code> 、 <code>.zlogout</code> 这几个文件。如果 <code>ZDOTDIR</code> 没有设置，那么就使用默认
+的 <code>HOME</code> 目录。这几个文件的用途都是不言自明的了，其中主要的配置会在用于
+非登录 shell 的 <code>.zshrc</code> 里面进行，而 <code>.zshenv</code> 则用于设置搜索路径以及其他
+一些重要的变量。需要注意的是， <code>.zshenv</code> 里面不应该包含产生文本输出的命
+令，也不应该随意假设执行的时候 shell 已经绑定到了一个 tty 上。</p>
+
+<h3><a name="sec2" id="sec2"></a>
+提示符</h3>
+
+<p class="first">可以使用 <code>prompt</code> 变量来配置 zsh 的提示符，提示符可以显示的信息非常丰富，详
+细可以参考 zsh 的文档，我使用如下设置来让他的提示符更像 bash ：</p>
+
+<pre class="example">
+prompt='%1/ %(!.#.$) '
+</pre>
+
+<p>另外，在<a href="http://www.aperiodic.net/phil/prompt/">这里</a>可以找到 Phil 的 zsh 的提示符设置，这是一个很 cool 的提示
+符，他还详细讲解了他设置这个提示符的脚本，仔细看还可以学到很多 zsh 相
+关的知识。</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .builtin {
+        /* font-lock-builtin-face */
+        color: #b0c4de;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .function-name {
+        /* font-lock-function-name-face */
+        color: #87cefa;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .sh-quoted-exec {
+        /* sh-quoted-exec */
+        color: #fa8072;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #eedd82;
+      }
+    --></style><span class="keyword">function</span> <span class="function-name">precmd</span> {
+
+    <span class="builtin">local</span> TERMWIDTH
+    (( <span class="variable-name">TERMWIDTH</span> = ${<span class="variable-name">COLUMNS</span>} - 1 ))
+
+
+    <span class="comment-delimiter">###</span><span class="comment">
+</span>    <span class="comment-delimiter"># </span><span class="comment">Truncate the path if it's too long.
+</span>
+    <span class="variable-name">PR_FILLBAR</span>=<span class="string">""</span>
+    <span class="variable-name">PR_PWDLEN</span>=<span class="string">""</span>
+
+    <span class="builtin">local</span> <span class="variable-name">promptsize</span>=${<span class="variable-name">#</span>${(%):---(%n@%m:%l)---()--}}
+    <span class="builtin">local</span> <span class="variable-name">pwdsize</span>=${<span class="variable-name">#</span>${(%):-%~}}
+
+    <span class="keyword">if</span> [[ <span class="string">"$promptsize + $pwdsize"</span> -gt $<span class="variable-name">TERMWIDTH</span> ]]; <span class="keyword">then</span>
+            ((<span class="variable-name">PR_PWDLEN</span>=$<span class="variable-name">TERMWIDTH</span> - $<span class="variable-name">promptsize</span>))
+    <span class="keyword">else</span>
+        <span class="variable-name">PR_FILLBAR</span>=<span class="string">"\${(l.(($TERMWIDTH - ($promptsize + $pwdsize)))..${PR_HBAR}.)}"</span>
+    <span class="keyword">fi</span>
+
+
+    <span class="comment-delimiter">###</span><span class="comment">
+</span>    <span class="comment-delimiter"># </span><span class="comment">Get APM info.
+</span>
+    <span class="keyword">if </span><span class="builtin">which</span> ibam &gt; /dev/null; <span class="keyword">then</span>
+        <span class="variable-name">PR_APM_RESULT</span>=<span class="sh-quoted-exec">`ibam --percentbattery`</span>
+    <span class="keyword">elif </span><span class="builtin">which</span> apm &gt; /dev/null; <span class="keyword">then</span>
+        <span class="variable-name">PR_APM_RESULT</span>=<span class="sh-quoted-exec">`apm`</span>
+    <span class="keyword">fi</span>
+}
+
+
+<span class="builtin">setopt</span> extended_glob
+<span class="function-name">preexec</span> () {
+    <span class="keyword">if</span> [[ <span class="string">"$TERM"</span> == <span class="string">"screen"</span> ]]; <span class="keyword">then</span>
+        <span class="builtin">local</span> <span class="variable-name">CMD</span>=${<span class="variable-name">1</span>[(wr)^(*=*|sudo|-*)]}
+        <span class="builtin">echo</span> -n <span class="string">"\ek$CMD\e\\"</span>
+    <span class="keyword">fi</span>
+}
+
+
+<span class="function-name">setprompt</span> () {
+    <span class="comment-delimiter">###</span><span class="comment">
+</span>    <span class="comment-delimiter"># </span><span class="comment">Need this so the prompt will work.
+</span>
+    <span class="builtin">setopt</span> prompt_subst
+
+
+    <span class="comment-delimiter">###</span><span class="comment">
+</span>    <span class="comment-delimiter"># </span><span class="comment">See if we can use colors.
+</span>
+    <span class="builtin">autoload</span> colors zsh/terminfo
+    <span class="keyword">if</span> [[ <span class="string">"$terminfo[colors]"</span> -ge 8 ]]; <span class="keyword">then</span>
+        colors
+    <span class="keyword">fi</span>
+    <span class="keyword">for</span> color<span class="keyword"> in</span> RED GREEN YELLOW BLUE MAGENTA CYAN WHITE; <span class="keyword">do</span>
+        <span class="builtin">eval</span> PR_$<span class="variable-name">color</span>=<span class="string">'%{$terminfo[bold]$fg[${(L)color}]%}'</span>
+        <span class="builtin">eval</span> PR_LIGHT_$<span class="variable-name">color</span>=<span class="string">'%{$fg[${(L)color}]%}'</span>
+        (( <span class="variable-name">count</span> = $<span class="variable-name">count</span> + 1 ))
+    <span class="keyword">done</span>
+    <span class="variable-name">PR_NO_COLOUR</span>=<span class="string">"%{$terminfo[sgr0]%}"</span>
+
+
+    <span class="comment-delimiter">###</span><span class="comment">
+</span>    <span class="comment-delimiter"># </span><span class="comment">See if we can use extended characters to look nicer.
+</span>
+    <span class="builtin">typeset</span> -A altchar
+    <span class="builtin">set</span> -A altchar ${(s..)terminfo[acsc]}
+    <span class="variable-name">PR_SET_CHARSET</span>=<span class="string">"%{$terminfo[enacs]%}"</span>
+    <span class="variable-name">PR_SHIFT_IN</span>=<span class="string">"%{$terminfo[smacs]%}"</span>
+    <span class="variable-name">PR_SHIFT_OUT</span>=<span class="string">"%{$terminfo[rmacs]%}"</span>
+    <span class="variable-name">PR_HBAR</span>=${<span class="variable-name">altchar</span>[q]:--}
+    <span class="variable-name">PR_ULCORNER</span>=${<span class="variable-name">altchar</span>[l]:--}
+    <span class="variable-name">PR_LLCORNER</span>=${<span class="variable-name">altchar</span>[m]:--}
+    <span class="variable-name">PR_LRCORNER</span>=${<span class="variable-name">altchar</span>[j]:--}
+    <span class="variable-name">PR_URCORNER</span>=${<span class="variable-name">altchar</span>[k]:--}
+
+
+    <span class="comment-delimiter">###</span><span class="comment">
+</span>    <span class="comment-delimiter"># </span><span class="comment">Decide if we need to set titlebar text.
+</span>
+    <span class="keyword">case</span> $<span class="variable-name">TERM</span><span class="keyword"> in</span>
+        xterm*)
+            <span class="variable-name">PR_TITLEBAR</span>=$<span class="string">'%{\e]0;%(!.-=*[ROOT]*=- | .)%n@%m:%~ | ${COLUMNS}x${LINES} | %y\a%}'</span>
+            ;;
+        screen)
+            <span class="variable-name">PR_TITLEBAR</span>=$<span class="string">'%{\e_screen \005 (\005t) | %(!.-=[ROOT]=- | .)%n@%m:%~ | ${COLUMNS}x${LINES} | %y\e\\%}'</span>
+            ;;
+        *)
+            <span class="variable-name">PR_TITLEBAR</span>=<span class="string">''</span>
+            ;;
+    <span class="keyword">esac</span>
+
+
+    <span class="comment-delimiter">###</span><span class="comment">
+</span>    <span class="comment-delimiter"># </span><span class="comment">Decide whether to set a screen title
+</span>    <span class="keyword">if</span> [[ <span class="string">"$TERM"</span> == <span class="string">"screen"</span> ]]; <span class="keyword">then</span>
+        <span class="variable-name">PR_STITLE</span>=$<span class="string">'%{\ekzsh\e\\%}'</span>
+    <span class="keyword">else</span>
+        <span class="variable-name">PR_STITLE</span>=<span class="string">''</span>
+    <span class="keyword">fi</span>
+
+
+    <span class="comment-delimiter">###</span><span class="comment">
+</span>    <span class="comment-delimiter"># </span><span class="comment">APM detection
+</span>
+    <span class="keyword">if </span><span class="builtin">which</span> ibam &gt; /dev/null; <span class="keyword">then</span>
+        <span class="variable-name">PR_APM</span>=<span class="string">'$PR_RED${${PR_APM_RESULT[(f)1]}[(w)-2]}%%(${${PR_APM_RESULT[(f)3]}[(w)-1]})$PR_LIGHT_BLUE:'</span>
+    <span class="keyword">elif </span><span class="builtin">which</span> apm &gt; /dev/null; <span class="keyword">then</span>
+        <span class="variable-name">PR_APM</span>=<span class="string">'$PR_RED${PR_APM_RESULT[(w)5,(w)6]/\% /%%}$PR_LIGHT_BLUE:'</span>
+    <span class="keyword">else</span>
+        <span class="variable-name">PR_APM</span>=<span class="string">''</span>
+    <span class="keyword">fi</span>
+
+
+    <span class="comment-delimiter">###</span><span class="comment">
+</span>    <span class="comment-delimiter"># </span><span class="comment">Finally, the prompt.
+</span>
+    <span class="variable-name">PROMPT</span>=<span class="string">'$PR_SET_CHARSET$PR_STITLE${(e)PR_TITLEBAR}\
+$PR_CYAN$PR_SHIFT_IN$PR_ULCORNER$PR_BLUE$PR_HBAR$PR_SHIFT_OUT(\
+$PR_GREEN%(!.%SROOT%s.%n)$PR_GREEN@%m:%l\
+$PR_BLUE)$PR_SHIFT_IN$PR_HBAR$PR_CYAN$PR_HBAR${(e)PR_FILLBAR}$PR_BLUE$PR_HBAR$PR_SHIFT_OUT(\
+$PR_MAGENTA%$PR_PWDLEN&lt;...&lt;%~%&lt;&lt;\
+$PR_BLUE)$PR_SHIFT_IN$PR_HBAR$PR_CYAN$PR_URCORNER$PR_SHIFT_OUT\
+
+$PR_CYAN$PR_SHIFT_IN$PR_LLCORNER$PR_BLUE$PR_HBAR$PR_SHIFT_OUT(\
+%(?..$PR_LIGHT_RED%?$PR_BLUE:)\
+${(e)PR_APM}$PR_YELLOW%D{%H:%M}\
+$PR_LIGHT_BLUE:%(!.$PR_RED.$PR_WHITE)%#$PR_BLUE)$PR_SHIFT_IN$PR_HBAR$PR_SHIFT_OUT\
+$PR_CYAN$PR_SHIFT_IN$PR_HBAR$PR_SHIFT_OUT\
+$PR_NO_COLOUR '</span>
+
+    <span class="variable-name">RPROMPT</span>=<span class="string">' $PR_CYAN$PR_SHIFT_IN$PR_HBAR$PR_BLUE$PR_HBAR$PR_SHIFT_OUT\
+($PR_YELLOW%D{%a,%b%d}$PR_BLUE)$PR_SHIFT_IN$PR_HBAR$PR_CYAN$PR_LRCORNER$PR_SHIFT_OUT$PR_NO_COLOUR'</span>
+
+    <span class="variable-name">PS2</span>=<span class="string">'$PR_CYAN$PR_SHIFT_IN$PR_HBAR$PR_SHIFT_OUT\
+$PR_BLUE$PR_SHIFT_IN$PR_HBAR$PR_SHIFT_OUT(\
+$PR_LIGHT_GREEN%_$PR_BLUE)$PR_SHIFT_IN$PR_HBAR$PR_SHIFT_OUT\
+$PR_CYAN$PR_SHIFT_IN$PR_HBAR$PR_SHIFT_OUT$PR_NO_COLOUR '</span>
+}
+
+setprompt
+</pre></div></div></div></div></div></div></div>
+
+
+<h3><a name="sec3" id="sec3"></a>
+与 TRAMP 配合使用</h3>
+
+<p class="first">在 <a href="Emacs.html">Emacs</a> 里面通过 <a href="EmacsTRAMP.html">TRAMP</a> 登录到 zsh 的机器上的时候会挂起，因为无法正确
+地识别出命令行提示符。</p>
+
+<h4><a name="sec4" id="sec4"></a>
+一种解决办法</h4>
+
+<p class="first">zsh 有额外的默认打开的功能，让 <a href="EmacsTRAMP.html">TRAMP</a> 不能正确处理。额外的功能由
+<code>prompt_cr</code> 和 <code>prompt_sp</code> 两个变量控制。 <code>prompt_cr</code> 打开的话，在输出提示符
+之前会输出回车符，这是多行编辑所需要的，但是这样有时候如果上一个命令的
+输出最后一行没有换行的话就会被“吃掉”，例如：</p>
+
+<pre class="example">
+$ setopt prompt_cr
+$ setopt No_prompt_sp
+$ echo -n &quot;foobar&quot;
+$
+</pre>
+
+<p>看到 <code>&quot;foobar&quot;</code> 已经被吃掉了，但是如果同时打开了 <code>prompt_sp</code> 变量，则会在
+未换行的那一行末尾打印一个反色粗体的 <code>%</code> (或者是 <code>#</code>)并打印适量的空格让提
+示符延伸到下一行。这个功能本来是不错的，但是在 <a href="Emacs.html">Emacs</a> 里面用 <code>M-x shell</code>
+得到的 shell 里面不好用，而且多余的 <code>%</code> (或者 <code>#</code>) 会影响 <a href="EmacsTRAMP.html">TRAMP</a> 识别提示
+符，造成 <a href="EmacsTRAMP.html">TRAMP</a> 不能正常工作。要解决这个问题的办法也是比较简单的，因为
+<a href="Emacs.html">Emacs</a> 和 <a href="EmacsTRAMP.html">TRAMP</a> 使用的 <code>TERM</code> 变量都是 <code>dumb</code> ，只要在 <code>TERM</code> 是 <code>dumb</code> 的时候
+关掉这两个选项就好了，在 <code>~/.zshrc</code> 里面加入：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .builtin {
+        /* font-lock-builtin-face */
+        color: #b0c4de;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style><span class="comment-delimiter"># </span><span class="comment">for Emacs and TRAMP to handle prompt properly
+</span><span class="keyword">if</span> [[ <span class="string">"$TERM"</span> == <span class="string">"dumb"</span> ]]; <span class="keyword">then</span>
+    <span class="builtin">setopt</span> No_prompt_cr
+    <span class="builtin">setopt</span> No_prompt_sp
+<span class="keyword">fi</span>
+</pre></div></div></div></div></div></div></div>
+
+<p>可是这样仍然无法使用 <a href="EmacsTRAMP.html">TRAMP</a> 的 sudo 方式来访问本地文件，也不知道是怎么
+一回事情，这个是很郁闷的。这个问题暂时还没有解决，只有先用 bash 作为登
+录 shell ，然后查看 <code>TERM</code> 变量，如果是 <code>linux</code> 或者 <code>screen</code> 的话就运行 zsh
+，因为 <code>linux</code> 是在虚拟终端里面的 <code>TERM</code> 值，而 <code>screen</code> 是我在 X 下运行
+<a href="XTerminal.html#urxvt">urxvt</a> 里面 <a href="Screen.html">Screen</a> 里的 <code>TERM</code> 值，其他情况下通常都不需要 zsh 。</p>
+
+<p>另外，在 <a href="Emacs.html">Emacs</a> 里面用 <code>M-x shell</code> 得到的终端会设置 <code>EMACS</code> 变量 ，在这里面
+可以把 zle (Z-Shell Line Editor) 禁用掉。</p>
+
+<p>在 <code>~/.bashrc</code> 里面写</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .sh-escaped-newline {
+        /* sh-escaped-newline */
+        color: #ffa07a;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style><span class="keyword">if</span> [ <span class="string">"$TERM"</span> = <span class="string">"screen"</span>        <span class="sh-escaped-newline">\</span>
+        -o <span class="string">"$TERM"</span> = <span class="string">"linux"</span>   <span class="sh-escaped-newline">\</span>
+        -o <span class="string">"$EMACS"</span> = <span class="string">"t"</span> ]; <span class="keyword">then</span>
+    <span class="keyword">exec</span> /bin/zsh
+<span class="keyword">fi</span>
+</pre></div></div></div></div></div></div></div>
+
+<p>在 <code>~/.zshrc</code> 里面写</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .builtin {
+        /* font-lock-builtin-face */
+        color: #b0c4de;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style><span class="keyword">if</span> [[ <span class="string">"$EMACS"</span> == <span class="string">"t"</span> ]]; <span class="keyword">then</span>
+    <span class="builtin">setopt</span> No_zle
+<span class="keyword">fi</span>
+</pre></div></div></div></div></div></div></div>
+
+
+<h4><a name="sec5" id="sec5"></a>
+更好的解决办法</h4>
+
+<p class="first">后来我在 <a href="Emacs.html">Emacs</a> 的邮件列表里面问了，原来 zsh 同时使用左右两个提示符，所
+以会造成问题，现在登录 shell 仍然使用 zsh ，只需要在 <code>~/.zshrc</code> 里面加入</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .builtin {
+        /* font-lock-builtin-face */
+        color: #b0c4de;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style><span class="keyword">if</span> [[ <span class="string">"$TERM"</span> == <span class="string">"dumb"</span> ]]; <span class="keyword">then</span>
+    <span class="builtin">setopt</span> No_zle
+<span class="keyword">fi</span>
+</pre></div></div></div></div></div></div></div>
+
+<p>就可以了。</p>
+
+
+
+
+<h3><a name="sec6" id="sec6"></a>
+单词分界</h3>
+
+<p class="first">zsh 的命令行编辑器默认用起来不是很方便，特别是在编辑路径的时候，比如输
+入 <code>/tmp/foo/bar</code> ，再用 <code>Alt+Backspace</code> 来删除一个词的时候会把整个路径全
+部都删除掉，这是因为 <code>/</code> 被当作单词的一部分的原因，而通常我们更习惯的是
+每次删除一个目录名。这可以通过修改 <code>WORDCHARS</code> 变量来实现，这个变量是一
+个表示除了字母和数字之外还有哪些符号是一个单词可以包含的，默认值是</p>
+
+<pre class="example">
+?*_-.[]~=/&amp;;!#$%^(){}&lt;&gt;
+</pre>
+
+<p>可以看到里面包含了 <code>/</code> ，只要定制为自己需要的值就行了，例如，从中去掉 <code>/</code>
+和 <code>.</code> 要显得更习惯一点。</p>
+
+<pre class="example">
+WORDCHARS='*?_-[]~=&amp;;!#$%^(){}&lt;&gt;'
+</pre>
+
+
+<h3><a name="sec7" id="sec7"></a>
+键绑定</h3>
+
+<p class="first">zsh 可以使用 <code>bindkey</code> 命令来进行键绑定，快捷键的语法里面一些常用的特殊
+字符的表示方法是：</p>
+
+<table class="muse-table">
+  <tbody>
+    <tr>
+      <td><code>\e</code> 或 <code>\E</code></td>
+      <td>Escape</td>
+    </tr>
+    <tr>
+      <td><code>\M[-]X</code></td>
+      <td>就类似于 <a href="Emacs.html">Emacs</a> 的 <code>M-X</code></td>
+    </tr>
+    <tr>
+      <td><code>\C[-]X</code> 或 <code>^X</code></td>
+      <td>类似于 <a href="Emacs.html">Emacs</a> 的 <code>C-X</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>例如，zsh 的命令行编辑器也实现了 <a href="Emacs.html">Emacs</a> 的 kill-ring 的功能，我习惯于把
+<code>set-mark-command</code> 绑定到 <code>M-&lt;SPACE&gt;</code> 上面，在 zsh 里面为了迎合这个习惯，
+我可以这样写(我一直使用 <code>Alt</code> 作为 <code>Meta</code> 键)：</p>
+
+<pre class="example">
+bindkey '\e ' set-mark-command
+</pre>
+
+<p>这样就很舒服了，可惜 zsh 里面不能像 <a href="Emacs.html">Emacs</a> 那样高亮显示当前的 region ，
+不过仍然有 <a href="Emacs.html">Emacs</a> 的那个 <code>C-x C-x</code> 交换 mark 和 pointer 的功能，因此查看
+当前 region 还是很方便的。</p>
+
+
+
+<h2><a name="sec8" id="sec8"></a>
+交互使用</h2>
+
+<h3><a name="sec9" id="sec9"></a>
+通配符</h3>
+
+<p class="first">除了支持经典的通配符之外，如果设置了 <code>EXTENDEDGLOB</code> ，那么 zsh 还支持一
+些扩展的通配符：</p>
+
+<h4><a name="sec10" id="sec10"></a>
+否定匹配</h4>
+
+<p><code>^</code> 可以用于取接下来的模式的否定，例如：</p>
+
+<pre class="example">
+% ls -d ^*.c
+Makefile   file.pro   link       morestuff  run2       run303
+bar.o      foo        main.h     pipe       run234     stuff
+file.h     foo.o      main.o     run123     run240     sub
+% ls -d ^*.*
+Makefile   link       pipe       run2       run240     stuff
+foo        morestuff  run123     run234     run303     sub
+</pre>
+
+
+<h4><a name="sec11" id="sec11"></a>
+整数范围匹配</h4>
+
+<p><code>&lt;x-y&gt;</code> 可以匹配在 <code>x</code> 到 <code>y</code> 范围内的整数：</p>
+
+<pre class="example">
+% ls run&lt;200-300&gt;
+run234 run240
+% ls run&lt;-200&gt;
+run 123 run2
+% ls run&lt;-&gt;
+run123 run2 run234 run240 run303
+</pre>
+
+
+<h4><a name="sec12" id="sec12"></a>
+分组功能</h4>
+
+<pre class="example">
+% ls (foo|bar).*
+bar.o foo.c foo.o
+% ls *.(c|o|pro)
+bar.o file.pro foo.c foo.o main.o q.c
+</pre>
+
+
+<h4><a name="sec13" id="sec13"></a>
+递归匹配</h4>
+
+<p><code>**/</code> 用于打开递归匹配。</p>
+
+<pre class="example">
+% ls -d **/f*bar
+footbar  stuff/fbar  stuff/fbar/foobar  stuff/xxx/foobar
+% ls -d stuff/**/f*bar
+stuff/fbar  stuff/fbar/foobar  stuff/xxx/foobar
+% ls -d fo*bar
+footbar
+% ls -d **/fo*bar
+footbar  stuff/fbar/foobar  stuff/xxx/foobar
+</pre>
+
+
+<h4><a name="sec14" id="sec14"></a>
+去除特例</h4>
+
+<p class="first">使用 <code>~</code> 可以从模式中去除不想要的匹配。</p>
+
+<pre class="example">
+% ls *.c
+foo.c foob.c bar.c
+% ls *.c~bar.c
+foo.c foob.c
+% ls *.c~f*
+bar.c
+</pre>
+
+
+<h4><a name="sec15" id="sec15"></a>
+类型限定</h4>
+
+<p class="first">在模式后面可以使用圆括号加上限定符限定匹配的类型，限定符包括：</p>
+
+<ul>
+<li><code>/</code> 目录</li>
+<li><code>@</code> 符号链接</li>
+<li><code>x</code> 所有者具有可执行权限</li>
+<li><code>X</code> 其他人具有可执行权限</li>
+<li><code>r/R</code> 所有者/其他人可读</li>
+<li><code>w/W</code> 所有者/其他人可写</li>
+<li><code>.</code> 普通文件</li>
+<li><code>p</code> 命名管道</li>
+<li><code>U</code> 属于你的文件</li>
+<li><code>s</code> setuid 文件</li>
+<li><code>u3338</code> 属于 uid 为 3338 的用户的文件</li>
+</ul>
+
+<p>他们可以组合使用，还可以哟个 <code>^</code> 来表示否定，例如 <code>*(W^@)</code> 、 <code>*(x^@/)</code> 等。</p>
+
+
+
+<h3><a name="sec16" id="sec16"></a>
+命令替换</h3>
+
+<p class="first">如同 bash 一样，zsh 也支持 <code>``</code> 和 <code>$()</code> 这样的命令替换用于使用程序的输出
+作为命令行。对应于 bash 那方便的 <code>&lt;()</code> 命令，也可以在 zsh 中使用：</p>
+
+<pre class="example">
+grep foo &lt;(ls -l)
+</pre>
+
+<p>就是把 <code>ls -l</code> 的输出作为一个命名管道，再把这个管道的名字(事实上，是指向
+这个管道的一个符号链接的名字)作为参数传递给 <code>grep</code> 程序，不过，这样也有
+一些不足的地方，例如下面的命令就不能成功：</p>
+
+<pre class="example">
+mail -f &lt;(zcat ~/mail/oldzshmail.Z)
+</pre>
+
+<p>因为 <code>mail</code> 不能把一个管道打开作为邮件箱。不过，zsh 还提供了另外一个类似
+的命令 <code>=()</code> ，它不是创建管道，而是创建一个临时文件，并在程
+序运行结束之后删掉临时文件。</p>
+
+
+<h3><a name="sec17" id="sec17"></a>
+别名</h3>
+
+<p class="first">zsh 有和其他 shell 一样的别名，除此之外，zsh 还有一种“global alias”，
+它可以出现在命令行的任何地方，通常用于为一些常用的比较长的名字、地址等：</p>
+
+<pre class="example">
+alias -g gg='http://www.google.com'
+w3m gg
+</pre>
+
+<p>不过这个功能不能被滥用了，否则会造成一片混乱的局势。</p>
+
+
+<h3><a name="sec18" id="sec18"></a>
+历史</h3>
+
+<p class="first">zsh 可以使用 csh 那样的历史替换功能。另外，还有一个内置的 fc 命令可以
+对历史里面的命令行进行编辑之后再执行，默认的编辑器是 vi ，不过可以通过
+变量 <code>FCEDIT</code> 来更改。另外，给 fc 传递 <code>-e</code> 选项可以指定 <code>ename</code> 参数用于覆
+盖 <code>FCEDIT</code> 的值，如果 <code>ename</code> 是 <code>-</code> 的话，则不调用编辑器编辑，这个功能是很
+常用的，所以还有一个内置命令 <code>r</code> ，就等价于 <code>fc -e -</code> 。</p>
+
+<pre class="example">
+$ echo foobar
+foobar
+$ echo hello world
+hello world
+$ r world=zshell
+echo hello zshell
+hello zshell
+$ fc -l
+    1  echo foobar
+    2  echo hello world
+    3  r world=zshell
+    4  echo hello zshell
+$ r bar=baz 1
+echo foobaz
+foobaz
+</pre>
+
+
+<h3><a name="sec19" id="sec19"></a>
+重定向</h3>
+
+<p class="first">zsh 支持一种扩展的重定向语法，由 <code>multios</code> 选项控制(默认是打开的)。这样
+可以避免使用 tee 程序，例如，在通常的是 shell 里面需要这样来完成重定向
+到多处的任务：</p>
+
+<pre class="example">
+echo foo | tee file1 &gt; file2
+</pre>
+
+<p>现在在 zsh 里面只需要这样</p>
+
+<pre class="example">
+echo foo &gt; file1 &gt; file2
+</pre>
+
+<p>另外，对于输入重定向也有这个功能，例如</p>
+
+<pre class="example">
+prog &lt; file1 &lt; file2
+</pre>
+
+<p>等价于</p>
+
+<pre class="example">
+cat file1 file2 | prog
+</pre>
+
+<p>另外，管道也相当于一个重定向，并且管道的输入先于输入重定向，从下面这个
+测试可以看出来：</p>
+
+<pre class="example">
+echo then this &gt; testfile
+echo this first | cat &lt; testfile
+</pre>
+
+
+<h3><a name="sec20" id="sec20"></a>
+命令行编辑</h3>
+
+<p class="first">zsh 有一个强大的命令行编辑器，可以模拟 <a href="Emacs.html">Emacs</a> 或者 vi 的快捷键方式，还
+支持多行编辑。</p>
+
+<p>另外，还有一些非常人性化的功能，比如，你正输入了一个命令，突然忘记了要
+用哪些文件名作为参数，这个时候你不想直接退出，因为这样你下一次就要再把
+这个命令整个输入一遍，虽然是不完整的命令，这个时候可以使用 <code>ESC-Q</code> ，把当
+前输入的不完整的命令放入 <strong><em>buffer stack</em></strong> 中，在下一次命令提示符显示出来的
+时候这个不完整的命令将会被显示出来，处于待编辑状态。</p>
+
+<p>更特殊的情况是你忘记了命令的参数，需要 man 一下，这个时候直接使用=ESC-H=
+即可把当前命令放入 <strong><em>buffer stack</em></strong> 再运行 <code>run-help prog</code> 命令( <code>run-help</code> 是
+<code>man</code> 的一个别名)。</p>
+
+<p>还有一个有趣的命令是 <code>ESC-A</code> ，他直接执行当前命令，并将其放入 <strong><em>buffer
+stack</em></strong> 中，这对于执行一系列的类似的命令非常有用。</p>
+
+<p>另外， <code>ESC-'</code> 命令用于创建当前命令行的引用，有时候是非常方便的，例如，
+你要输出一句</p>
+
+<pre class="example">
+don't do that; type 'rm -rf \*', with a \ before the *.
+</pre>
+
+<p>只需要直接输入这一句话，然后按下 <code>ESC-'</code> ，就会自动转换成</p>
+
+<pre class="example">
+'don'\&quot;t do that; type '\&quot;rm -rf \*'\&quot;, with a \ before the *.'
+</pre>
+
+<p>再跳到行首，输入 <code>echo </code> 就可以了。</p>
+
+
+
+<h2><a name="sec21" id="sec21"></a>
+脚本编程</h2>
+
+<h3><a name="sec22" id="sec22"></a>
+使用 Emacs 编辑 zsh 脚本</h3>
+
+<p><a href="Emacs.html">Emacs</a> 已经支持 zsh 脚本的编辑，会自动识别 <code>#!/bin/zsh</code> 并进入
+shell-script-mode 。在 shell-script-mode 里面可以使用 <code>C-c : zsh</code> 来得到
+针对 zsh 的编辑功能支持。</p>
+
+
+
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

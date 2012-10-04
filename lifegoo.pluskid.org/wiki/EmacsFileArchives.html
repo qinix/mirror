@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>Emacs 直接编辑压缩打包文件</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>Emacs 直接编辑压缩打包文件</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here--><div class="contents"><h2>Contents</h2>
+<dl>
+<dt>
+<a href="#sec1">直接存取压缩文件</a>
+</dt>
+<dt>
+<a href="#sec2">访问打包的文件</a>
+</dt>
+</dl>
+</div>
+
+
+    <!-- Page published by Emacs Muse begins here -->
+<h2><a name="sec1" id="sec1"></a>
+直接存取压缩文件</h2>
+
+<p><a href="Emacs.html">Emacs</a> 会在你访问压缩文件的时候自动地进行解压缩，并在你修改了文件内容保
+存的时候自动地压缩该文件。  Emacs 通过文件名来识别压缩文件，例如，以
+`.gz' 结尾的文件是通过 `gzip' 来压缩的，而 `.bz2' 则表明是通过 `bzip2'
+来压缩的。</p>
+
+<p>自动解压缩与压缩对于所有的与文件内容有关的操作都适用，这包括访问、保存、
+把他的内容插入到某个 buffer 中，作为 <a href="Elisp">elisp</a> 加载它以及作为 elisp  byte
+compile 它。</p>
+
+<p>这有时候会造成麻烦，比如你有一个普通文件但是文件名以 `.gz' 结尾，那么
+用 Emacs 打开它就会遇到麻烦，因为 Emacs 试图用 gzip 去解压它，所以有时
+候需要禁用这个功能： <code>M-x auto-compression-mode</code> 。你也可以通过定制变量
+`auto-compression-mode' 来永久地禁用它。</p>
+
+
+<h2><a name="sec2" id="sec2"></a>
+访问打包的文件</h2>
+
+<p class="first">一般文件名以 `.tar' 结尾的文件表示一个由 `tar' 打包产生的档案文件。
+Emacs 会在 Tar mode 里面打开它们，这类似于 <a href="EmacsDired">Dired</a> ，它列出档案包里面的所
+有文件，你可以像在 Dired 里面一样移动，并可以使用许多 Dired 命令。</p>
+
+<p>如果 Auto Compression mode 是打开的，文件名以 `.tgz' 、`.tar.Z' 和
+`.tar.gz' 等结尾的文件也会被自动解压缩并用 Tar mode 打开。</p>
+
+<p>`e' 、`f' 或 &lt;RET&gt; 键会从打包档案中取出该文件进行编辑。 `v' 键会取出该
+文件放到 View mode 中。 `o' 键取出文件并在另外一个 window 中打开。 `d'
+键会把文件标记为删除，以便你待会用 `x' 键执行的时候真正地从打包档案中
+删除它。 `u' 去掉标记。这些都和 Dired 差不多。 `C' 将从打包档案中把文
+件拷贝到磁盘里面，而 `R' 则可以在打包档案里面重命名文件。 `g' 用磁盘上
+档案文件里面的内容来恢复这个 buffer ，以撤销所有未做保存的修改。</p>
+
+<p>`M' 、`G' 和 `O' 键分别改变文件的权限位、所属组以及所属用户。</p>
+
+<p>如果你当前可以使用鼠标并且支持不同的颜色，当你把鼠标移动到文件名上的时
+候它会高亮显示，并且你可以通过点击中键来打开它。</p>
+
+<p>保存这个 Tar buffer 会写入一个新的 tar 打包档案到磁盘上，替换掉原来的
+文件，其中包括了你对档案里面的内容所作的修改。</p>
+
+<p>你并不需要安装 `tar' 程序就可以使用 Tar mode &mdash; Emacs 可以直接读写 tar
+打包档案，不过，如果是经过压缩的 tar 文件，你仍然需要安装对应的压缩和
+解压缩程序以便让 Emacs 能够先解压缩。</p>
+
+<p>还有一个类似的 Archive mode 用于处理通过 `arc' 、 `jar' 、 `lzh' 、
+'zip' 以及 `zoo' 产生的打包文档。</p>
+
+<p>Archive mode 的键绑定和 Tar mode 很类似，不过多了 `m' 键用于标记文件一
+执行接下来的操作以及 `M-&lt;DEL&gt;' 用来去掉所有的标记。还有 `a' 键用于打开
+或者关闭详细信息的显示，因为有些打包档案的信息无法在一行中显示完。至于
+重命名、改变权限位以及所有者之类的操作，是否可用是与特定的打包文档格式
+有关的。</p>
+
+<p>和 Tar mode 不一样的是， Archive mode 通过运行对应的程序来解包和重新打
+包文件。关于对应的程序以及他们的参数，可以参加 `Archive' Customize
+group 。你需要这些程序来解包或者操纵档案里面的文件，但是如果仅仅是显示
+一下打包文件的列表，这些程序也并不是必须的。</p>
+
+
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

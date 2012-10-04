@@ -1,0 +1,943 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>Sawfish</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>Sawfish</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here--><div class="contents"><h2>Contents</h2>
+<dl>
+<dt>
+<a href="#sec1">实时控制 Sawfish</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec2">使用 sawfish-client</a>
+</dt>
+<dt>
+<a href="#sec3">使用 sawfish-ui</a>
+</dt>
+</dl>
+</dd>
+<dt>
+<a href="#sec4">使用扩展</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec5">jump-or-exec</a>
+</dt>
+<dt>
+<a href="#sec6">更加智能的 emacsclient</a>
+</dt>
+<dt>
+<a href="#sec7">iswitch-window</a>
+</dt>
+</dl>
+</dd>
+<dt>
+<a href="#sec8">快捷键</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec9">选择合适的快捷键</a>
+</dt>
+<dt>
+<a href="#sec10">如何表示快捷键</a>
+</dt>
+<dt>
+<a href="#sec11">使用 key sequence</a>
+</dt>
+</dl>
+</dd>
+<dt>
+<a href="#sec12">抓图</a>
+</dt>
+<dt>
+<a href="#sec13">Sawfish 小技巧</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec14">nil 的引用问题</a>
+</dt>
+<dt>
+<a href="#sec15">显示消息</a>
+</dt>
+<dt>
+<a href="#sec16">wm-modifier</a>
+</dt>
+<dt>
+<a href="#sec17">启动程序</a>
+</dt>
+<dt>
+<a href="#sec18">模块</a>
+</dt>
+</dl>
+</dd>
+<dt>
+<a href="#sec19">Sawfish 在线资源</a>
+</dt>
+</dl>
+</div>
+
+
+    <!-- Page published by Emacs Muse begins here -->
+<h2><a name="sec1" id="sec1"></a>
+实时控制 Sawfish</h2>
+
+<h3><a name="sec2" id="sec2"></a>
+使用 sawfish-client</h3>
+
+<p class="first">sawfish-client 可以对 Sawfish 进行实时控制，可以直接在终端里面运行
+sawfish-client ，不过更好用的方法是使用 <a href="http://www.davep.org/emacs/#sawfish.el">sawfish.el</a> 在 <a href="Emacs.html">Emacs</a> 里的
+sawfish-mode 里面进行编辑，并用 <code>C-x C-e</code> 来执行相应的 lisp 语句。</p>
+
+<p>值得注意的是，sawfish-client 里面有一个 <code>(quit)</code> 函数，它并不是退出
+sawfish-client ，而是直接退出 Sawfish ，随便执行这个操作有可能造成你其
+他 X 程序的数据丢失。</p>
+
+
+<h3><a name="sec3" id="sec3"></a>
+使用 sawfish-ui</h3>
+
+<p class="first">sawfish-ui 是一个图形化的配置对话框，里面可以配置包括主题、快捷键等很
+多东西，配置会被写入到 <code>~/.sawfish/custom</code> 里面去。</p>
+
+
+
+<h2><a name="sec4" id="sec4"></a>
+使用扩展</h2>
+
+<p class="first">使用 Sawfish 的扩展和 <a href="Emacs.html">Emacs</a> 差不多，也是通过一个 <code>load-path</code> 来加载扩展。
+我把下载到的扩展全部放在 <code>~/.sawfish/extensions</code> 里面，并在 <code>~/.sawfishrc</code>
+里面加入一句</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>(setq load-path (cons <span class="string">"~/.sawfish/extensions"</span>
+                      load-path))
+</pre></div></div></div></div></div></div></div>
+
+<p>然后就可以通过 <code>require</code> 来加载对应的扩展了。在<a href="#OnlineResources">在线资源</a>这里可以找到许多下
+载扩展的地方。这里介绍几个常用的扩展。</p>
+
+<p><a name="JumpOrExec" id="JumpOrExec"></a></p>
+
+<h3><a name="sec5" id="sec5"></a>
+jump-or-exec</h3>
+
+<p class="first">自从我第一次接触这个功能我就再也离不开它了，它让我保持某个程序只有一个
+实例，并且能方便地切换。正如它的名字所言，jump 对应于跳转，如果程序正
+在运行，则跳转到程序那里，即把程序的窗口切换到前台，这个功能让我不再需
+要使用任务栏来切换窗口；exec 表示运行，如果程序没有运行，着运行它，通
+常，新运行的程序会自动被带到前台，这样，不管程序有没有在运行，我只需要
+一个快捷键就可以把它唤出，于是我根本不需要查看任务栏得出当前哪个程序有
+没有在运行，因为我不再需要关心这个问题。这样，由于任务栏的两大存在理由
+都已经没有意义，jump-or-exec 的出现让我最终<a href="MyDesktop.html#Panel">抛弃了任务栏</a>。</p>
+
+<p>在<a href="http://sawfish.endorphin.org/pub/uploads/SawfishWiki/jump-or-exec.jl">这里</a>可以下载到 jump-or-exec.jl ，在 <a href="http://sawfish.endorphin.org/SawfishWiki/FocusOrLaunch">Sawfish Wiki</a> 上有一个例子讲解如
+何配置。我建立了一个列表，把我常用的只需要启动一个实例的程序都配置为
+jump-or-exec ：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .constant {
+        /* font-lock-constant-face */
+        color: #7fffd4;
+      }
+      .function-name {
+        /* font-lock-function-name-face */
+        color: #87cefa;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #eedd82;
+      }
+    --></style><span class="comment-delimiter">;;; </span><span class="comment">jump-or-exec
+</span>(<span class="keyword">require</span> '<span class="constant">jump-or-exec</span>)
+
+(<span class="keyword">defun</span> <span class="function-name">jump-or-exec-emacs</span> ()
+  (interactive)
+  (jump-or-exec <span class="string">"emacs@"</span>                <span class="comment-delimiter">; </span><span class="comment">Emacs's title
+</span>                (<span class="keyword">lambda</span> ()              <span class="comment-delimiter">; </span><span class="comment">When Emacs isn't running
+</span>                  (kid-display-message <span class="string">"starting Emacs ..."</span>)
+                  (system <span class="string">"emacs &amp;"</span>)
+                  <span class="string">"sleep 10"</span>)
+                (<span class="keyword">lambda</span> (wind)          <span class="comment-delimiter">; </span><span class="comment">When already focused
+</span>                  (display-window wind))))
+
+(<span class="keyword">defvar</span> <span class="variable-name">kid-jump-or-exec-list</span>
+  '((<span class="string">"H-q"</span> <span class="string">"QTerm"</span> <span class="string">"qterm &amp;"</span>)
+    (<span class="string">"H-f"</span> <span class="string">"Firefox"</span> <span class="string">"firefox &amp;"</span>)
+    (<span class="string">"H-t"</span> <span class="string">"^screen$"</span> <span class="string">"urxvt -e screen -xRRS urxvt &amp;"</span>)
+    (<span class="string">"H-g"</span> <span class="string">"gnus@"</span> <span class="string">"emacs --eval \'(setq frame-title-format \"gnus@%b\")\' -f gnus &amp;"</span>)))
+</pre></div></div></div></div></div></div></div>
+
+<p>其中 <code>kid-display-message</code> 是我自己定义的一个工具函数，可以在<a href="#DisplayMessage">这里</a>找到。</p>
+
+<p><a name="SmarterEmacsClient" id="SmarterEmacsClient"></a></p>
+
+<h3><a name="sec6" id="sec6"></a>
+更加智能的 emacsclient</h3>
+
+<p><a href="Emacs.html">Emacs</a> 启动比较慢，一直以来有<a href="FasterEmacs.html">各种解决办法</a>，<a href="Emacs.html">Emacs</a> 自己提供的一个解决办法
+是<a href="FasterEmacs.html#SERVERSTART">使用 emacsclient 来打开文件</a>，这个方法的缺点是把要打开的文件发送给
+<a href="Emacs.html">Emacs</a> 之后，<a href="Emacs.html">Emacs</a> 的主窗口并不能自动切换到前台，这个缺点可以通过窗口管
+理器来解决，这里介绍使用 sawfish-client 的方法：</p>
+
+<p>首先，在 <code>~/.emacs</code> 里面加入 <code>(server-start)</code> 好让 <a href="Emacs.html">Emacs</a> 在启动的时候启动
+server ，这样就可以使用emacsclient 来连接到 <a href="Emacs.html">Emacs</a> 了。然后在 Sawfish 里
+面写一个切换到 <a href="Emacs.html">Emacs</a> 的函数，我这里使用了<a href="#JumpOrExec">jump-or-exec</a> ，虽然这不是必须
+的，但是我平时也使用这个功能来切换到 <a href="Emacs.html">Emacs</a> 。</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .function-name {
+        /* font-lock-function-name-face */
+        color: #87cefa;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>(<span class="keyword">defun</span> <span class="function-name">jump-or-exec-emacs</span> ()
+  (interactive)
+  (jump-or-exec <span class="string">"emacs@"</span>                <span class="comment-delimiter">; </span><span class="comment">Emacs's title
+</span>                (<span class="keyword">lambda</span> ()              <span class="comment-delimiter">; </span><span class="comment">When Emacs isn't running
+</span>                  (system <span class="string">"emacs &amp;"</span>))
+                (<span class="keyword">lambda</span> (wind)          <span class="comment-delimiter">; </span><span class="comment">When already focused
+</span>                  (display-window wind))))
+
+(bind-keys global-keymap
+           <span class="string">"H-e"</span> 'jump-or-exec-emacs)
+</pre></div></div></div></div></div></div></div>
+
+<p>然后我可以写一个脚本来调用 emacsclient:</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style><span class="comment-delimiter">#</span><span class="comment">!/bin/sh
+</span>
+<span class="comment-delimiter"># </span><span class="comment">first jump-or-exec to emacs
+</span>sawfish-client -c jump-or-exec-emacs
+
+<span class="comment-delimiter"># </span><span class="comment">then call emacsclient
+</span>emacsclient <span class="string">"$@"</span>
+</pre></div></div></div></div></div></div></div>
+
+<p>不过这样并不能满足要求，因为 <a href="Emacs.html">Emacs</a> 的启动需要几秒钟的时间，如果事先没
+有启动 <a href="Emacs.html">Emacs</a> ，就调用 <code>e</code> ，则 <code>sawfis-client -c jump-or-exec-emacs</code> 立即
+返回，这个时候 <a href="Emacs.html">Emacs</a> 还没有完全启动起来并执行 <code>(server-start)</code> ，所以
+emacsclient 这个时候会抱怨找不到 server 。没关系，我们修改一下代码，如
+果 <a href="Emacs.html">Emacs</a> 没有启动起来，就 sleep 几秒，在 Sawfish 里面 sleep 当然不好，
+所以将作为一个返回值传回脚本 ，并由脚本来 sleep 。下面是修改后的
+<code>jump-or-exec-emacs</code> 函数：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .function-name {
+        /* font-lock-function-name-face */
+        color: #87cefa;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>(<span class="keyword">defun</span> <span class="function-name">jump-or-exec-emacs</span> ()
+  (interactive)
+  (jump-or-exec <span class="string">"emacs@"</span>                <span class="comment-delimiter">; </span><span class="comment">Emacs's title
+</span>                (<span class="keyword">lambda</span> ()              <span class="comment-delimiter">; </span><span class="comment">When Emacs isn't running
+</span>                  (system <span class="string">"emacs &amp;"</span>)
+                  <span class="string">"sleep 3"</span>)
+                (<span class="keyword">lambda</span> (wind)          <span class="comment-delimiter">; </span><span class="comment">When already focused
+</span>                  (display-window wind))))
+</pre></div></div></div></div></div></div></div>
+
+<p>并修改脚本 <code>e</code> 为：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .sh-quoted-exec {
+        /* sh-quoted-exec */
+        color: #fa8072;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #eedd82;
+      }
+    --></style><span class="comment-delimiter">#</span><span class="comment">!/bin/bash
+</span>
+<span class="comment-delimiter"># </span><span class="comment">first jump-or-exec to emacs
+</span><span class="variable-name">cmd</span>=<span class="sh-quoted-exec">`sawfish-client -e '(jump-or-exec-emacs)'`</span>
+
+<span class="keyword">if</span> [ <span class="string">"()"</span> != <span class="string">"$cmd"</span> ]
+<span class="keyword">then</span>
+    <span class="comment-delimiter"># </span><span class="comment">() stands for nil in lisp, if it is not (), then
+</span>    <span class="comment-delimiter"># </span><span class="comment">it should be the cmd returned by jump-or-exec-emacs
+</span>    <span class="comment-delimiter"># </span><span class="comment">to be invoked. See ~/.sawfishrc for more information
+</span>    <span class="comment-delimiter">#</span><span class="comment">
+</span>    <span class="comment-delimiter"># </span><span class="comment">$cmd
+</span>    <span class="comment-delimiter"># </span><span class="comment">simply $cmd won't work, because $cmd is "some cmd"
+</span>    <span class="comment-delimiter"># </span><span class="comment">with the quote mark, so I have to filter the quote
+</span>    <span class="comment-delimiter"># </span><span class="comment">mark first
+</span>    <span class="variable-name">cmd</span>=${<span class="variable-name">cmd</span>%<span class="string">\"</span>}
+    <span class="variable-name">cmd</span>=${<span class="variable-name">cmd</span>#<span class="string">\"</span>}
+    $<span class="variable-name">cmd</span>
+<span class="keyword">fi</span>
+
+<span class="comment-delimiter"># </span><span class="comment">if there's argument then call emacsclient
+</span><span class="keyword">if</span> [ $<span class="variable-name">#</span> -gt 0 ]
+<span class="keyword">then</span>
+    emacsclient <span class="string">"$@"</span>
+<span class="keyword">fi</span>
+</pre></div></div></div></div></div></div></div>
+
+<p>其中， <code>jump-or-exec-emacs</code> 里面的秒数可以根据自己 <a href="Emacs.html">Emacs</a> 的启动速度来设
+定，这样是不是非常方便了？</p>
+
+<p><a name="ISwitchWindow" id="ISwitchWindow"></a></p>
+
+<h3><a name="sec7" id="sec7"></a>
+iswitch-window</h3>
+
+<p class="first">毕竟不是所有的程序都是只启动一个实例就够了，有些程序需要启动多个实例，
+用 <a href="#JumpOrExec">jump-or-exec</a> 切换起来就比较痛苦，<a href="http://toykeeper.net/sawfish/">这里</a>介绍了在 Sawfish 里面模拟
+fluxbox 的把几个窗口放到一个窗口的多个 tab 里面的方法。</p>
+
+<p>这里要介绍的 iswitch-window 是一个方便切换窗口的扩展，就像 <a href="Emacs.html">Emacs</a> 的
+iswitch-buffer 一类的扩展那样，列出窗口列表，并根据你的输入动态更新，过
+滤掉不匹配输入的项，切换起来还是非常方便的。配置也非常方便，只需要在
+<a href="http://www.co.jyu.fi/~tjp/sawfish/iswitch-window.jl">这里</a>下载 iswitch-window.jl ，放到 load-path 里面，然后在 <code>~/.sawfishrc</code>
+里加上这两行即可：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .constant {
+        /* font-lock-constant-face */
+        color: #7fffd4;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>(<span class="keyword">require</span> '<span class="constant">iswitch-window</span>)
+(bind-keys global-keymap <span class="string">"H-s"</span> 'iswitch-window)
+</pre></div></div></div></div></div></div></div>
+
+
+
+<h2><a name="sec8" id="sec8"></a>
+快捷键</h2>
+
+<h3><a name="sec9" id="sec9"></a>
+选择合适的快捷键</h3>
+
+<p class="first">通常，常用的 <code>Control</code> 、 <code>Shift</code> 、 <code>Alt</code> 相关的快捷键都被 <a href="Emacs.html">Emacs</a> 占据，不过
+现在普通键盘上通常还有左右两个 <code>Win</code> 键，正好可以让我们用于窗口管理器的
+操作。这里我把左边的 <code>Win</code> 键映射到 <code>Super</code> ，同时我也设定 <a href="#WmModifier">wm-modifier</a> 为
+<code>Super</code> ，然后把右边的 <code>Win</code> 键映射到 <code>Hyper</code> 。通常我用 <code>Hyper</code> 来进行切换窗
+口相关的操作(如 <a href="#JumpOrExec">jump-or-exec</a> 和 <a href="#ISwitchWindow">iswitch-window</a> 等)，而用 <code>Super</code> 来进行
+窗口控制(如移动、改变大小、最大化、关闭等)。</p>
+
+<p>映射 <code>Win</code> 键可以用 xmodmap 程序来完成，<a href="http://twistedmatrix.com/~teratorn/better_wm/better_wm.html#tth_sEc4">这里</a>介绍了映射的方法。还可以用这
+个方法来<a href="SwapCapsCtrl.html">交换 Control 和 Caps Lock 键</a>。这里是我的 <code>~/.Xmodmap</code> 文件：</p>
+
+<pre class="example">
+keycode 115 = Super_L
+keycode 116 = Hyper_R
+clear mod3
+add mod3 = Super_L
+clear mod4
+add mod4 = Hyper_R
+</pre>
+
+<p>配置好之后要保证启动 X 的时候 xmodmap 程序去加载这个文件，重新启动一下
+X ，并在一个<a href="XTerminal.html">终端模拟器</a>里面输入 <code>xmodmap</code> ，看是否有我们写进去的这些内容，如
+果没有的话，则要在 <code>~/.xinitrc</code> 或 <code>~/.xsession</code> 之类的文件里面手工加上一
+句：</p>
+
+<pre class="example">
+xmodmap ~/.Xmodmap
+</pre>
+
+
+<h3><a name="sec10" id="sec10"></a>
+如何表示快捷键</h3>
+
+<p class="first">Sawfish 里面表示快捷键的方法和 <a href="Emacs.html">Emacs</a> 里面差不多，但是又不是完全一样，最
+郁闷的就是想要把某个快捷键绑定到某个命令上，但是有不知道该如何写。这里
+有一个函数可以查看输入的快捷键的名字，有点类似于 <a href="Emacs.html">Emacs</a> 里面的 <code>C-h k</code> ，
+不过这个并不显示键的绑定信息，也不会连续抓取 key sequence ，但是还是很
+有用的：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .constant {
+        /* font-lock-constant-face */
+        color: #7fffd4;
+      }
+      .function-name {
+        /* font-lock-function-name-face */
+        color: #87cefa;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>(<span class="keyword">defun</span> <span class="function-name">kid-show-key</span> ()
+  (interactive)
+  (<span class="keyword">require</span> '<span class="constant">keymap</span>)
+  (kid-display-message (concat <span class="string">"You input \""</span>
+                               (event-name (read-event <span class="string">"Please input the key: "</span>))
+                               <span class="string">"\""</span>)))
+</pre></div></div></div></div></div></div></div>
+
+<p>显示出来的快捷键的名字就可以直接作为 <code>bind-keys</code> 的参数。</p>
+
+
+<h3><a name="sec11" id="sec11"></a>
+使用 key sequence</h3>
+
+<p class="first">Sawfish 也可以像 <a href="Emacs.html">Emacs</a> 那样使用 key sequence ，方法和 <a href="Emacs.html">Emacs</a> 差不多，都
+是使用 keymap ，不过新版本的 <a href="Emacs.html">Emacs</a> 在 <code>define-key</code> 等函数中会自动判断并
+定义需要的 keymap ，而在 Sawfish 中则需要手动定义 keymap 。这里我写了
+一个 <code>kid-bind-keys</code> ，能够自动定义 keymap ：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .function-name {
+        /* font-lock-function-name-face */
+        color: #87cefa;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>(<span class="keyword">defun</span> <span class="function-name">string-split</span> (string regex #!optional (align 0) (n 0))
+  (<span class="keyword">if</span> (string-match regex string n)
+      (append (list (substring string n (+ align (match-start))))
+              (string-split string regex align (match-end)))
+    (list (substring string n))))
+
+(define kid-keymap-alist ())
+
+(<span class="keyword">defun</span> <span class="function-name">kid-bind-keys</span> (keymap key action)
+  (<span class="keyword">do</span> ((last-keymap keymap)
+       (keys (string-split key <span class="string">" "</span>) (cdr keys)))
+      ((null keys))
+    (bind-keys last-keymap
+               (car keys)
+               (<span class="keyword">if</span> (null (cdr keys))
+                   action
+                   (<span class="keyword">let</span> ((current-keymap (assoc key kid-keymap-alist)))
+                     (setq last-keymap (or current-keymap
+                                           (cdar (setq kid-keymap-alist
+                                                       (cons (cons key (make-keymap))
+                                                             kid-keymap-alist))))))))))
+</pre></div></div></div></div></div></div></div>
+
+<p>这样，就可以像 <a href="Emacs.html">Emacs</a> 那样直接设定复杂的 key sequence 了，例如：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>(kid-bind-keys global-keymap <span class="string">"W-h k"</span> 'kid-show-key)
+</pre></div></div></div></div></div></div></div>
+
+<p>但是要保持定义快捷键的方式一致，如果你一会自己手动定义 keymap ，一会儿
+使用 <code>kid-bind-keys</code> 来定义，有可能会出问题，因为 <code>kid-bind-keys</code> 并不知道
+你定义的 keymap 。另外，如果一个快捷键有多种表示方式(例如，在我这里
+<code>Super-h</code> 和 <code>W-h</code> 是同样的，因为我把 <a href="#WmModifier">wm-modifier</a> 设定成了 <code>Super</code> 键)，也不
+要多种表示混用，否则会导致某一种表示方式定义的快捷键丢失。</p>
+
+
+
+<h2><a name="sec12" id="sec12"></a>
+抓图</h2>
+
+<p class="first">为了方便抓图，我自己试着写了一个<a href="#Module">模块</a>来完成这个工作：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .builtin {
+        /* font-lock-builtin-face */
+        color: #b0c4de;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .function-name {
+        /* font-lock-function-name-face */
+        color: #87cefa;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .negation-char {
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #eedd82;
+      }
+    --></style><span class="comment-delimiter">;;;; </span><span class="comment">screenshot utilities
+</span>(define-structure kid.util.capture
+
+    (export kid-capture-default-filename
+            kid-capture-current-window
+            kid-capture-region
+            kid-capture-desktop)
+
+    (open rep
+          rep.system
+          rep.io.files
+          rep.regexp
+          rep.threads
+          sawfish.wm.commands
+          sawfish.wm.misc
+          sawfish.wm.util.prompt
+          sawfish.wm.events
+          sawfish.wm.windows
+          kid.util.message)
+
+  (<span class="keyword">defvar</span> <span class="variable-name">kid-capture-default-filename</span> <span class="string">"/tmp/capture00.png"</span>)
+
+  (define (kid-capture-compute-next-filename last)
+    (string-match <span class="string">"([0-9]*)\\.[</span><span class="string"><span class="negation-char">^</span></span><span class="string">.]+$"</span> last)
+    (<span class="keyword">let*</span> ((name (substring last 0 (match-start 0)))
+           (num (substring last (match-start 1) (match-end 1)))
+           (ext (substring last (match-end 1)))
+           (len (length num)))
+      (concat name
+              (<span class="keyword">if</span> (= 0 len)
+                  <span class="string">"00"</span>
+                  (format ()
+                          (concat <span class="string">"%0"</span> (prin1-to-string len) <span class="string">"d"</span>)
+                          (1+ (string-&gt;number num))))
+              ext)))
+
+  (<span class="keyword">defmacro</span> <span class="function-name">define-capture</span> (func args)
+      `(define (,func file)
+         (setq kid-capture-default-filename (kid-capture-compute-next-filename file))
+         (system (concat <span class="string">"sawfish-capture "</span> ,args <span class="string">" "</span> file <span class="string">" &amp;"</span>))))
+  (define-capture kid-capture-desktop <span class="string">"-window root"</span>)
+  (define-capture kid-capture-region <span class="string">""</span>)
+  (define-capture kid-capture-current-window
+      (concat <span class="string">"-window "</span>
+              (<span class="keyword">let</span> ((w (or (current-event-window)
+                           (input-focus))))
+                (<span class="keyword">if</span> w
+                    (prin1-to-string (window-id w))
+                    <span class="string">"root"</span>))))
+
+  (define-command 'kid-capture-desktop kid-capture-desktop
+    #<span class="builtin">:spec</span> '(list (prompt-for-file <span class="string">"Capture desktop to file: "</span> ()  kid-capture-default-filename)))
+  (define-command 'kid-capture-region kid-capture-region
+    #<span class="builtin">:spec</span> '(list (prompt-for-file <span class="string">"Capture region to file: "</span> () kid-capture-default-filename)))
+  (define-command 'kid-capture-current-window kid-capture-current-window
+    #<span class="builtin">:spec</span> '(list (prompt-for-file <span class="string">"Capture current window to file: "</span> () kid-capture-default-filename))))
+</pre></div></div></div></div></div></div></div>
+
+<p>要能够正常工作，还需要一个脚本 <code>sawfish-capture</code> ：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style><span class="comment-delimiter">#</span><span class="comment">!/bin/zsh
+</span>
+<span class="comment-delimiter"># </span><span class="comment">use import to capture the screen and then use xloadimage
+</span><span class="comment-delimiter"># </span><span class="comment">to display it
+</span>import <span class="string">"$@"</span> &amp;&amp; xloadimage <span class="string">"${argv[$#]}"</span>
+</pre></div></div></div></div></div></div></div>
+
+<p>可以看见其实是使用 <a href="ImageMagick.html">ImageMagick</a> 包的 <code>import</code> 命令抓图，并用 <code>xloadimage</code>
+显示出来，而那么多的代码其实主要是处理文件名方面，如果能够计算出几乎每
+次都很让人满意的默认文件名的话，抓图就很惬意了！在输入文件名的那个窗口
+里面，虽然编辑功能比不上 <a href="Emacs.html">Emacs</a> 的 minibuffer ，但是也能够进行文件名补
+全了。</p>
+
+<p>要使用这个功能，把他放到合适的路径下(<a href="#Module">这里</a>介绍了应该把模块放到什么路径
+下面)，并让那个 <a href="ZShell.html">ZShell</a> 脚本可以运行(如果没有 <a href="ZShell.html">ZShell</a> ，你也可以用自己喜
+欢的 shell 写一个类似的，或者，如果不需要抓图之后预览一下的话，可以直
+接在 Sawfish 的 lisp 代码里面运行 <code>import</code> 抓图就行了。) ，然后可以绑定
+到相应的快捷键：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .constant {
+        /* font-lock-constant-face */
+        color: #7fffd4;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>(<span class="keyword">require</span> '<span class="constant">sawfish.wm.util.prompt</span>)       <span class="comment-delimiter">; </span><span class="comment">&#36825;&#20010;&#26159;&#24517;&#39035;&#30340;
+</span>(<span class="keyword">require</span> '<span class="constant">kid.util.capture</span>)
+(kid-bind-keys global-keymap <span class="string">"Print"</span> 'kid-capture-current-window)
+(kid-bind-keys global-keymap <span class="string">"M-Print"</span> 'kid-capture-current-desktop)
+(kid-bind-keys global-keymap <span class="string">"C-Print"</span> 'kid-capture-region)
+</pre></div></div></div></div></div></div></div>
+
+
+<h2><a name="sec13" id="sec13"></a>
+Sawfish 小技巧</h2>
+
+<h3><a name="sec14" id="sec14"></a>
+nil 的引用问题</h3>
+
+<p class="first">注意在 Sawfish 配置里面， <code>(null (car '(nil)))</code> 返回为假，不过可以这样来
+得到返回为真的值： <code>(null (car `(,nil)))</code> 。这是一个容易犯错误的地方，不
+过在 <a href="Elisp">Elisp</a> 或者是 <a href="CommonLisp.html">CommonLisp</a> 中， <code>nil</code> 和 <code>'nil</code> 是相等的，所以不会出现这
+种情况。还有一个办法就是使用 <code>()</code> 来代替 <code>nil</code> ： <code>(null (car '(())))</code> 求值就
+会得到想要的 <code>t</code> 。</p>
+
+<p>我想出现这样事情的原因是在 librep<sup><a name="fnr.1" href="#fn.1">1</a></sup> 里面仅仅以 <code>()</code> 来表示假，而 <code>nil</code> 只
+是一个普通的值为 <code>()</code> 的 <code>symbol</code> 而已，这个 <code>symbol</code> 本身并没有得到特殊对待
+而理解为假。</p>
+
+<p><a name="DisplayMessage" id="DisplayMessage"></a></p>
+
+<h3><a name="sec15" id="sec15"></a>
+显示消息</h3>
+
+<p class="first">Sawfish 提供了 <code>display-message</code> 函数可以在屏幕上显示一段文字，不过这段
+文字并不会自动消失，于是我自己弄了一个函数，可以使用 <code>display-message</code>
+来显示一段文字，并让消息在指定的一段时间之后自动消失：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .constant {
+        /* font-lock-constant-face */
+        color: #7fffd4;
+      }
+      .doc {
+        /* font-lock-doc-face */
+        color: #ffa07a;
+      }
+      .function-name {
+        /* font-lock-function-name-face */
+        color: #87cefa;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #98fb98;
+      }
+    --></style>(<span class="keyword">require</span> '<span class="constant">rep.io.timers</span>)
+(<span class="keyword">defun</span> <span class="function-name">kid-display-message</span> (message <span class="type">&amp;optional</span> seconds)
+  <span class="doc">"display MESSAGE for SECONDS seconds and make the message disappeared.
+The default display-message don't close the message window automatically"</span>
+  (interactive)
+  (display-message message)
+  (make-timer
+   (<span class="keyword">lambda</span> ()
+     (display-message))                 <span class="comment-delimiter">; </span><span class="comment">close message window
+</span>   (or seconds 3)))
+</pre></div></div></div></div></div></div></div>
+
+<p><a name="WmModifier" id="WmModifier"></a></p>
+
+<h3><a name="sec16" id="sec16"></a>
+wm-modifier</h3>
+
+<p class="first">在设定 Sawfish 的快捷键的时候经常看到 <code>W-h</code> 这类的快捷键， <code>W</code> 其实就是
+<code>wm-modifier</code> ，这是可以定制的，不过通常我们设定他为 <code>Super</code> 键，这样可以
+避免和 <a href="Emacs.html">Emacs</a> 的快捷键冲突。可以在 sawfish-ui 里面设定这个值。</p>
+
+
+<h3><a name="sec17" id="sec17"></a>
+启动程序</h3>
+
+<p class="first">我使用 <code>startx</code> 来启动 X ，所以我的必要的程序都在 <code>~/.xinitrc</code> 里面启动，
+但是在 Sawfish 退出的时候并不知道其他程序的存在，所以他们经常是异常退
+出。一个办法就是在 Sawfish 里面使用 start-process 来启动程序，并在退出
+之前结束掉它们。</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>(define kid-startup-programs
+  '((<span class="string">"xloadimage"</span> <span class="string">"-onroot"</span> <span class="string">"-fullscreen"</span> <span class="string">"/home/kid/.desktop"</span>)
+    (<span class="string">"xscreensaver"</span> <span class="string">"-no-splash"</span>)
+    (<span class="string">"scim"</span> <span class="string">"-d"</span>)
+    (<span class="string">"asclock"</span> <span class="string">"-theme"</span> <span class="string">"/home/kid/.asclock/kid"</span>)))
+(mapc (<span class="keyword">lambda</span> (program)
+        (apply start-process (make-process standard-output) program))
+      kid-startup-programs)
+(add-hook 'before-exit-hook
+          (<span class="keyword">lambda</span> ()
+            (mapc stop-process (active-processes))))
+</pre></div></div></div></div></div></div></div>
+
+<p><a name="Module" id="Module"></a></p>
+
+<h3><a name="sec18" id="sec18"></a>
+模块</h3>
+
+<p class="first">Sawfish 的扩展可以写成一个一个的模块，通过 <code>require</code> 来加载，例如
+<code>sawfish.wm.util.prompt</code> 。Sawfish 到 <code>load-path</code> 里面去找对应的模块，例
+如，它会去 <code>load-path</code> 中的目录下面的 <code>sawfish/wm/util</code> 子目录下面寻找
+<code>prompt.jl</code> 或 <code>prompt.jlc</code> 文件来加载 <code>sawfish.wm.util.prompt</code> 模块。</p>
+
+<p><a name="OnlineResources" id="OnlineResources"></a></p>
+
+<h2><a name="sec19" id="sec19"></a>
+Sawfish 在线资源</h2>
+
+<ul>
+<li><a href="http://docs.huihoo.com/homepage/shredderyin/wiki/SawfishWindowManager.html">王垠的关于 Sawfish 的介绍</a></li>
+<li><a href="http://sawmill.sourceforge.net/">Sawfish 的主页</a></li>
+<li><a href="http://sawfish.endorphin.org/">Sawfish Wiki</a></li>
+<li><a href="http://twistedmatrix.com/~teratorn/better_wm/better_wm.html">一个 Sawfish 的教程</a></li>
+<li><a href="http://dir.gmane.org/gmane.comp.window-managers.sawfish">Sawfish 在 GMANE 的邮件列表在线浏览</a></li>
+<li>一些使用 sawfish 的人的站点上的资料
+<ul>
+<li><a href="http://toykeeper.net/sawfish/">http://toykeeper.net/sawfish/</a></li>
+<li><a href="http://www.davep.org/sawfish/">http://www.davep.org/sawfish/</a></li>
+<li><a href="http://yann.hodique.free.fr/index.php?pagename=Perso.Sawfish">http://yann.hodique.free.fr/index.php?pagename=Perso.Sawfish</a></li>
+</ul></li>
+</ul>
+
+<h2>Footnote</h2>
+<p class="footnote"><a name="fn.1" href="#fnr.1">1.</a> librep 是 Sawfish 的脚本语言，一种很类似于 <a href="Elisp">Elisp</a> 的 Lisp 方言。</p>
+
+
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

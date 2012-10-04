@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>定制 Emacs 的字体</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>定制 Emacs 的字体</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here-->
+
+    <!-- Page published by Emacs Muse begins here -->
+<p><a href="Emacs.html">Emacs</a> 的字体和 Emacs 本身一样有极高的可定制性，可以在 <code>~/.emacs</code> 里面设
+定字体，但是我更喜欢在 <code>~/.Xresources</code> 文件里面指定 Emacs 的字体。要让
+Emacs 能够使用字体，必须让它知道字体的存在。 Emacs 目前使用的是 X 核心
+字体，虽然目前已经有一个正在开发中的 xft 的分支<sup><a name="fnr.1" href="#fn.1">1</a></sup>，但是目前还很不成熟，
+特别是对中文支持很差。</p>
+
+<p>要查看系统里面有那些 X 核心字体，可以使用 <code>xlsfonts</code> 命令，这个输出通常
+是非常多的。你可以为 Emacs 指定其中的某个字体，如果要安装新的字体，比
+如，我下载了<a href="http://wqy.sourceforge.net">文泉驿</a>字体，想在 Emacs 里面使用它。现在，我把字体解压出来，
+拷贝到某个目录，比如 <code>/usr/share/fonts/Chinese/wqy-bitmapfont</code> 里面。</p>
+
+<p>然后我要生成 <code>fonts.dir</code> 和 <code>fonts.scale</code> 文件，并加入字体路径。这些步骤必
+须要有 root 权限，我使用的是 <code>sudo</code> 。</p>
+
+<pre class="example">
+cd /usr/share/fonts/Chinese/wqy-bitmapfont/
+sudo mkfontdir
+sudo mkfontscale
+sudo xset +fp /usr/share/fonts/Chinese/wqy-bitmapfont/
+</pre>
+
+<p>最后一条命令是设置字体路径，如果要永久设置，需要在 <code>/etc/X11/xorg.conf</code> 或
+者是 <code>/etc/X11/XF86Config-4</code> 里面添加字体路径：</p>
+
+<pre class="example">
+...
+Section &quot;Files&quot;
+    ...
+    FontPath  &quot;unix/:7100&quot;
+    ...
+    FontPath  &quot;/usr/share/fonts/Chinese/wqy-bitmapfont&quot;
+EndSection
+</pre>
+
+<p>这样你就可以在 <code>xlsfonts</code> 里面看到新安装的字体了<sup><a name="fnr.2" href="#fn.2">2</a></sup>。下面就可以在
+<code>~/.Xresources</code> 里面配置 Emacs 让他使用文泉驿作为中文字体了：</p>
+
+<pre class="example">
+Emacs.Font: fontset-courier
+
+Emacs.Fontset-0:-*-*-medium-r-normal--12-*-*-*-m-*-fontset-courier,\
+ascii:-monotype-courier new-medium-r-normal--12-0-0-0-m-0-iso8859-1,\
+chinese-gb2312:-wenquanyi-wenquanyi bitmap song-medium-r-normal--13-130-75-75-p-80-iso10646-1,\
+mule-unicode-0100-24ff:-misc-freemono-medium-r-normal--0-0-0-0-p-0-iso10646-1
+</pre>
+
+<p>类似的可以定义多个字体集，并指定一个默认的，在 Emacs 里面可以按住
+Shift 在点击鼠标左键来选择字体或者字体集。其中的东西都是很清楚的，只是
+最后一项 <code>mule-unicode-0100-24ff</code> ，这个是我为了正常显示 Stardict 的音标
+而加上的，当然前提是必须装上了 ttf-freefont 并按照前面的方法正确设置了
+路径，至于如何在 Emacs 里面使用 Stardict ，请看<a href="EmacsStardict.html">这里</a>。如果要详细了解 X
+核心字体的语法，请参见相应的手册页或者 Emacs 的 Info 页里面也有相应的
+介绍：</p>
+
+<pre class="example">
+(info &quot;(Emacs) Font X&quot;)
+</pre>
+
+<p>好了，现在如果要令改动立即生效，可以使用 <code>xrdb</code> 命令：</p>
+
+<pre class="example">
+xrdb -merge ~/.Xresources
+</pre>
+
+<p>现在，重新启动 Emacs ，就可以看到字体效果了！</p>
+
+<h2>Footnote</h2>
+<p class="footnote"><a name="fn.1" href="#fnr.1">1.</a> 请参见 <a href="http://www.emacswiki.org/cgi-bin/wiki/XftGnuEmacs">EmacsWiki</a> 和<a href="http://times.usefulinc.com/2005/12/02-emacs-xft">这里</a>。</p>
+
+<p class="footnote"><a name="fn.2" href="#fnr.2">2.</a> 如果要让使用 <code>fontconfig</code> 的程序也能使用到字体，还有必要执行一下
+&lt;code>`sudo fc-cache -f -v .'</code> 这条命令。</p>
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

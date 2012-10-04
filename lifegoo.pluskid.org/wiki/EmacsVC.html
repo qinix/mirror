@@ -1,0 +1,524 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>EmacsVC</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>EmacsVC</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here--><div class="contents"><h2>Contents</h2>
+<dl>
+<dt>
+<a href="#sec1">Emacs VC 的基本概念</a>
+</dt>
+<dt>
+<a href="#sec2">编辑 comment buffer</a>
+</dt>
+<dt>
+<a href="#sec3">VC 命令总结</a>
+</dt>
+<dt>
+<a href="#sec4">VC Mode Indicator</a>
+</dt>
+<dt>
+<a href="#sec5">各个 VC 命令简介</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec6">同时操作一组文件或者子目录</a>
+</dt>
+<dt>
+<a href="#sec7">Diff 报告</a>
+</dt>
+<dt>
+<a href="#sec8">获得旧的版本</a>
+</dt>
+<dt>
+<a href="#sec9">查看历史</a>
+</dt>
+<dt>
+<a href="#sec10">注册文件</a>
+</dt>
+<dt>
+<a href="#sec11">插入 Version Control Header</a>
+</dt>
+<dt>
+<a href="#sec12">标记和获取快照</a>
+</dt>
+<dt>
+<a href="#sec13">更新ChangeLog文件</a>
+</dt>
+<dt>
+<a href="#sec14">重命名version controled文件</a>
+</dt>
+<dt>
+<a href="#sec15">当VC被搞迷糊了的时候</a>
+</dt>
+<dt>
+<a href="#sec16">其他命令</a>
+</dt>
+</dl>
+</dd>
+<dt>
+<a href="#sec17">使用 Ediff 进行比较</a>
+</dt>
+</dl>
+</div>
+
+
+    <!-- Page published by Emacs Muse begins here -->
+<p>Emacs VC 是 <a href="Emacs.html">Emacs</a> 里面的一个 minor mode 。使用 VC ，你可以很方便地进行
+版本控制，VC 为你隐藏了几乎所有的版本控制的细节问题，你只要记住一个 VC
+命令，就能完成几乎所有的版本控制操作，VC 会替你运行正确的命令。</p>
+
+<p><a name="AnchorBasicUnderstanding" id="AnchorBasicUnderstanding"></a></p>
+
+<h2><a name="sec1" id="sec1"></a>
+Emacs VC 的基本概念</h2>
+
+<p class="first">Emacs VC的接口非常简单，原因在于在某个状态下，只有一件合理的下一步要做
+的事，规则如下：</p>
+
+<ul>
+<li>如果当前文件不在版本控制之下，下一步要做的合理的事情就是把他注册到
+仓库，然后为你check out出一个可修改的文件。</li>
+
+<li>如果他已经注册在版本控制之下，并且没有被其他人check out出去，那么就
+把他check out出来，好让你可以编辑他。</li>
+
+<li>如果你改变了当前文件，那么下一步要做的事情就是提交他。</li>
+
+<li>比较罕见的是，当你工作在比较老的版本控制系统上的时候，如果别人已经
+check out出去了那个文件，你也许会想steal the lock。</li>
+</ul>
+
+<p>事实上，VC mode只有一个最基本的命令： <code>C-x v v (vc-next-action)</code> 。他的作
+用就是对当前文件进行下一个合理的VC操作，或者，更确切的说，让当前文件进
+入下一个正常的版本控制状态。他按照图<sup><a name="fnr.1" href="#fn.1">1</a></sup>中传统的版本控制循环来行事。</p>
+
+<pre class="example">
+                                       	  +----------------+
+                                          | steal the lock |
+                                          | (if necessary) |
+                                       	  +--------+-------+
+               	       	       	       	       	   |
+          			       	   	   v
+                               	                check-out
+                         	       +---------&gt;&gt;&gt;&gt;&gt;&gt;------+
+				       |       	       	     |
++--------------+  registration	 +-----+------+         +----+-----+
+| unregistered | --------------&gt; | registered,|  revert |  locked, |
++--------------+		 |  unlocked  | &lt;------ | editable |
+				 +-----+------+         +-----+----+
+				       |       	       	      |
+				       +-----------&lt;&lt;&lt;&lt;&lt;&lt;-----+
+					           check-in
+					       	      x
+						      |
+					 +------------+---------------+
+					 |     add change comments    |
+					 | (optional, but you should) |
+					 +----------------------------+
+</pre>
+
+<p>另外，当你提交的时候，Emacs会弹出一个buffer让你填写日志。类似的，当你
+工作在比较老的版本控制系统上，准备``steal a lock''的时候，Emacs会弹
+出一个buffer让你填写说明原因。</p>
+
+<p>VC还有一个恢复操作： <code>C-x v u (vc-revert-buffer)</code> 恢复到上一次check out的
+状态并解除锁定。</p>
+
+<p>以上是传统的版本控制的流程，VC就是以此为基础设计的，但是现在流行的版本
+控制系统的工作方式有一点不一样。幸运的是，现在的系统更简单一些，因为没
+有了为了编辑文件必须获取锁定的必要，VC的其中一个步骤被省略了。如下图所
+示：</p>
+
+
+<pre class="example">
+                                      +------------------------+
+                                      | normal editor activity |
+                                      |  (no locks are used)   |
+                                      +------------+-----------+
+               	       	       	       	       	   |
+          			       	   	   v
+                               	               edit document
+                         	       +-=-=-=-=-&gt;&gt;&gt;&gt;&gt;&gt;-=-=-=-+
+				       |       	       	      |
++--------------+  registration	 +-----+------+         +-----+----+
+| unregistered | --------------&gt; | registered,|  revert |  locked, |
++--------------+		 |  unlocked  | &lt;------ | editable |
+				 +-----+------+         +-----+----+
+				       |       	       	      |
+				       +-----------&lt;&lt;&lt;&lt;&lt;&lt;-----+
+					           commit
+					       	      x
+						      |
+					 +------------+---------------+
+					 |     add change comments    |
+					 | (optional, but you should) |
+					 +----------------------------+
+</pre>
+
+<p>从未修改的状态过渡到已修改的状态在这儿用虚线来表示了，因为这个过程并不
+需要执行任何VC操作。当你告诉VC你要执行下一步操作的时候，他能够判断出当
+前文件在上一次check out之后是否已经修改过了，如果修改过，他会弹出一个
+buffer让你填写日志并提交这个文件。如果这个文件没有被修改过，VC只是显示
+一条消息告诉你当前buffer是最新的。</p>
+
+
+<h2><a name="sec2" id="sec2"></a>
+编辑 comment buffer</h2>
+
+<p class="first">在VC mode里面，三种操作会弹出一个buffer让你输入comment或者notification text:</p>
+
+<ul>
+<li>check in</li>
+<li>steal a lock</li>
+<li>file registration</li>
+</ul>
+
+<p>这个时候操作会被挂起直到你在comment buffer里面按C-c C-c提交comment
+buffer为止。你可以输入comment，也可以去干点其他事情，VC会一直等你。如
+果你直接把comment buffer关掉了，那么挂起的操作就会被取消。</p>
+
+<p>每次你提交的comment会被保存在一个ring里面。你可以用M-p在这个ring里面往
+后游历，用M-n往前游历，或者用M-r往后搜索、M-s望前搜索。最常用的命令当
+然是M-p 。因为我们通常都是连续进行一系列相关的修改，所以编辑上一次提交
+的comment是非常有用的。</p>
+
+
+
+<h2><a name="sec3" id="sec3"></a>
+VC 命令总结</h2>
+
+<p class="first">这个表是按照VC命令的使用频率排序的，你会发现所有的VC命令都是以C-x v开
+头的：
+
+
+<table class="muse-table" align="center">
+<caption><b>VC 命令</b>
+</caption>
+<tr>
+<th> 快捷键
+</th><th> 命令名
+</th><th> 动作
+</th></tr>
+<tr>
+<td> C-x v v
+</td><td> vc-next-action
+</td><td> 让当前文件进入下一个合理的version control状态
+</td></tr>
+<tr>
+<td> C-x v d
+</td><td> vc-directory
+</td><td> 显示一个目录下所有注册到版本控制下的文件
+</td></tr>
+<tr>
+<td> C-x v =
+</td><td> vc-diff
+</td><td> 产生一个diff报告
+</td></tr>
+<tr>
+<td> C-x v u
+</td><td> vc-revert-buffer
+</td><td> 丢弃自从所以此check in以来所做的所有更改
+</td></tr>
+<tr>
+<td> C-x v ~
+</td><td> vc-version-otder-window
+</td><td> 取出当前buffer在仓库里的指定版本并在另外一个窗口中显示出来
+</td></tr>
+<tr>
+<td> C-x v l
+</td><td> vc-print-log
+</td><td> 显示一个文件的历史和日志
+</td></tr>
+<tr>
+<td> C-x v i
+</td><td> vc-register
+</td><td> 把文件注册到版本控制系统里面去
+</td></tr>
+<tr>
+<td> C-x v h
+</td><td> vc-insert-headers
+</td><td> 在文件里面插入version control headers
+</td></tr>
+<tr>
+<td> C-x v r
+</td><td> vc-retrieve-snapshot
+</td><td> check out一个named project快照
+</td></tr>
+<tr>
+<td> C-x v s
+</td><td> vc-create-snapshot
+</td><td> 创建一个named project快照
+</td></tr>
+<tr>
+<td> C-x v c
+</td><td> vc-cancel-version
+</td><td> 丢弃一个已经保存的版本
+</td></tr>
+<tr>
+<td> C-x v a
+</td><td> vc-update-change-log
+</td><td> 更新一个GNU-style的ChangeLog文件
+</td></tr></table></p>
+
+
+<p><a name="ModeIndicator" id="ModeIndicator"></a></p>
+
+<h2><a name="sec4" id="sec4"></a>
+VC Mode Indicator</h2>
+
+<p class="first">VC在mode line霸占一块地方用来告诉你当前buffer的version control状态。当
+你访问一个在version control控制下的文件时，mode line上会显示这个文件所
+使用的version control系统的名字以及这个文件的版本号：</p>
+
+<center>
+<p><img src="image/EmacsVCModeIndicatorDash.png" alt=""></p>
+</center>
+
+<p>当两者之间是一个“-”时，说明这个文件还没有check out，是“:”时说明已经
+被 check out了，版本号是这个文件在你上一次check out的时候的版本号。值得
+注 意的是现在大多数人都使用并发式的version control系统，并没有check
+out文 件并获得锁定的操作，你可以简单的认为“-”表示未修改，而“:”表示
+已经修改了， 但是还未提交到仓库。</p>
+
+<center>
+<p><img src="image/EmacsVCModeIndicatorColon.png" alt=""></p>
+</center>
+
+<p>如果你没有看到这些指示器，说明这个文件并没有注册到某个version control系
+统下面。</p>
+
+<center>
+<p><img src="image/EmacsVCModeIndicatorNone.png" alt=""></p>
+</center>
+
+
+
+
+<h2><a name="sec5" id="sec5"></a>
+各个 VC 命令简介</h2>
+
+<p class="first">在<a href="#AnchorBasicUnderstanding">基本的Emacs VC概念</a>那儿我
+们已经讲了VC最主要的命令：vc-next-action。这儿我们将按照命令的使用频率
+的顺序来讲解一下剩下的命令。</p>
+
+<h3><a name="sec6" id="sec6"></a>
+同时操作一组文件或者子目录</h3>
+
+<p class="first">命令C-x v d (vc-directory)将为你打开一个经过定制了的[[EmacsDired][Dire
+mode]]的buffer，列出目录下的所有注册到版本控制系统里面的文件以及他们的
+状态。你可以用<a href="EmacsDired">Dired</a>的那些方便的命令标记一些文件，然后你
+可以对他们执行vc-next-action或者vc-revert-buffer。如果vc-next-action是
+提交文件，VC只会让你输入日志一次，但是如果是vc-revert-buffer，对每个文
+件，VC都会让你确认是否丢弃更改。在这里执行VC命令可以不用加C-x前缀，例如，
+你可以用v u来执行vc-revert-buffer。</p>
+
+
+<h3><a name="sec7" id="sec7"></a>
+Diff 报告</h3>
+
+<p class="first">命令C-x v = (vc-diff)将显示文件的当前工作版本和你上一次提交的时候的版本
+之间的差异，由此你可以看出，再一次提交会产生什么样的修改。如果你用一个
+前缀C-u来调用这个命令：C-u C-x v = ，VC会让你填写要比较的文件名以及两个
+版本号。如果“older revision number”为空(如果你什么都不输入就直接回车
+就会产生这种效果)，他将是你上一次提交的版本；如果“newer revision
+number”为空，他将是你目前的工作版本。所以输入文件名之后连续两次回车的
+效果和不用C-u前缀来执行命令的效果是一样的。</p>
+
+<p>如果你传递给<code>C-u C-x v =</code>的文件名事实上是一个目录名，你将会看到目录下面所
+有注册到版本控制系统下面的文件之间的差异比较报告。</p>
+
+
+<h3><a name="sec8" id="sec8"></a>
+获得旧的版本</h3>
+
+<p class="first">你可以用C-x v ~ (vc-version-other-window)来获得文件的任意以前的版本。这
+个版本将保存到同一个目录下，并在后面加上特定的后缀(事实上，后缀是一个
+“.”、一个“~”加上版本号再加上一个“~”构成的)。这样，你可以一次获取
+几个不同的版本，而且这种命名方式也让你可以使用<a href="EmacsDired">Dired</a>的~
+命令一次把他们全部标记以便删除。</p>
+
+
+<h3><a name="sec9" id="sec9"></a>
+查看历史</h3>
+
+<p class="first">C-x v l (vc-print-log)命令会让VC弹出一个buffer，并在里面显示这个文件的
+历史以及日志等有用的信息。</p>
+
+
+<h3><a name="sec10" id="sec10"></a>
+注册文件</h3>
+
+<p class="first">在非并发式的版本控制系统(如RCS、SCCS)上，vc-next-action 不仅注册一个文
+件，而且check out一个可编辑版本，而有时候需要仅仅是注册一个文件而不
+check out，C-x v i (vc-register)就可以完成这个工作。但是在现在流行的并
+发式的版本控制系统上，两者之间几乎已经没有什么差别了。</p>
+
+
+<h3><a name="sec11" id="sec11"></a>
+插入 Version Control Header</h3>
+
+<p class="first">一些版本控制系统鼓励你在文件里面插入一些可以随你check in、check out和
+revert的时候自动更新的magic string用来产生自动插入的与当前版本号相关的
+信息：是谁上次修改了他、上一次check in是什么时候等等。</p>
+
+<p>这些header strings很大程度上是和<a href="#ModeIndicator">VC mode指示器</a>显示的
+信息是重复的，剩下的信息你也可以通过C-x v l来得到。所以这个功能看起来好
+像不是特别有用，但是当你不是在<a href="Emacs.html">Emacs</a>里面查看文件的时候，这些信息就显
+得有用了。VC提供插入magic strings的方法，其实他只是插入了对应的占位符，
+真正信息的填充是在你提交的时候由对应的版本控制来完成的。</p>
+
+<p>VC会试着探测当前文件的注释类型，并以注释的形式插入magic strings，并且
+VC还会探测你之前是否已经插入了magic string。对于C文件的行为比较特殊，
+VC并不是把version header放在注释里面，而是产生一个名叫vcid的静态字符串
+来包含版本信息，这样版本信息就可以被编译到object文件里面，以后你可以用
+strings工具(如果你使用一个类Unix的环境的话)来查看这个二进制文件是由那个
+版本的源文件产生的了。<sup><a name="fnr.2" href="#fn.2">2</a></sup></p>
+
+
+<h3><a name="sec12" id="sec12"></a>
+标记和获取快照</h3>
+
+<p class="first">一个工程的快照就是把一个工程里面各个文件的某个版本号联系在一起而得到的
+一个单元，大多数的版本控制允许你用一个符号名称来标记一个快照，例外的是，
+SCCS不支持这个特性(VC会为SCCS模拟这个特性)，而对于<a href="Subversion.html">Subversion</a>则根本
+没有这样的概念，因为在<a href="Subversion.html">Subversion</a>里面每一个版本号都对应了整个模块的
+一个快照。</p>
+
+<p>C-x v s (vc-create-snapshot)命令将让你输入一个符号名称，然后VC将当前各
+个文件对应的版本号关联到那个符号名称上。符号名称可以作为其他需要版本号
+的VC命令的有效的参数，这在vc-diff的时候是非常有用的。命令C-x v r
+(vc-retrieve-snapshot)以一个符号名称作为参数，并check out目录下的所有注
+册到版本控制系统里面的文件对应于符号名称的版本号的版本。</p>
+
+<p>两个命令都有可能失败并返回一个错误。当目录下的某个注册过的文件被别人
+check out了，vc-create-snapshot命令会失败，in order to avoid making a
+snapshot that, when retrieved later, won't restore the current state
+completely. 或者是在本地文件更改之后，他也会失败，因为你也许想先提交或
+者丢弃你的更改。</p>
+
+
+<h3><a name="sec13" id="sec13"></a>
+更新ChangeLog文件</h3>
+
+<p class="first">C-x v a (vc-update-change-log)帮助VC与Free Software Foundation的一些工
+程管理约定协同工作。FSF的工程在每一个目录下面都会有一个ChangeLog文件，
+包含了目录里面的每一个文件的timestamped修改日志。</p>
+
+<p>Rather than make you enter every change comment twice (!), VC provides
+a hook that copies recent change comments out of masters beneath the
+current directory and appends them to a ChangeLog in the approved
+format.</p>
+
+
+<h3><a name="sec14" id="sec14"></a>
+重命名version controled文件</h3>
+
+<p class="first">在很多version control系统下面，重命名文件是需要很大技巧的，甚至是非常困
+难的，vc-rename-file尝试着让你从困境中摆脱出来，他试着把事情做好，并随
+时报告错误并告诉你他无法完成工作。不过，在<a href="Subversion.html">Subversion</a>里面这个功能已
+经变成他的基本功能之一了。</p>
+
+
+<h3><a name="sec15" id="sec15"></a>
+当VC被搞迷糊了的时候</h3>
+
+<p class="first">确定一个文件的版本信息的操作有时候是昂贵和缓慢的，特别是在NFS或者其他网
+络环境里面的时候。VC有两种方式来补偿：</p>
+
+<ol>
+<li>为每个文件的信息在内存里面建立缓存。</li>
+<li>假设可以通过文件的权限推断出状态。</li>
+</ol>
+
+<p>这有时候会造成问题，比如另外一个用户在VC不知情的情况下手工修改了某个文
+件的权限，或者是同时有几个VC在对文件进行操作。如果你任何VC被搞迷糊了，
+就调用vc-clear-contex命令来让VC丢掉所有的缓存。但事实上这样的情况是很罕
+见的。</p>
+
+
+<h3><a name="sec16" id="sec16"></a>
+其他命令</h3>
+
+<p class="first">还有其他没有介绍的和随着新版本的VC而加入的命令，你可以通过 M-x vc-
+&lt;tab&gt; 来获取一个VC命令的列表，并通过 C-h f vc-command 来得到该命令的文
+档。</p>
+
+
+
+<h2><a name="sec17" id="sec17"></a>
+使用 Ediff 进行比较</h2>
+
+<p><a href="EmacsEdiff">Ediff</a>是<a href="Emacs.html">Emacs</a>里面非常丰富强大的一个的一个模块，你也许会想用他来比较文件。
+这儿有三种方法启动<a href="EmacsEdiff">Ediff</a>：</p>
+
+<ol>
+<li>用 vc-resolve-conflicts 启动 <a href="EmacsEdiff">Ediff</a> 来解决冲突</li>
+<li>用 ediff-revision 启动 <a href="EmacsEdiff">Ediff</a> 来比较版本之间的异同</li>
+<li>手工启动 <a href="EmacsEdiff">Ediff</a> 来比较两个文件，比如你手动获取的某几个版本的文件</li>
+</ol>
+
+<h2>Footnote</h2>
+<p class="footnote"><a name="fn.1" href="#fnr.1">1.</a>  这两幅图片的来源是 OReilly.Learning.Gnu.Emacs.3rd.Edition</p>
+
+<p class="footnote"><a name="fn.2" href="#fnr.2">2.</a> 我在试验<a href="Subversion.html">Subversion</a>的时候好像这些magic strings并没有得到任何的填
+充替换，也许这个特性在<a href="Subversion.html">Subversion</a>里面已经没有了，不过我试验过RCS，是
+可以正常工作的，基于RCS的CVS系统应该也是有这个特性的吧。</p>
+
+
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

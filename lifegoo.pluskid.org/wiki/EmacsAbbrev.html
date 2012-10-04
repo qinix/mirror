@@ -1,0 +1,356 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>缩写词功能</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>缩写词功能</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here--><div class="contents"><h2>Contents</h2>
+<dl>
+<dt>
+<a href="#sec1">尝试 Emacs 自带的缩写词功能</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec2">定义缩写词</a>
+</dt>
+<dt>
+<a href="#sec3">使用缩写词</a>
+</dt>
+<dt>
+<a href="#sec4">保存缩写词定义</a>
+</dt>
+</dl>
+</dd>
+<dt>
+<a href="#sec5">msf-abbrev.el</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec6">简介</a>
+</dt>
+<dt>
+<a href="#sec7">定义缩写词的语法</a>
+</dt>
+<dt>
+<a href="#sec8">安装和配置</a>
+</dt>
+</dl>
+</dd>
+</dl>
+</div>
+
+
+    <!-- Page published by Emacs Muse begins here -->
+<p><a href="Emacs.html">Emacs</a> 有非常方便的缩写词功能，例如，经常要输入“the National Institute
+of Standards and Technology”让你非常厌烦，你可以定义一个缩写词“nist”，
+这样，每当你输入“nist”然后接着输入空格或者标点符号等的时候就会被 <a href="Emacs.html">Emacs</a>
+自动扩展为“the National Institute of Standards and Technology”。</p>
+
+<h2><a name="sec1" id="sec1"></a>
+尝试 Emacs 自带的缩写词功能</h2>
+
+<p class="first">打开 minor-mode <code>abbrev-mode</code> 之后，就可以使用缩写词功能了。可以定义全局
+的缩写词，也可以定义只针对某一个 mode 的缩写词，这会覆盖掉同名的全局缩
+写词。</p>
+
+<h3><a name="sec2" id="sec2"></a>
+定义缩写词</h3>
+
+<p class="first">可以分别使用 <code>C-x a g</code> 和 <code>C-x a l</code> 来定义全局和针对某个 mode 的缩写词，他
+们会从 minibuffer 读取缩写形式，并把当前光标以前的一个或者几个词作为缩
+写词的扩展形式，可以通过 <code>C-u</code> 来传递一个数值参数告诉他需要使用几个词。例
+如，要定义“find outer otter”的缩写为“foo”，先输入“find outer otter”，然
+后键入 <code>C-u 3 C-x a g f o o &lt;RET&gt;</code> 即可。当用 <code>C-u</code> 传入参数零的时候表示使
+用选中的区域作为要扩展的形式。反过来，你可以先输入“foo”，然后再键入
+<code>C-x a i g</code> 或者 <code>C-x a i l</code> ，通过在 minibuffer 输入扩展后的形式的方法来定
+义缩写词，这样的方法不用费心用 <code>C-u</code> 去传递参数，相比之下要方便一些。</p>
+
+<p>要删除一个缩写词，只需要给 <code>C-x a g</code> 或者 <code>C-x a l</code> 传递一个负参数即可，它
+会让你输入要删除的缩写词。另外，还可以通过 <code>M-x kill-all-abbrevs</code> 来删除
+所有的(包括全局和局部的)缩写词。</p>
+
+
+<h3><a name="sec3" id="sec3"></a>
+使用缩写词</h3>
+
+<p class="first">缩写词会在你键入一个不能作为单词的内容的字符的时候得到扩展，换句话说，
+任何可以作为单词内容的字符都可以作为缩写词的内容。</p>
+
+<p>缩写词扩展的时候会保留大小写状态，例如：“foo”会扩展为“find outer
+otter”，“Foo”会扩展为“Find outer otter”，而根据 <code>abbrev-all-caps</code> 变量的
+设定，“FOO”会扩展为“FIND OUTER OTTER”或者“Find Outer Otter”。</p>
+
+<p>在没有打开 abbrev-mode 的时候，也可以通过 <code>C-x a e</code> 来手动扩展光标所在出
+的缩写词。另外，还可以用 <code>M-x expand-region-abbrevs</code> 来在一个区域进行手工
+扩展。</p>
+
+<p>假如你定义了一个缩写词“cnst”扩展为“construction”，现在你希望输入
+“recnst”并让他扩展为“reconstruction”。直接输入“recnst”是不行的，这个时
+候 <code>M-'(abbrev-prefix-mark)</code> 就起作用了。输入“re”，然后键入 <code>M-'</code> (这个时候
+会出现一个连字符)接着再输入“cnst”，之后再输入空格之类的，就可以成功扩展
+为“reconstruction”了。</p>
+
+<p>有时候不希望缩写词被扩展，这个时候只需要使用 <code>C-q</code> 来输入缩写词后面的那
+个空格或者标点符号即可。</p>
+
+
+<h3><a name="sec4" id="sec4"></a>
+保存缩写词定义</h3>
+
+<p class="first">可以分别用 <code>M-x write-abbrev-file</code> 和 <code>M-x read-abbrev-file</code> 来保存和加载
+缩写词定义。如果没有提供文件名，他们会使用变量 <code>abbrev-file-name</code> 所提供
+的文件名，默认是 <code>~/.abbrev_defs</code> 。另外，如果 <code>save-abbrevs</code> 不为 <code>nil</code> 的
+话，<a href="Emacs.html">Emacs</a> 在保存所有文件的时候(例如 <code>C-x s</code> 或者 <code>C-x C-c</code> 的时候)也会把缩
+写词保存到 <code>abbrev-file-name</code> 所指定的文件中去。</p>
+
+<p><a name="msf" id="msf"></a></p>
+
+<h2><a name="sec5" id="sec5"></a>
+msf-abbrev.el</h2>
+
+<h3><a name="sec6" id="sec6"></a>
+简介</h3>
+
+<p class="first">msf-abbrev 最初是设计来管理 mode 相关的缩写词的，现在功能已经相当完善，
+可以说远远超过了缩写词的功能，在它的<a href="http://www.bloomington.in.us/~brutt/msf-abbrev.html">主页</a>上有一个动画的 demo ，生动地展
+示了他的强大功能。</p>
+
+<p>msf-abbrev 使用目录结构来管理各个 mode 特定的缩写词。例如，把缩写词定
+义在 <code>~/emacs/mode-abbrevs</code> 目录下：</p>
+
+<pre class="example">
+~/emacs/mode-abbrevs
+ |
+ +---- muse-mode
+ |      |
+ |      +---- emacs
+ |      |
+ |      `---- debian
+ `---- c-mode
+        |
+        +---- ifndefx
+        |
+        `---- fopenx
+</pre>
+
+<p>其中每一个文件就是一个单独的缩写词定义。这样的布局让缩写词管理变得非常
+方便。并且缩写词的定义也是使用了一种简单的语法，而不需要指定 <a href="Elisp">Elisp</a> 的
+相关细节。</p>
+
+
+<h3><a name="sec7" id="sec7"></a>
+定义缩写词的语法</h3>
+
+<p class="first">文件的内容就是缩写词扩展后的内容，不过，下面一些特殊形式会被解释：</p>
+
+<dl>
+<dt><strong>&lt;cursor&gt;</strong></dt>
+<dd>表示扩展结束后光标所在的位置。</dd>
+
+<dt><strong>&lt;varlookup &quot;user-mail-address&quot;&gt;</strong></dt>
+<dd>插入 <a href="Elisp">Elisp</a> 变量 <code>user-mail-address</code> 的
+值。</dd>
+
+<dt><strong>&lt;elisp &quot;(insert (current-time-string))&quot;&gt;</strong></dt>
+<dd>在当前位置执行引号内的 <a href="Elisp">Elisp</a>
+表达式。</dd>
+
+<dt><strong>&lt;query &quot;what color? &quot;&gt;</strong></dt>
+<dd>在 minibuffer 里面显示引号内的内容，并把用户的
+输入作为替换内容。如果有几个相同的 query ，那么只会提问一次，并在后面
+的 query 中使用前一次获得的值。</dd>
+
+<dt><strong>&lt;field &quot;foo&quot;&gt;</strong></dt>
+<dd>生成一个叫做 foo 的域，可以使用 <code>TAB</code> 或者 <code>Shift+Tab</code> 在各
+个域之间切换。</dd>
+
+<dt><strong>&lt;choose&gt;&lt;choice &quot;foo&quot;&gt;&lt;choice &quot;bar&quot;&gt;&lt;/choose&gt;</strong></dt>
+<dd>生成一个可以选择内容的
+域，按 <code>Enter</code> 键并使用方向键即可选择某个选项。</dd>
+
+<dt><strong>&lt;endpoint&gt;</strong></dt>
+<dd>标记一系列域的结束位置，即 <code>TAB</code> 键最后会到达的位置。</dd>
+
+<dt><strong>&lt;comment &quot;blah blah&quot;&gt;</strong></dt>
+<dd>作为注释，最后会被空内容替换掉。</dd>
+</dl>
+
+<p>例如，我定义的 <code>c-mode</code> 的 ifndefx 内容为：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .negation-char {
+      }
+      .preprocessor {
+        /* font-lock-preprocessor-face */
+        color: #b0c4de;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style><span class="preprocessor">#if</span><span class="negation-char"><span class="preprocessor">n</span></span><span class="preprocessor">def</span> &lt;elisp <span class="string">"(insert (concat (upcase (replace-regexp-in-string "</span>\\.<span class="string">" "</span>_<span class="string">" (file-name-nondirectory buffer-file-name))) "</span>_<span class="string">"))"</span>&gt;
+<span class="preprocessor">#define</span> &lt;elisp <span class="string">"(insert (concat (upcase (replace-regexp-in-string "</span>\\.<span class="string">" "</span>_<span class="string">" (file-name-nondirectory buffer-file-name))) "</span>_<span class="string">"))"</span>&gt;
+
+&lt;cursor&gt;
+<span class="preprocessor">#endif</span>  <span class="comment-delimiter">/* </span><span class="comment">&lt;elisp "(insert (concat (upcase (replace-regexp-in-string "\\." "_" (file-name-nondirectory buffer-file-name))) "_"))"&gt; </span><span class="comment-delimiter">*/</span>
+</pre></div></div></div></div></div></div></div>
+
+<p>在 <code>foo.h</code> 中输入 <code>ifndefx</code> 并按下空格键就会扩展为：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .negation-char {
+      }
+      .preprocessor {
+        /* font-lock-preprocessor-face */
+        color: #b0c4de;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #eedd82;
+      }
+    --></style><span class="preprocessor">#if</span><span class="negation-char"><span class="preprocessor">n</span></span><span class="preprocessor">def</span> FOO_C_
+<span class="preprocessor">#define</span> <span class="variable-name">FOO_C_</span>
+
+
+<span class="preprocessor">#endif</span>  <span class="comment-delimiter">/* </span><span class="comment">FOO_C_ </span><span class="comment-delimiter">*/</span>
+</pre></div></div></div></div></div></div></div>
+
+
+<h3><a name="sec8" id="sec8"></a>
+安装和配置</h3>
+
+<p class="first">可以从<a href="http://www.bloomington.in.us/~brutt/msf-abbrev.html">主页</a>下载，也可以在<a href="lisp/msf-abbrev.el">这里</a>得到 msf-abbrev.el 的 1.0beta1 版。把他放
+到自己的 <code>load-path</code> 所包含的路径里面。并根据自己的需要在 <code>~/.emacs</code> 里面
+加入下面类似的初始化语句：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .constant {
+        /* font-lock-constant-face */
+        color: #7fffd4;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style><span class="comment-delimiter">;; </span><span class="comment">ensure abbrev mode is always on
+</span>(setq-default abbrev-mode t)
+
+<span class="comment-delimiter">;; </span><span class="comment">do not bug me about saving my abbreviations
+</span>(setq save-abbrevs nil)
+
+<span class="comment-delimiter">;; </span><span class="comment">load up modes I use
+</span>(<span class="keyword">require</span> '<span class="constant">muse-mode</span>)
+(<span class="keyword">require</span> '<span class="constant">cc-mode</span>)
+
+<span class="comment-delimiter">;; </span><span class="comment">load up abbrevs for these modes
+</span>(<span class="keyword">require</span> '<span class="constant">msf-abbrev</span>)
+(setq msf-abbrev-root <span class="string">"~/emacs/mode-abbrevs"</span>)
+(msf-abbrev-load)
+
+<span class="comment-delimiter">;; </span><span class="comment">use C-c a to define a new abbrev for this mode
+</span>(global-set-key (kbd <span class="string">"C-c a"</span>) 'msf-abbrev-define-new-abbrev-this-mode)
+</pre></div></div></div></div></div></div></div>
+
+<p>之后可以手工在相应的目录下面添加缩写词，或者使用 <code>C-c a</code> 动态地给某个
+mode 添加缩写词了。另外，在<a href="http://www.bloomington.in.us/~brutt/msf-abbrev.html">主页</a>上还可以找到通过解析 glibc 的 info 文档
+而得到的针对 <code>c-mode</code> 的缩写词包，这也算是一个非常不错的自动完成以及在线
+文档功能了。</p>
+
+
+
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

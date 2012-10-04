@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>Python 笔记</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>Python 笔记</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here--><div class="contents"><h2>Contents</h2>
+<dl>
+<dt>
+<a href="#sec1">语法</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec2">and-or Trick</a>
+</dt>
+</dl>
+</dd>
+</dl>
+</div>
+
+
+    <!-- Page published by Emacs Muse begins here -->
+<h2><a name="sec1" id="sec1"></a>
+语法</h2>
+
+<h3><a name="sec2" id="sec2"></a>
+and-or Trick</h3>
+
+<p class="first">C 语言里面有一个非常方便的表达式 <code>bool ? a : b</code> ，在 Python 里面可以耍点
+小把戏来实现同样的功能：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>&gt;&gt;&gt; a = <span class="string">"first"</span>
+&gt;&gt;&gt; b = <span class="string">"second"</span>
+&gt;&gt;&gt; 1 <span class="keyword">and</span> a <span class="keyword">or</span> b
+<span class="string">'first'</span>
+&gt;&gt;&gt; 0 <span class="keyword">and</span> a <span class="keyword">or</span> b
+<span class="string">'second'</span>
+</pre></div></div></div></div></div></div></div>
+
+<p>语法和 C 的那个表达式非常像。整个表达式按照从左到右的顺序进行求值(而不
+是像 C 那样 <code>&amp;&amp;</code> 比 <code>||</code> 有更高的优先级)。因此 <code>1 and a</code> 得到 <code>a</code> ，而 <code>a or b</code>
+得到 <code>a</code> 也就是 <code>'first'</code> ，后者同样， <code>0 and a</code> 得到 <code>0</code> ，而 <code>0 or b</code> 得到 <code>b</code>
+也就是 <code>'second'</code> 。不过这个 Trick 还有一个 bug ，看下面这个例子：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>&gt;&gt;&gt; a = <span class="string">""</span>
+&gt;&gt;&gt; b = <span class="string">"second"</span>
+&gt;&gt;&gt; 1 <span class="keyword">and</span> a <span class="keyword">or</span> b
+<span class="string">'second'</span>
+</pre></div></div></div></div></div></div></div>
+
+<p>因为现在 <code>1 and a</code> 虽然是得到了 <code>a</code> ，但是 <code>a</code> 是空字符串，在 Python 里面被
+视为假，于是 <code>a or b</code> 就得到了 <code>a</code> ，这违背了我们本来的意愿。不过也有一个
+办法来解决这个问题，那就是用方括号把 <code>a</code> 和 <code>b</code> 包围起来，让他们成为一个非
+空列表，而非空列表永远都不会为假，也就不会出现刚才那种情况了：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>&gt;&gt;&gt; a = <span class="string">""</span>
+&gt;&gt;&gt; b = <span class="string">"second"</span>
+&gt;&gt;&gt; (1 <span class="keyword">and</span> [a] <span class="keyword">or</span> [b])[0]
+<span class="string">''</span>
+</pre></div></div></div></div></div></div></div>
+
+<p>但是这样语法就显得稍微复杂了，但是有时候，比如你在两个已知的常量之间选
+择的时候，如果两者都是已知非假的，就可以直接使用简单的形式，即使是复杂
+形式，也是很有用的，像有时候(比如，在 lambda 函数里面) Python 不允许
+if 语句的出现，这个就有用武之地了。</p>
+
+
+
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

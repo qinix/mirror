@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>在 Emacs 里编辑 Ascii 图片</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>在 Emacs 里编辑 Ascii 图片</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here--><div class="contents"><h2>Contents</h2>
+<dl>
+<dt>
+<a href="#sec1">简介</a>
+</dt>
+<dt>
+<a href="#sec2">小技巧</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec3">控制输入字符后移动的方向</a>
+</dt>
+<dt>
+<a href="#sec4">矩形操作</a>
+</dt>
+</dl>
+</dd>
+</dl>
+</div>
+
+
+    <!-- Page published by Emacs Muse begins here -->
+<h2><a name="sec1" id="sec1"></a>
+简介</h2>
+
+<p><a href="Emacs.html">Emacs</a> 有一个 picture-mode 可以很方便地编辑 ascii 图片。通常，图片是一
+个大文件的一部分，使用 <code>M-x edit-picture</code> 进入 picture-mode 进行图片编辑，
+编辑完成后使用 <code>C-c C-c</code> 退回原来的 major-mode 。</p>
+
+<p>在 picture-mode 里面，大部分键都进行了重新绑定，普通的字母进行覆盖性插
+入，而删除命令也并不是删除，而是使用空格替换掉原来的字符。</p>
+
+
+<h2><a name="sec2" id="sec2"></a>
+小技巧</h2>
+
+<h3><a name="sec3" id="sec3"></a>
+控制输入字符后移动的方向</h3>
+
+<p class="first">默认情况下输入一个字符之后往右移动一个字符，不过有时候往其他方向移动更
+加方便。</p>
+
+<ul>
+<li><code>C-c &lt;</code> 或 <code>C-c &lt;LEFT&gt;</code> 输入后往左移动</li>
+<li><code>C-c &gt;</code> 或 <code>C-c &lt;RIGHT&gt;</code> 输入后往右移动</li>
+<li><code>C-c ^</code> 或 <code>C-c &lt;UP&gt;</code> 输入后往上移动</li>
+<li><code>C-c .</code> 或 <code>C-c &lt;DOWN&gt;</code> 输入后往下移动</li>
+<li><code>C-c `</code> 或 <code>C-c &lt;HOME&gt;</code> 输入后往左上移动</li>
+<li><code>C-c '</code> 或 <code>C-c &lt;PAGEUP&gt;</code> 输入后往右上移动</li>
+<li><code>C-c /</code> 或 <code>C-c &lt;END&gt;</code> 输入后望左下移动</li>
+<li><code>C-c \</code> 或 <code>C-c &lt;PAGEDOWN&gt;</code> 输入后往右下移动</li>
+</ul>
+
+
+<h3><a name="sec4" id="sec4"></a>
+矩形操作</h3>
+
+<p class="first">picture-mode 里面出了可以使用标准的<a href="EmacsTip.html#Rectangle">矩形操作</a>命令之外，还有一些附加定义
+的命令可用。下面所列举的命令大多数是以覆盖模式执行，即删除的时候用空格
+替代，插入的时候直接覆盖性插入，但是通过 <code>C-u</code> 来传递一个前缀参数的话，
+就可以改变他的默认行为，变成非覆盖模式：</p>
+
+<ul>
+<li><code>C-c C-k</code> kill 一个矩形块的内容</li>
+<li><code>C-c C-y</code> 粘贴上一次 kill 的矩形块的内容</li>
+</ul>
+
+
+
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

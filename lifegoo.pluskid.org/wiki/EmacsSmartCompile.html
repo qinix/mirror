@@ -1,0 +1,280 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>Emacs 的智能编译</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>Emacs 的智能编译</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here--><div class="contents"><h2>Contents</h2>
+<dl>
+<dt>
+<a href="#sec1">我自己写的 smart-compile</a>
+</dt>
+<dt>
+<a href="#sec2">使用 smart-compile.el</a>
+</dt>
+</dl>
+</div>
+
+
+    <!-- Page published by Emacs Muse begins here -->
+<p><a href="Emacs.html">Emacs</a> 提供了一个编译接口，可以使用 <code>M-x compile</code> 来输入编译命令，然后
+Emacs 会以很友好的方式把编译结果显示出来，并允许你快速定位编译产生的错
+误、警告等。然而这样还是有些麻烦，通常把它绑定到一个快捷键，然而这样还
+是比较麻烦，需要自己输入编译命令，其实有很多时候一些编译命令是可以自动
+分析出来的，比如通常在做练习的时候随手写一个 c 文件，那么应该是希望调
+用 gcc 来编译，而如果是在做一个工程，通常目录下面有一个 Makefile ，则
+希望调用 make 来完成编译。既然有想法，就肯定有实现：</p>
+
+<h2><a name="sec1" id="sec1"></a>
+我自己写的 smart-compile</h2>
+
+<p class="first">我自己写了个 smart-compile ，他的功能是查找当前目录，如果找到 Makefile
+之类的东西，就调用 make 直接编译，否则再根据 major-mode 来判断：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .builtin {
+        /* font-lock-builtin-face */
+        color: #b0c4de;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .doc {
+        /* font-lock-doc-face */
+        color: #ffa07a;
+      }
+      .function-name {
+        /* font-lock-function-name-face */
+        color: #87cefa;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .underline {
+        /* underline */
+        text-decoration: underline;
+      }
+    --></style>(global-set-key (kbd <span class="string">"&lt;f9&gt;"</span>) 'smart-compile)
+(<span class="keyword">defun</span> <span class="function-name">smart-compile</span>()
+  <span class="doc">"&#27604;&#36739;&#26234;&#33021;&#30340;C/C++&#32534;&#35793;&#21629;&#20196;
+&#22914;&#26524;&#24403;&#21069;&#30446;&#24405;&#26377;makefile&#21017;&#29992;make -k&#32534;&#35793;&#65292;&#21542;&#21017;&#65292;&#22914;&#26524;&#26159;
+&#22788;&#20110;c-mode&#65292;&#23601;&#29992;gcc -Wall&#32534;&#35793;&#65292;&#22914;&#26524;&#26159;c++-mode&#23601;&#29992;
+g++ -Wall&#32534;&#35793;"</span>
+  (interactive)
+  <span class="comment-delimiter">;; </span><span class="comment">&#26597;&#25214; Makefile
+</span>  (<span class="keyword">let</span> ((candidate-make-file-name '(<span class="string">"makefile"</span> <span class="string">"Makefile"</span> <span class="string">"GNUmakefile</span><span class="string"><span class="underline">"</span></span><span class="underline">))
+</span>        (command nil))
+    (<span class="keyword">if</span> (not (null
+              (find t candidate-make-file-name <span class="builtin">:key</span>
+                    '(<span class="keyword">lambda</span> (f) (file-readable-p f)))))
+        (setq command <span class="string">"make -k "</span>)
+        <span class="comment-delimiter">;; </span><span class="comment">&#27809;&#26377;&#25214;&#21040; Makefile &#65292;&#26597;&#30475;&#24403;&#21069; mode &#26159;&#21542;&#26159;&#24050;&#30693;&#30340;&#21487;&#32534;&#35793;&#30340;&#27169;&#24335;
+</span>        (<span class="keyword">if</span> (null (buffer-file-name (current-buffer)))
+            (message <span class="string">"Buffer not attached to a file, won't compile!"</span>)
+            (<span class="keyword">if</span> (eq major-mode 'c-mode)
+                (setq command
+                      (concat <span class="string">"gcc -Wall -o "</span>
+                              (file-name-sans-extension
+                               (file-name-nondirectory buffer-file-nam<span class="underline">e))
+</span>                              <span class="string">" "</span>
+                              (file-name-nondirectory buffer-file-name<span class="underline">)
+</span>                              <span class="string">" -g -lm "</span>))
+              (<span class="keyword">if</span> (eq major-mode 'c++-mode)
+                  (setq command
+                        (concat <span class="string">"g++ -Wall -o "</span>
+                                (file-name-sans-extension
+                                 (file-name-nondirectory buffer-file-n<span class="underline">ame))
+</span>                                <span class="string">" "</span>
+                                (file-name-nondirectory buffer-file-na<span class="underline">me)
+</span>                                <span class="string">" -g -lm "</span>))
+                (message <span class="string">"Unknow mode, won't compile!"</span>)))))
+    (<span class="keyword">if</span> (not (null command))
+        (<span class="keyword">let</span> ((command (read-from-minibuffer <span class="string">"Compile command: "</span> comma<span class="underline">nd)))
+</span>          (compile command)))))
+</pre></div></div></div></div></div></div></div>
+
+<p>后来我发现这个有些不方便，有时候 Makefile 其实是在上一层目录的，但如果
+把 Makefile 的搜索路径扩充到当前目录以及父目录以及父目录的父目录直到根
+目录的话，有时候又会造成一些问题。我仔细分析自己的问题，通常我要编译的
+东西都是一些零碎的小文件，直接用 gcc 就可以编译，而一般只有当我写一个
+工程的时候才会用到 Makefile ，而工程的文件又是相对集中在某一个目录下面
+的，因此其实直接用文件路径来判断也是一个很实用的方法，正好，我在网上看
+到一个写好的 smart-compile 扩展： smart-compile.el 。</p>
+
+
+<h2><a name="sec2" id="sec2"></a>
+使用 smart-compile.el</h2>
+
+<p class="first">smart-compile.el 提供一个 smart-compile 的函数，它查找当前目录下面有没
+有 Makefile ，如果有，则会询问是否使用 make 进行编译。否则，他会通过查
+看 smart-compile-alist 来根据当前的文件名以及 major-mode 来得到最合适
+的编译命令。</p>
+
+<p>可以在 <a href="http://www.emacswiki.org/elisp/smart-compile.el">EmacsWiki</a> 上面下载到他的最新版本。加载之后就可以通过修改或添加项
+目到 <code>smart-compile-alist</code> 来实现智能编译了！假如我现在在做一个工程，他
+处于 <code>/home/kid/project/foo/</code> 下面，我可以这样写：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>(add-to-list 'smart-compile-alist
+             '(<span class="string">"/home/kid/project/foo/.*"</span> . <span class="string">"make"</span>))
+</pre></div></div></div></div></div></div></div>
+
+<p>但是这样也有一些问题，比如如果我工程里面分了模块，里面又分了子目录，而
+Makefile 是放在工程目录的最顶层的：</p>
+
+<pre class="example">
+project/foo/
+           |-- Makefile
+           |-- foo.c
+           `-- bar/
+                 |-- bar.c
+                 `-- foobar.c
+</pre>
+
+<p>那么，假如我现在在编辑 bar.c ，编辑完之后使用 <code>smart-compile</code> 则会调用
+make 来进行编译，然而这是不正确的，因为 Makefile 不在这儿。不过，也可
+以给 make 指定路径来解决这个问题：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .underline {
+        /* underline */
+        text-decoration: underline;
+      }
+    --></style>(add-to-list 'smart-compile-alist
+             '(<span class="string">"/home/kid/project/foo/.*"</span> . <span class="string">"make -C /home/kid/project</span><span class="string"><span class="underline">/foo"</span></span><span class="underline">))
+</span></pre></div></div></div></div></div></div></div>
+
+<p>其他的也参照设置一下就可以了，在编译命令那里可以使用几个预定义的变量：</p>
+
+<ul>
+<li>%F 完整的绝对路径(如 /usr/local/bin/netscape.bin)</li>
+<li>%f 除去目录前缀的文件名(如 netscape.bin)</li>
+<li>%n 除去扩展名和目录前缀的文件名(如 netscape)</li>
+<li>%e 扩展名(如 bin)</li>
+</ul>
+
+<p>最后，再把他绑定到一个自己喜欢的快捷键上面就万事大吉了！</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>(global-set-key (kbd <span class="string">"&lt;f9&gt;"</span>) 'smart-compile)
+</pre></div></div></div></div></div></div></div>
+
+<p>另外，那个列表的每一项第二个参数并不一定要是作为 shell 命令运行的字符串，
+也可以是一个 lisp 语句，例如，我让他在 <code>muse-mode</code> 的时候使用
+<code>muse-project-publish</code> 来进行编译，则可以这么写：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .underline {
+        /* underline */
+        text-decoration: underline;
+      }
+    --></style>(add-to-list 'smart-compile-alist
+             '(muse-mode . (call-interactively 'muse-project-publish))<span class="underline">)
+</span></pre></div></div></div></div></div></div></div>
+
+<p>这样，我写到这儿，就可以按一下 F9 ，就发布当前页面了，而不是调用
+compile 来进行编译。另外，从他的源代码里面可以看到，如果通过前面查找
+Makefile 以及 smart-compile-alist 的办法都没有办法确定如何编译的时候，
+他会查看文件的头两个字符，如果是 ``#!'' 的话，则编译命令就是当前文件名，
+这个设计与其说是编译，倒不如说是运行了，但是由于 ``#!'' 又是非常灵活的，
+所以这也是一个值得利用的地方，但是如果当前文件没有可执行权限的话，这个
+命令是会运行失败的，也许可以修改一下，题取出 ``#!'' 后面的命令来作为编
+译命令，或者说，这种情况下的编译命令就是为当前文件加上可执行权限。</p>
+
+
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

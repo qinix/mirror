@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>Emacs 如何选择 Major Modes</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>Emacs 如何选择 Major Modes</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here-->
+
+    <!-- Page published by Emacs Muse begins here -->
+<p>你可以显式地为当前的 buffer 选择一个 mode ，但是其实大多数情况 Emacs 会
+根据文件名以及出现在文件里面的特殊字符自动选择对应的 mode 。</p>
+
+<p>要显式地选择一种 mode ，可以使用 ``M-x'' 命令，mode 的名字加上 ``-mode'' 就
+是设置这个 mode 的命令。例如 ``M-x lisp-mode'' 可以打开 Lisp mode 。</p>
+
+<p>当你访问一个文件的时候，Emacs 一般会根据文件名自动选择正确的 mode ，例
+如：当你打开一个文件名以 ``.c'' 结尾的文件时，会自动进入 C mode 。文件名
+和 mode 之间的对应关系是由变量 &quot;auto-mode-alist&quot; 来控制的。它是一个表，
+表里面的每一个元素有这样的形式：</p>
+
+<pre class="example">
+(REGEXP . MODE-FUNCTION)
+</pre>
+
+<p>或者是这种形式</p>
+
+<pre class="example">
+(REGEXP MODE-FUNCTION FLAG)
+</pre>
+
+<p>例如，表里面有一个元素为 (&quot;\\.c\\'&quot; . c-mode) 所以文件名以 ``.c'' 结尾的
+文件会使用 C mode 。如果是第二种形式，并且 FLAG 不是 nil ，那么在调用
+了 MODE-FUNCTION 之后，匹配到 REGEXP 的后缀将会被丢弃，并继续寻找下一
+个匹配。</p>
+
+<p>你也可以在文件的第一个非空白行添加一些特殊的文本告诉 Emacs 对这个文件
+使用某个特定的 mode 。这一行应该包括 <code>``-*-MODENAME-*-''</code> 的形式，也允许
+其他字符出现在这一行，例如：</p>
+
+<pre class="example">
+;-*-Lisp-*-
+</pre>
+
+<p>告诉 Emacs 在这儿使用 Lisp mode 。这种显式地指定将覆盖通过文件名来选择
+的 mode 。另外一种形式是<sup><a name="fnr.1" href="#fn.1">1</a></sup>：</p>
+
+<pre class="example">
+-*- mode: MODENAME;-*-
+</pre>
+
+<p>这样你可以像这样指定一些局部变量：</p>
+
+<pre class="example">
+-*- mode: MODENAME; VAR: VALUE; ... -*-
+</pre>
+
+<p>当一个文件的内容以 ``#!'' 开始，他将被当作 Shell Script 。当你访问这样的
+文件而他的文件名有没有对应的 major mode 的时候，Emacs 使用第一行的解释
+器的名字来选择 mode ，例如 ``perl'' 、``tcl'' 、``bash'' 等。Emacs 会选择合
+适那个解释器的 mode 。这样的选择是由变量 ``interpreter-mode-alist'' 来控
+制的。</p>
+
+<p>当一个文件的内容以 ``#!'' 开始的时候，你无法在第一行以 <code>``-*-''</code> 的形式来指
+定 mode ，因为这样会使 ``#!'' 的功能失效。这个时候 Emacs 会查看第二行是
+否有 <code>``-*-''</code> 的指定 mode 的指令。</p>
+
+<p>但是这样有时候仍然不够用，例如 <a href="Scsh.html">Scsh</a> 通常要使用到头部两行，这个时候可以
+使用 <code>local variables list</code> 的办法，写在文件末尾。这样的列表必须以包含
+<code>Local Variables:</code> 的一行开始，并以包含 <code>End:</code> 的一行结束，每一行有
+<code>VARIABLE:VALUE</code> 的形式，这里是一个例子：</p>
+
+<pre class="example">
+;; Local Variables: **
+;; mode:lisp **
+;; comment-column:0 **
+;; comment-start: &quot;;; &quot;  **
+;; comment-end:&quot;**&quot; **
+;; End: **
+</pre>
+
+<p><a href="Emacs.html">Emacs</a> 会根据第一行识别出 <code>;;</code> 是前缀， <code>**</code> 是后缀，并在处理一下的行的时候
+丢弃这些东西，这使得我们可以把这个列表写到注释里面。值得注意的是，如果
+要在这里指定 major mode ，应该写在第一行，因为设定 major mode 通常会重
+新设定 local variable ，所以在这之前设定的值通常会不起作用。</p>
+
+<p>当你访问一个没有指定 mode 的文件，或者使用 ``C-x b'' 来创建一个新的
+buffer 的时候，变量 ``default-major-mode'' 将指定使用哪个 mode 。他的值
+一般是 ``fundamental-mode'' 。如果这个变量的值是 nil ，major mode 将会根
+据前一个 current buffer 来选取。</p>
+
+<p>当你改变了一个 buffer 的 mode 的时候，你可以用 &quot;M-x normal-mode&quot; 来让
+Emacs 自动选择 mode 。这也正是 ``find-file'' 调用来设置 mode 的方法，它
+还会处理文件相关的局部变量 (如果有的话) 。</p>
+
+<p>调用命令 ``C-x C-w'' 和 ``set-visited-file-name'' 之后如果新的文件名对应一
+个 mode ，那么 Emacs 将进入这个 mode 。但是如果 buffer 的内容指定了一个
+mode ，这种情况不会出现。而且，有些 major mode 不允许改变 mode 。你可
+以把变量 ``change-major-mode-with-file-name'' 设定为 nil 来关闭这个特性。</p>
+
+<h2>Footnote</h2>
+<p class="footnote"><a name="fn.1" href="#fnr.1">1.</a> 可以多次使用 <code>mode</code> ，第一个用于指定 major mode ，后面的用于指定
+minor mode 。</p>
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>特训！交换 Ctrl 和 Caps Lock</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>特训！交换 Ctrl 和 Caps Lock</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here--><div class="contents"><h2>Contents</h2>
+<dl>
+<dt>
+<a href="#sec1">Xorg 下映射的更改</a>
+</dt>
+<dt>
+<a href="#sec2">终端下的映射的更改</a>
+</dt>
+</dl>
+</div>
+
+
+    <!-- Page published by Emacs Muse begins here -->
+<p><a href="Emacs.html">Emacs</a> 的快捷键里面使用了很多 <code>Ctrl</code> ，如果按起来不方便可以把左边的
+<code>Ctrl</code> 和 <code>Caps Lock</code> 交换一下，好像 Solaris 上面的键盘就是这样布局的，不
+过我们也可以改变 PC 键盘的映射。</p>
+
+<h2><a name="sec1" id="sec1"></a>
+Xorg 下映射的更改</h2>
+
+<p class="first">在你的 <code>/etc/X11/xorg.conf</code> 里面找到键盘定义的一节，在里面加入：</p>
+
+<pre class="example">
+Option		&quot;XkbOptions&quot;	&quot;ctrl:swapcaps&quot;
+</pre>
+
+<p>就可以了！</p>
+
+
+<h2><a name="sec2" id="sec2"></a>
+终端下的映射的更改</h2>
+
+<p class="first">终端下面主要使用 keymap 来控制键的映射，如果使用的是 <a href="Debian.html">Debian</a> 系统，可以
+修改 <code>/etc/console-tools/remap</code> 文件，添加：</p>
+
+<pre class="example">
+s/keycode *58 = Caps_Lock/keycode 58 = Control/;
+s/keycode *29 = Control/keycode 29 = Caps_Lock/;
+</pre>
+
+<p>就可以了<sup><a name="fnr.1" href="#fn.1">1</a></sup>。其他的系统请参考系统的文档查看如何修改 keymap 。</p>
+
+<p>恩，这样映射之后确实很多快捷键都方便了很多，但是以前的很多东西都要改了，
+因为系统全局都改过来了，这看来是需要一段适应时间的，特训呀！ :D</p>
+
+<p>现在我已经完全习惯了，很舒服。</p>
+
+<h2>Footnote</h2>
+<p class="footnote"><a name="fn.1" href="#fnr.1">1.</a> 请参见<a href="EnableLeftCtrlInConsole.html">在虚拟终端下面使用Emacs不能使用右边的Alt键问题的解决</a>。</p>
+
+
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

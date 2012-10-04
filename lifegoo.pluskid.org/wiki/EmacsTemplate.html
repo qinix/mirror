@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>使用 template.el 为文件创建默认模板</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>使用 template.el 为文件创建默认模板</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here--><div class="contents"><h2>Contents</h2>
+<dl>
+<dt>
+<a href="#sec1">使用简介</a>
+</dt>
+<dt>
+<a href="#sec2">和 ido 一类的包协同工作</a>
+</dt>
+</dl>
+</div>
+
+
+    <!-- Page published by Emacs Muse begins here -->
+<h2><a name="sec1" id="sec1"></a>
+使用简介</h2>
+
+<p><a href="http://emacs-template.sourceforge.net/">template.el</a> 可以让你在创建文件的时候为不同类型的文件指定初始化模板，模
+板可以包含普通文本以及动态扩展的域。例如，你可以在 <code>~/.templates/</code> 目录
+下包含一个 TEMPLATE.h.tpl 文件：</p>
+
+<pre class="example">
+/* author: (&gt;&gt;&gt;USER_NAME&lt;&lt;&lt;)
+ * date:   (&gt;&gt;&gt;ISO_DATE&lt;&lt;&lt;)
+ */
+
+#ifndef _(&gt;&gt;&gt;FILE_UPCASE&lt;&lt;&lt;)_H
+#define _(&gt;&gt;&gt;FILE_UPCASE&lt;&lt;&lt;)_H 1
+
+(&gt;&gt;&gt;POINT&lt;&lt;&lt;)
+
+#endif /* _(&gt;&gt;&gt;FILE_UPCASE&lt;&lt;&lt;)_H */
+</pre>
+
+<p>那些 <code>(&gt;&gt;&gt;USER_NAME&lt;&lt;&lt;)</code> 一类的域会动态得到扩展，更多的域可以参见
+template.el 的文档，也可以通过添加到 <code>template-expansion-alist</code> 来定义自
+己的域。</p>
+
+<p>template.el 查找模板的方式非常智能，让用户可以为不同的工程、不同类型的
+文件甚至是某一个特殊的文件指定不同的模板，文档里面有一个例子：
+<ul>
+<li>你有一个工程目录 <code>~/proj/</code> 以及子目录 <code>foo/</code> 和 <code>bar/</code> ，他们都包含 <code>.java</code>
+类型的文件。</li>
+<li>你想为工程里面的 <code>.java</code> 文件定义一个一般的模板，同时，为子目录 <code>foo/</code>
+里面的 <code>.java</code> 文件定义另外一个模板。你还想为工程里面的所有文件名为
+<code>proj.java</code> 的文件定义一个单独的模板。</li>
+<li>为了避免让模板文件把你的工程目录搞得一团糟，你首先创建一个
+<code>~/proj/Templates/</code> 目录，并把一般模板的 <code>TEMPLATE.java.tpl</code> 和
+<code>proj.java.tpl</code> 放到这里面。同时，在 <code>~/proj/foo/</code> 目录里面创建用于这个
+子目录的模板文件 <code>TEMPLATE.java.tpl</code> 。</p></li>
+</ul>
+
+<p>template.el 还有其他功能，详细可以参见他的文档。</p>
+
+
+<h2><a name="sec2" id="sec2"></a>
+和 ido 一类的包协同工作</h2>
+
+<p class="first">如果使用 ido 的话，会发现用 ido 的 <code>ido-find-file</code> 来打开文件并不会触发模
+板扩展，查看文档可以看出，应该修改一下 <code>template-find-file-commands</code> 。可
+是把 <code>ido-find-file</code> 加到里面并不管用，查看了一下 template 的源代码可以发
+现，template.el 工作的方式大概是这样的，他通过加入 hook 到
+<code>find-file-not-found-hooks</code> (事实上，这个变量已经在版本 22.1 里面不鼓励使
+用了，取而代之的是 <code>find-file-not-found-functions</code>) ，在新建一个文件的时
+候他提供的 hook 将会被调用，这个时候他判断 <code>this-command</code> ，看他是否在变
+量 <code>template-find-file-commands</code> 里面，如果在里面，那么就会执行 template
+的相应工作了。而我跟踪发现 `ido-find-file' 执行之后 <code>this-command</code> 的值事
+实上是 <code>ido-exit-minibuffer</code> ，因此这儿必须这样设置才会生效：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--     --></style>(add-to-list 'template-find-file-commands
+             'ido-exit-minibuffer)
+</pre></div></div></div></div></div></div></div>
+
+<p>happierbee@newsmth 补充了一下，这样可以在 ido 中用 <code>C-j</code> , <code>C-f</code> 等方式创建
+新文件时也可以触发模板调用了：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+    --></style>(<span class="keyword">dolist</span> (cmd '(ido-select-text ido-magic-forward-char
+                               ido-exit-minibuffer))
+  (add-to-list 'template-find-file-commands cmd))
+</pre></div></div></div></div></div></div></div>
+
+
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

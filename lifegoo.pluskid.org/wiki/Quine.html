@@ -1,0 +1,624 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>打印自身的程序</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>打印自身的程序</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here--><div class="contents"><h2>Contents</h2>
+<dl>
+<dt>
+<a href="#sec1">Quine 简介</a>
+</dt>
+<dt>
+<a href="#sec2">程序搜集</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec3">历史上已知的第一个 quine</a>
+</dt>
+<dt>
+<a href="#sec4">C 语言</a>
+</dt>
+<dt>
+<a href="#sec5">Lisp 语言</a>
+</dt>
+<dt>
+<a href="#sec6">Shell 脚本</a>
+</dt>
+</dl>
+</dd>
+<dt>
+<a href="#sec7">在线资料</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec8">Wikipedia</a>
+</dt>
+<dt>
+<a href="#sec9">The Quine Page</a>
+</dt>
+<dt>
+<a href="#sec10">Wiki Wiki Web 上的 Quine 页面</a>
+</dt>
+<dt>
+<a href="#sec11">David Madore 对于 Quine 的讨论</a>
+</dt>
+<dt>
+<a href="#sec12">The Search For Self-Documenting Code</a>
+</dt>
+</dl>
+</dd>
+</dl>
+</div>
+
+
+    <!-- Page published by Emacs Muse begins here -->
+<h2><a name="sec1" id="sec1"></a>
+Quine 简介</h2>
+
+<p class="first">Quine 以哲学家 Willard van Orman Quine (1908-2000) 而命名，表示一个可以
+生成他自己的完全的源代码的程序。编写出某个语言中最简短的 quine 通常作为
+黑客们的消遣。</p>
+
+<p>作为真正的 quine ，有一些约定：程序不能接受输入或者是打开文件，因为那
+样就可以直接输入源代码或者是把源代码文件直接打开再重新打印出来，就没有
+什么意思了；同时，一个完全空白的程序(产生完全空白的输出，即没有输出)也
+并不能称作 quine 。</p>
+
+<p>quine 的想法最初出现在 <em>Bratley, Paul and Jean Millo. &quot;Computer
+Recreations; Self-Reproducing Automata&quot;, Software &mdash; Practice &amp;
+Experience, Vol. 2 (1972). pp. 397-400</em> 中。Bratley 在看到已知的第一个
+这样的程序以后对 quine 产生了兴趣。这个程序于二十世纪六十年代由爱丁堡
+大学的 Hamish Dewar 以 Atlas Autocode 语言写成。</p>
+
+
+<h2><a name="sec2" id="sec2"></a>
+程序搜集</h2>
+
+<h3><a name="sec3" id="sec3"></a>
+历史上已知的第一个 quine</h3>
+
+<p class="first">这个就是前面提及的以 Atlas Autocode 写成的 quine ：</p>
+
+<pre class="example">
+%BEGIN
+!THIS IS A SELF-REPRODUCING PROGRAM
+%ROUTINESPEC R
+R
+PRINT SYMBOL(39)
+R
+PRINT SYMBOL(39)
+NEWLINE
+%CAPTION %END~
+%CAPTION %ENDOFPROGRAM~
+%ROUTINE R
+%PRINTTEXT '
+%BEGIN
+!THIS IS A SELF-REPRODUCING PROGRAM
+%ROUTINESPEC R
+R
+PRINT SYMBOL(39)
+R
+PRINT SYMBOL(39)
+NEWLINE
+%CAPTION %END~
+%CAPTION %ENDOFPROGRAM~
+%ROUTINE R
+%PRINTTEXT '
+%END
+%ENDOFPROGRAM
+</pre>
+
+
+<h3><a name="sec4" id="sec4"></a>
+C 语言</h3>
+
+<p class="first">这个据说是用 C 语言写成的 quine 中最简短的一个是由 Vlad Taeerov 和
+Rashit Fakhreyev 所写成的仅包含 64 个字符的程序：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .function-name {
+        /* font-lock-function-name-face */
+        color: #87cefa;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style><span class="function-name">main</span>(a){printf(a,34,a=<span class="string">"main(a){printf(a,34,a=%c%s%c,34);}"</span>,34);}
+</pre></div></div></div></div></div></div></div>
+
+<p>我在《高效程序的奥秘》(Henry S. Warren, Jr. <em>Hacker's Delight</em>) 一书的前
+言中找到了这个程序。类似的还有这个例子：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .function-name {
+        /* font-lock-function-name-face */
+        color: #87cefa;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #98fb98;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #eedd82;
+      }
+    --></style><span class="type">char</span>*<span class="variable-name">f</span>=<span class="string">"char*f=%c%s%c;main(){printf(f,34,f,34,10);}%c"</span>;<span class="function-name">main</span>(){printf(f,34,f,34,10);}
+</pre></div></div></div></div></div></div></div>
+
+<p>以及：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .function-name {
+        /* font-lock-function-name-face */
+        color: #87cefa;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .negation-char {
+      }
+      .preprocessor {
+        /* font-lock-preprocessor-face */
+        color: #b0c4de;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #eedd82;
+      }
+    --></style><span class="preprocessor">#define</span> <span class="function-name">q</span>(<span class="variable-name">k</span>)<span class="function-name">main</span>(){<span class="keyword">return</span><span class="negation-char">!</span>puts(#k<span class="string">"\nq("</span>#k<span class="string">")"</span>);}
+q(#define q(k)<span class="variable-name">main</span>(){<span class="keyword">return</span><span class="negation-char">!</span>puts(#k<span class="string">"\nq("</span>#k<span class="string">")"</span>);})
+</pre></div></div></div></div></div></div></div>
+
+<p>作为另外一个比较长的例子的是我在 <a href="http://en.wikipedia.org/wiki/Quine">WikiPedia</a> 上看到的例子：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .function-name {
+        /* font-lock-function-name-face */
+        color: #87cefa;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .preprocessor {
+        /* font-lock-preprocessor-face */
+        color: #b0c4de;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #98fb98;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #eedd82;
+      }
+    --></style><span class="comment-delimiter">/* </span><span class="comment">A simple quine (self-printing program), in standard C. </span><span class="comment-delimiter">*/</span>
+
+<span class="comment-delimiter">/* </span><span class="comment">Note: in designing this quine, we have tried to make the code clear
+ * and readable, not concise and obscure as many quines are, so that
+ * the general principle can be made clear at the expense of length.
+ * In a nutshell: use the same data structure (called "progdata"
+ * below) to output the program code (which it represents) and its own
+ * textual representation. </span><span class="comment-delimiter">*/</span>
+
+<span class="preprocessor">#include</span> <span class="string">&lt;stdio.h&gt;</span>
+
+<span class="type">void</span> <span class="function-name">quote</span>(<span class="keyword">const</span> <span class="type">char</span> *<span class="variable-name">s</span>)
+     <span class="comment-delimiter">/* </span><span class="comment">This function takes a character string s and prints the
+      * textual representation of s as it might appear formatted in C
+      * code. </span><span class="comment-delimiter">*/</span>
+{
+    <span class="type">int</span> <span class="variable-name">i</span>;
+
+    printf(<span class="string">"    \""</span>);
+    <span class="keyword">for</span> (i = 0; s[i]; i++) {
+        <span class="comment-delimiter">/* </span><span class="comment">Certain characters are quoted. </span><span class="comment-delimiter">*/</span>
+        <span class="keyword">if</span> (s[i] == <span class="string">'\\'</span>)
+            printf(<span class="string">"\\\\"</span>);
+        <span class="keyword">else</span> <span class="keyword">if</span> (s[i] == <span class="string">'"'</span>)
+            printf(<span class="string">"\\\""</span>);
+        <span class="keyword">else</span> <span class="keyword">if</span> (s[i] == <span class="string">'\n'</span>)
+            printf(<span class="string">"\\n"</span>);
+        <span class="comment-delimiter">/* </span><span class="comment">Others are just printed as such. </span><span class="comment-delimiter">*/</span>
+        <span class="keyword">else</span>
+            printf(<span class="string">"%c"</span>, s[i]);
+        <span class="comment-delimiter">/* </span><span class="comment">Also insert occasional line breaks. </span><span class="comment-delimiter">*/</span>
+        <span class="keyword">if</span> (i % 48 == 47)
+            printf(<span class="string">"\"\n    \""</span>);
+    }
+    printf(<span class="string">"\""</span>);
+}
+
+<span class="comment-delimiter">/* </span><span class="comment">What follows is a string representation of the program code, from
+ * beginning to end (formated as per quote() function, above), except
+ * that the string _itself_ is coded as two consecutive '@'
+ * characters. </span><span class="comment-delimiter">*/</span>
+<span class="keyword">const</span> <span class="type">char</span> <span class="variable-name">progdata</span>[] =
+    <span class="string">"/* A simple quine (self-printing program), in st"</span>
+    <span class="string">"andard C. */\n\n/* Note: in designing this quine, "</span>
+    <span class="string">"we have tried to make the code clear\n * and read"</span>
+    <span class="string">"able, not concise and obscure as many quines are"</span>
+    <span class="string">", so that\n * the general principle can be made c"</span>
+    <span class="string">"lear at the expense of length.\n * In a nutshell:"</span>
+    <span class="string">" use the same data structure (called \"progdata\"\n"</span>
+    <span class="string">" * below) to output the program code (which it r"</span>
+    <span class="string">"epresents) and its own\n * textual representation"</span>
+    <span class="string">". */\n\n#include &lt;stdio.h&gt;\n\nvoid quote(const char "</span>
+    <span class="string">"*s)\n     /* This function takes a character stri"</span>
+    <span class="string">"ng s and prints the\n      * textual representati"</span>
+    <span class="string">"on of s as it might appear formatted in C\n      "</span>
+    <span class="string">"* code. */\n{\n    int i;\n\n    printf(\"    \\\"\");\n "</span>
+    <span class="string">"   for (i = 0; s[i]; i++) {\n        /* Certain c"</span>
+    <span class="string">"haracters are quoted. */\n        if (s[i] == '\\\\"</span>
+    <span class="string">"')\n            printf(\"\\\\\\\\\");\n        else if ("</span>
+    <span class="string">"s[i] == '\"')\n            printf(\"\\\\\\\"\");\n       "</span>
+    <span class="string">" else if (s[i] == '\\n')\n            printf(\"\\\\n\""</span>
+    <span class="string">");\n        /* Others are just printed as such. *"</span>
+    <span class="string">"/\n        else\n            printf(\"%c\", s[i]);\n "</span>
+    <span class="string">"       /* Also insert occasional line breaks. */"</span>
+    <span class="string">"\n        if (i % 48 == 47)\n            printf(\"\\"</span>
+    <span class="string">"\"\\n    \\\"\");\n    }\n    printf(\"\\\"\");\n}\n\n/* What "</span>
+    <span class="string">"follows is a string representation of the progra"</span>
+    <span class="string">"m code, from\n * beginning to end (formated as pe"</span>
+    <span class="string">"r quote() function, above), except\n * that the s"</span>
+    <span class="string">"tring _itself_ is coded as two consecutive '@'\n "</span>
+    <span class="string">"* characters. */\nconst char progdata[] =\n@@;\n\nin"</span>
+    <span class="string">"t main(void)\n     /* The program itself... */\n{\n"</span>
+    <span class="string">"    int i;\n\n    /* Print the program code, chara"</span>
+    <span class="string">"cter by character. */\n    for (i = 0; progdata[i"</span>
+    <span class="string">"]; i++) {\n        if (progdata[i] == '@' &amp;&amp; prog"</span>
+    <span class="string">"data[i + 1] == '@')\n            /* We encounter "</span>
+    <span class="string">"two '@' signs, so we must print the quoted\n     "</span>
+    <span class="string">"        * form of the program code. */\n        {"</span>
+    <span class="string">"\n            quote(progdata);    /* Quote all. *"</span>
+    <span class="string">"/\n            i++;                /* Skip second"</span>
+    <span class="string">" '@'. */\n        } else\n            printf(\"%c\","</span>
+    <span class="string">" progdata[i]);  /* Print character. */\n    }\n   "</span>
+    <span class="string">" return 0;\n}\n"</span>;
+
+<span class="type">int</span> <span class="function-name">main</span>(<span class="type">void</span>)
+     <span class="comment-delimiter">/* </span><span class="comment">The program itself... </span><span class="comment-delimiter">*/</span>
+{
+    <span class="type">int</span> <span class="variable-name">i</span>;
+
+    <span class="comment-delimiter">/* </span><span class="comment">Print the program code, character by character. </span><span class="comment-delimiter">*/</span>
+    <span class="keyword">for</span> (i = 0; progdata[i]; i++) {
+        <span class="keyword">if</span> (progdata[i] == <span class="string">'@'</span> &amp;&amp; progdata[i + 1] == <span class="string">'@'</span>)
+            <span class="comment-delimiter">/* </span><span class="comment">We encounter two '@' signs, so we must print the quoted
+             * form of the program code. </span><span class="comment-delimiter">*/</span>
+        {
+            quote(progdata);    <span class="comment-delimiter">/* </span><span class="comment">Quote all. </span><span class="comment-delimiter">*/</span>
+            i++;                <span class="comment-delimiter">/* </span><span class="comment">Skip second '@'. </span><span class="comment-delimiter">*/</span>
+        } <span class="keyword">else</span>
+            printf(<span class="string">"%c"</span>, progdata[i]);  <span class="comment-delimiter">/* </span><span class="comment">Print character. </span><span class="comment-delimiter">*/</span>
+    }
+    <span class="keyword">return</span> 0;
+}
+</pre></div></div></div></div></div></div></div>
+
+
+<h3><a name="sec5" id="sec5"></a>
+Lisp 语言</h3>
+
+<p class="first">关于 <a href="CommonLisp.html">Common Lisp</a> 里面的 quine ，有一篇专门的文章： Peter Norvig,
+<em>Self-Reproducing Programs in Common Lisp</em> 。事实上，在 Lisp 里面，任何
+的数字都可以算是一个 quine ，但这多少显得有点无聊，所以通常限定必须是
+non-atomic 的表达式。作为一个经典的例子，在任何 Lisp 方言里面都成立的
+一个 quine 是：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+    --></style>((<span class="keyword">lambda</span> (x) (list x (list (quote quote) x)))
+ (quote (<span class="keyword">lambda</span> (x) (list x (list (quote quote) x)))))
+</pre></div></div></div></div></div></div></div>
+
+<p>在有反引号的语法的“现代 Lisp ”里面，可以有更紧凑的写法：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+    --></style>((<span class="keyword">lambda</span> (x) (list x `',x)) '(<span class="keyword">lambda</span> (x) (list x `',x)))
+</pre></div></div></div></div></div></div></div>
+
+<p>在 <a href="CommonLisp.html">Common Lisp</a> 里面还可以这么写：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+    --></style>((<span class="keyword">lambda</span> (list) (list list `',list))
+ '(<span class="keyword">lambda</span> (list) (list list `',list)))
+</pre></div></div></div></div></div></div></div>
+
+<p>再从理论上来讨论的话，对于 Y-operator 来说，如果应用正则序求值的话，我
+们可以得到</p>
+
+<pre class="example">
+(Y identity) = (identity (Y identity)) = (Y identity)
+</pre>
+
+<p>不过在像 Lisp 这种应用序求值的语言中，这只会造成无限循环而已。</p>
+
+<p>另外还有一些比较新的 <a href="CommonLisp.html">Common Lisp</a> 里面的 quine ：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--     --></style>#1=(setq *print-circle* '#1#)
+</pre></div></div></div></div></div></div></div>
+
+<p>以及：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--     --></style>(identity -)
+</pre></div></div></div></div></div></div></div>
+
+<p>对于 <a href="Scheme.html">Scheme</a> ，有 Tanaka Tomoyuki 写的</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+    --></style>((<span class="keyword">lambda</span> (x) `(,(reverse x) ',x)) '(`(,(reverse x) ',x) (x) lambda))
+</pre></div></div></div></div></div></div></div>
+
+<p>以及 Douglass Auclair 用 <a href="Elisp">Elisp</a> 写的</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>(<span class="keyword">let</span> ((a <span class="string">"(let ((a %c%s%c)) (format a 34 a 34))"</span>)) (format a 34 a 34))
+</pre></div></div></div></div></div></div></div>
+
+
+<h3><a name="sec6" id="sec6"></a>
+Shell 脚本</h3>
+
+<p class="first">对于 Shell 脚本也有很多 quine ，比如 Brian A.E. Meekings 写的适用于 sh
+和 ksh 的脚本：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .builtin {
+        /* font-lock-builtin-face */
+        color: #b0c4de;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #eedd82;
+      }
+    --></style><span class="variable-name">b</span>=<span class="string">\\</span>;<span class="variable-name">bb</span>=$<span class="variable-name">b</span>$<span class="variable-name">b</span>$<span class="variable-name">b</span>$<span class="variable-name">b</span>;<span class="variable-name">q</span>=<span class="string">\'</span>;<span class="variable-name">x</span>=<span class="string">'echo "b=$bb;bb=\$b\$b\$b\$b;q=$b$q;x=$q$x$q";echo $x'</span>
+<span class="builtin">echo</span> <span class="string">"b=$bb;bb=\$b\$b\$b\$b;q=$b$q;x=$q$x$q"</span>;<span class="builtin">echo</span> $<span class="variable-name">x</span>
+</pre></div></div></div></div></div></div></div>
+
+<p>以及 Mark Wooding 的作品</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .builtin {
+        /* font-lock-builtin-face */
+        color: #b0c4de;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #eedd82;
+      }
+    --></style><span class="comment-delimiter">#</span><span class="comment">! /bin/sh
+</span><span class="variable-name">q</span>=<span class="string">"'"</span> <span class="variable-name">qq</span>=<span class="string">'echo \#! /bin/sh;echo q=\"$q\" qq=${q}$qq$q;echo eval \$qq'</span>
+<span class="builtin">eval</span> $<span class="variable-name">qq</span>
+</pre></div></div></div></div></div></div></div>
+
+<p>等，另外，作为魔数字 <code>#!</code> 的经典把戏，下面的脚本也轻易地把自己打印了出来：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+    --></style><span class="comment-delimiter">#</span><span class="comment">!/bin/cat
+</span>&#20219;&#20309;&#20869;&#23481;
+</pre></div></div></div></div></div></div></div>
+
+
+
+<h2><a name="sec7" id="sec7"></a>
+在线资料</h2>
+
+<h3><a name="sec8" id="sec8"></a>
+Wikipedia</h3>
+
+<p><a href="http://en.wikipedia.org/wiki/Quine">Wikipedia</a> 上有对 quine 做了详尽解释的页面，并举了一些例子。</p>
+
+
+<h3><a name="sec9" id="sec9"></a>
+The Quine Page</h3>
+
+<p class="first">Gary P. Thompson 的<a href="http://www.nyx.net/~gthompso/quine.htm">这个页面</a>里面搜集了大量的 quine 程序，按照语言进行分
+类，非常不错！</p>
+
+
+<h3><a name="sec10" id="sec10"></a>
+Wiki Wiki Web 上的 Quine 页面</h3>
+
+<p><a href="http://c2.com/cgi/wiki?QuineProgram">这里</a>以一个失败的试图构造 quine 的例子讲述了 quine 的困难，并且列举了许
+多 quine 程序。</p>
+
+
+<h3><a name="sec11" id="sec11"></a>
+David Madore 对于 Quine 的讨论</h3>
+
+<p><a href="http://www.madore.org/~david/computers/quine.html">这里</a>对 Quine 做了非常详尽的讨论，如果你对 Quine 很感兴趣的话，这是非常
+不错的资料。</p>
+
+
+<h3><a name="sec12" id="sec12"></a>
+The Search For Self-Documenting Code</h3>
+
+<p class="first">Craig S. Kaplan 的<a href="http://www.nyx.net/~gthompso/quine.htm">这篇文章</a>讲述了编写 quine 的方法。</p>
+
+
+
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

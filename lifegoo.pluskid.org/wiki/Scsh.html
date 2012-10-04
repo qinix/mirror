@@ -1,0 +1,204 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>Scsh -- a Scheme Shell</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>Scsh -- a Scheme Shell</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here--><div class="contents"><h2>Contents</h2>
+<dl>
+<dt>
+<a href="#sec1">Scsh 简介</a>
+</dt>
+<dt>
+<a href="#sec2">Scsh 作为脚本语言</a>
+</dt>
+<dt>
+<a href="#sec3">Scsh 作为系统编程语言</a>
+</dt>
+<dt>
+<a href="#sec4">Scsh 作为一个可移植的编程环境</a>
+</dt>
+<dt>
+<a href="#sec5">我自己的一些脚本</a>
+</dt>
+</dl>
+</div>
+
+
+    <!-- Page published by Emacs Muse begins here -->
+<h2><a name="sec1" id="sec1"></a>
+Scsh 简介</h2>
+
+<p class="first">与其说 Scsh 是一个 shell ，还不如说他是一个完整的 scheme 的实现。事实
+上，他是在 Scheme 48<sup><a name="fnr.1" href="#fn.1">1</a></sup> 的基础上做出来的，任何现有的 scheme 代码都可以
+不加修改地在他里面运行<sup><a name="fnr.2" href="#fn.2">2</a></sup>，另外，他还提供了完整的 Posix 接口、完整的网络
+支持、强大的字符串操、AWK 式的宏、基于 s-expression 表示的正则表达式以
+及线程支持。相比之下，scsh 和 Emacs 的 elisp 是不同的，elisp 是模拟一
+个 sh 类似的 shell 语法，再经过转换成为 lisp 代码再执行，而 scsh 则完
+全使用 lisp 语法，下面是一个例子：</p>
+
+<pre class="example">
+gunzip &lt; paper.tex.gz | detex | spell | lpr -Ppulp &amp;
+</pre>
+
+<p>在 scsh 里面会被写为：</p>
+
+<pre class="example">
+(&amp; (| (gunzip) (detex) (spell) (lpr -Ppulp)) ; background a pipeline
+    (&lt; paper.tex.gz))                         ; with this redirection
+</pre>
+
+
+<h2><a name="sec2" id="sec2"></a>
+Scsh 作为脚本语言</h2>
+
+<p class="first">目前 scsh 并不是专门设计来作为交互使用的，而是主要作为脚本编程之用，目
+前的版本甚至连最简单的命令行编辑功能都没有，我试验过，确实非常难用，你
+甚至无法用 Backspace 来删除同一行上刚刚键入的字符。文档里面提供的解决办
+法是使用 Commander S 作为 scsh 的上层交互界面<sup><a name="fnr.3" href="#fn.3">3</a></sup>，Scsh 文档里面提供的
+commander-s 的下载页面已经不能访问了，但是可以在sourceforge 里 scsh 的
+cvs 仓库里面找到 commander-s 的源代码下载，目前我可以使用匿名登录的方式
+通过 cvs 下载到：</p>
+
+<pre class="example">
+cvs -d:pserver:anonymous@scsh.cvs.sourceforge.net:/cvsroot/scsh login
+cvs -z3 -d:pserver:anonymous@scsh.cvs.sourceforge.net:/cvsroot/scsh \
+    co -P commander-s
+</pre>
+
+<p>注意如果提示输入密码，只需直接回车就可以了。在<a href="http://www.deinprogramm.de/scheme-2005/05-knauel/05-knauel.pdf">这里</a>可以找到 commander-s
+的一份很不错的文档。要安装 commander-s 的话，还需要其他的东西：</p>
+
+<ul>
+<li>到 <a href="http://lamp.epfl.ch/~schinz/scsh_packages/">http://lamp.epfl.ch/~schinz/scsh_packages/</a> 去下载 scsh 的
+install-lib</li>
+<li>到 <a href="ftp://ftp.scsh.net/pub/scsh/packages/scsh-ncurses/">ftp://ftp.scsh.net/pub/scsh/packages/scsh-ncurses/</a> 去下载
+scsh-ncurses 。</li>
+<li>到 <a href="http://savannah.nongnu.org/download/sunterlib/">http://savannah.nongnu.org/download/sunterlib/</a> 去下载 Sunterlib
+。</li>
+</ul>
+
+<p>把上面几个包分别装上之后，只要运行 commander-s 目录下的 install.scm 就
+可以安装上了。</p>
+
+<p>当然还有其他的方法：</p>
+
+<ul>
+<li>使用 <a href="Emacs.html">Emacs</a> 里面的 cmuscheme 包：键入 C-u M-x runscheme 并在请求程序
+中键入 scsh 即可。</li>
+<li>使用行编辑器 rlwrap ，安装之后可以这样来启动交互：</li>
+</ul>
+
+<pre class="example">
+rlwrap -c -b '(){}[].,=&amp;^%$#@\;|' scsh
+</pre>
+<ul>
+<li>使用一些有输入输出功能的终端模拟器，例如为 Plan 9<sup><a name="fnr.4" href="#fn.4">4</a></sup> 设计的 9term 就是
+一个例子，他的主页在 <a href="http://www.cs.su.oz.au/~matty/9term/index.html">http://www.cs.su.oz.au/~matty/9term/index.html</a>
+- 或者，任何其他可以在里面运行一个子进程的文本编辑器，例如 wily 。</li>
+</ul>
+
+
+<h2><a name="sec3" id="sec3"></a>
+Scsh 作为系统编程语言</h2>
+
+<p class="first">Scsh 提供了很多操作系统的底层操作接口，除了信号控制之外，目前的版本完
+全支持 Posix 并且还有许多非 Posix 扩展，如 sockets 支持等。换句话说，
+在 Scsh 里面可以使用进程操作、文件读写、目录访问、tty &amp; pty 支持，文件
+锁定、管道、日期以及环境变量等等所有的操作。这样，就可以使用 scheme 而
+不是 C 语言来进行系统编程了。</p>
+
+
+<h2><a name="sec4" id="sec4"></a>
+Scsh 作为一个可移植的编程环境</h2>
+
+<p class="first">Scsh 是为可移植性而设计的，他在 Scheme 48 的基础上实现。Scheme 48 作为
+scheme 的一个字节解释器实现，可以在任何拥有 C 编译器的平台上得到编译。
+Scsh 的 OS 接口也是非常具有可移植性的。目前 Scsh 代码可以不加修改地运
+行在 DEC Ultrix, GNU Hurd, HP-UX, IBM AIX, Linux, NetBSD/i386,
+NeXTSTEP, SGI IRIX, Solaris 和 SunOS 上，并且移植到其他系统上也并非难
+事。</p>
+
+
+<h2><a name="sec5" id="sec5"></a>
+我自己的一些脚本</h2>
+
+<p class="first">这里列举一些我自己用 Scsh 写的一些脚本，以及它们的设计思路等等。</p>
+
+<ul>
+<li><a href="ScshScriptUploadWiki.html">把 wiki 页面上传到主页空间</a></li>
+</ul>
+
+<h2>Footnote</h2>
+<p class="footnote"><a name="fn.1" href="#fnr.1">1.</a> Jonathan Rees 和 Richard Kelsey 说作的一个 scheme 实现。</p>
+
+<p class="footnote"><a name="fn.2" href="#fnr.2">2.</a> 只有一个不兼容的地方，就是 symbol 在 scsh 里面是区分大小写的，就是
+说： <code>(eq? 'symbol 'Symbol)</code> 在 scsh 里面求值会得到 #f ，而在符合
+R5RS 的解释器(包含本来的 Scheme 48)上会得到 #t 。</p>
+
+<p class="footnote"><a name="fn.3" href="#fnr.3">3.</a> 事实上，我觉得任何 shell 都应该这样设计，然后可以做一个通用的交互
+前端，这样，既减轻了 shell 实现的负担，又让用户从一个 shell 迁移到
+另外一个 shell 的时候减轻了许多习惯上的痛苦。</p>
+
+<p class="footnote"><a name="fn.4" href="#fnr.4">4.</a> 引用 Plan 9 wiki 上的一句话：Developed by the people who devised
+Unix, i.e. Bell Labs, Plan 9 takes OS development back into the
+realm of research. Plan 9 is an attempt to work on the concept of
+operating system from the ground up, reworking the whole idea
+using modern concepts and technology. 关于 Plan 9 的更多东西请参见
+<a href="http://cm.bell-labs.com/plan9/">http://cm.bell-labs.com/plan9/</a> 或者也可以自己 google 出更多东西来。</p>
+
+
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

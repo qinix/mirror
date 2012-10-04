@@ -1,0 +1,690 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>jump or exec</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>jump or exec</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here--><div class="contents"><h2>Contents</h2>
+<dl>
+<dt>
+<a href="#sec1">EWMH/NetWM compatible X Window Manager</a>
+</dt>
+<dt>
+<a href="#sec2">独立的 Python 版 jump-or-exec</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec3">截获全局快捷键</a>
+</dt>
+<dt>
+<a href="#sec4">列出所有任务</a>
+</dt>
+<dt>
+<a href="#sec5">将一个窗口切换到前台</a>
+</dt>
+<dt>
+<a href="#sec6">构造快捷键值</a>
+</dt>
+<dt>
+<a href="#sec7">提示窗口</a>
+</dt>
+<dt>
+<a href="#sec8">代码</a>
+</dt>
+</dl>
+</dd>
+<dt>
+<a href="#sec9">在 FVWM 中实现</a>
+</dt>
+</dl>
+</div>
+
+
+    <!-- Page published by Emacs Muse begins here -->
+<p>jump or exec 的概念是我在接触 <a href="Sawfish.html">Sawfish</a> 的时候接知道的。通常对于一个任
+务，你并不需要关心它是否已经在运行了，你需要它的时候只需要一个指令，如
+果它已经在运行了，那么就把他带到前台来，否则就启动一个。而把这个指令绑
+定到一个全局快捷键上，也就成了 jump or exec 了。</p>
+
+<p>在 <a href="Sawfish.html">Sawfish</a> 里面有好几个扩展可以方便地实现这个功能，我不知道在其它窗口
+管理器里面怎么做，自己也没有用过 FVWM 之类的，而像 KDE 的 kwin 之类的
+窗口管理器好像也没有相关的东西。</p>
+
+<p>由于对 Konqueror 文件管理器特别喜爱，同时 Konqueror 又要在 KDE 下面使
+用才舒服，在使用 <a href="Sawfish.html">Sawfish</a> 代替 KDE 的 kwin 一段时间以后，我还是决定制作
+在其它窗口管理器下可以使用的 jump or exec 功能，因为 <a href="Sawfish.html">Sawfish</a> 搭配 KDE
+使用还是有一些小问题的。</p>
+
+<h2><a name="sec1" id="sec1"></a>
+EWMH/NetWM compatible X Window Manager</h2>
+
+<p class="first">无意中发现 <code>wmctrl</code> 这个程序，可以通过命令行的方式控制 EWMH/NetWM 兼容的
+窗口管理器，其中就包括 kwin 和 Icewm 等。其实只要可以通过命令行控制的
+话，用脚本来实现这个功能应该是很方便的，例如，这样一个脚本：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .negation-char {
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #eedd82;
+      }
+    --></style><span class="comment-delimiter">#</span><span class="comment">!/bin/sh
+</span>
+<span class="variable-name">wind</span>=$<span class="variable-name">1</span>
+<span class="variable-name">cmd</span>=$<span class="variable-name">2</span>
+
+<span class="keyword">if</span> <span class="negation-char">!</span> wmctrl -a $<span class="variable-name">wind</span>
+<span class="keyword">then</span>
+    $<span class="variable-name">cmd</span> &amp;
+<span class="keyword">fi</span>
+</pre></div></div></div></div></div></div></div>
+
+<p>便可以实现这个功能，只是还没有快捷键，KDE 的控制中心里可以设置快捷键，
+但是还有一个独立的程序叫做 <code>xbindkeys</code> 可以在任何窗口管理器下设置全局快捷
+键，用于运行特定的程序。这样，我写了一个通用的 <a href="Python.html">Python</a> 脚本：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #eedd82;
+      }
+    --></style><span class="comment">#!/usr/bin/python
+</span>
+<span class="comment">######################################################################
+## file:   jump-or-exec.py
+## author: pluskid &lt;pluskid.zju@gmail.com&gt;
+## date:   2007-01-21
+##
+## description:
+##   Jump or Exec utilities -- jump to perticular window or start a
+##   new one if it doesn't exist.
+##
+##   There's `wmctrl' that can control a interact with an X Window
+##   manager that is compatible with the EWMH/NetWM
+##   specification. (Some examples of EWMH/NetWM compatible window
+##   managers include recent versions of Enlightenment, Icewm, Kwin,
+##   Sawfish and Xfce.)
+##
+##   There's another utility `xbindkeys' which can be used to customize
+##   your own keyboard shortcut.
+##
+##   Combining the two tools, here comes the jump-or-exec utilities:
+##   save this file as `jump-or-exec.py' and then:
+##    $ chmod +x jump-or-exec.py
+##    $ ln -s joe-browser jump-or-exec.py
+##   then you can execute ./joe-browser to jump or exec the firefox web
+##   browser. If it works, you can customize the progs variable to set
+##   your own programs to execute and create those symlinks. Finally you
+##   can bind a shortcut to each program with `xbindkeys'. This method
+##   works under any window manager that is compatible with the EWMH/NetWM
+##   specification.
+##
+######################################################################
+</span>
+<span class="keyword">import</span> os
+<span class="keyword">import</span> sys
+
+<span class="variable-name">progs</span> = {
+    <span class="string">"joe-terminal"</span> : (<span class="string">"urxvt.URxvt -x"</span>, <span class="string">"urxvt -e screen -xRRS terminal"</span>),
+    <span class="string">"joe-emacs"</span> : (<span class="string">"emacs@"</span>, <span class="string">"fe -f server-start"</span>),
+    <span class="string">"joe-gnus"</span> : (<span class="string">"gnus@"</span>, <span class="string">"fe --eval \'(setq frame-title-format \"gnus@%b\")\' -f gnus"</span>),
+    <span class="string">"joe-fm"</span> : (<span class="string">"konqueror.Konqueror -x"</span>, <span class="string">"kfmclient openProfile filemanagement"</span>),
+    <span class="string">"joe-browser"</span> : (<span class="string">"Gecko.Firefox-bin -x"</span>, <span class="string">"firefox"</span>),
+    <span class="string">"joe-bbs"</span> : (<span class="string">"qterm.Qterm -x"</span>, <span class="string">"qterm"</span>)
+    }
+
+<span class="keyword">if</span> len(sys.argv) &lt; 1:
+    <span class="keyword">print</span> <span class="string">"Don't know what program to start. Please execute with one of:\n%s\n"</span> % \
+          <span class="string">"\n"</span>.join([<span class="string">"\t"</span>+prog_name <span class="keyword">for</span> prog_name <span class="keyword">in</span> progs.keys()])
+    sys.exit(-1)
+
+<span class="variable-name">prog</span> = os.path.basename(sys.argv[0])
+wind,cmdline = progs[prog]
+<span class="keyword">if</span> os.system(<span class="string">"wmctrl -a %s"</span> % wind) != 0:
+    os.system(<span class="string">"%s &amp;"</span> % cmdline)         <span class="comment"># execute in background
+</span></pre></div></div></div></div></div></div></div>
+
+<p>并且做一系列的链接 ( joe-fm、joe-gnus 等 ) 到这个脚本文件，它根据自己
+被调用的名字来启动对应的程序，于是我就在 <code>xbindkeys</code> 里面执行这些软链接：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style><span class="comment-delimiter">###########################</span><span class="comment">
+</span><span class="comment-delimiter"># </span><span class="comment">xbindkeys configuration #
+</span><span class="comment-delimiter">###########################</span><span class="comment">
+</span><span class="comment-delimiter"># </span><span class="comment">My jump-or-exec utilities
+</span><span class="string">"/home/kid/bin/joe-terminal"</span>
+Mod4 + t
+
+<span class="string">"/home/kid/bin/joe-browser"</span>
+Mod4 + f
+
+<span class="string">"/home/kid/bin/joe-emacs"</span>
+Mod4 + e
+
+<span class="string">"/home/kid/bin/joe-gnus"</span>
+Mod4 + g
+
+<span class="string">"/home/kid/bin/joe-bbs"</span>
+Mod4 + q
+
+<span class="string">"/home/kid/bin/joe-fm"</span>
+Mod4 + c
+
+<span class="comment-delimiter">##################################</span><span class="comment">
+</span><span class="comment-delimiter"># </span><span class="comment">End of xbindkeys configuration #
+</span><span class="comment-delimiter">##################################</span><span class="comment">
+</span></pre></div></div></div></div></div></div></div>
+
+<p>这样就能实现 jump-or-exec 的功能了。但是效果不如 <a href="Sawfish.html">Sawfish</a> 里面内置的
+jump-or-exec 好，因为每次都是启动一个脚本，有一些微微的延迟，而且有时
+候切换过去之后没有获得焦点。于是我决定做一个像 <code>xbindkeys</code> 一样的后台进
+程，自己处理快捷键捕获、窗口切换已经运行程序，而不是用几个命令组合起来。</p>
+
+
+<h2><a name="sec2" id="sec2"></a>
+独立的 Python 版 jump-or-exec</h2>
+
+<p class="first">正好 <a href="Python.html">Python</a> 有 Xlib 的库，可是后来发现它的文档其实非常不全，很多东西都
+没有提到，上它的网站也看到提到这个问题，并且还在征集维护者。不过我对
+Xlib 和 <a href="Python.html">Python</a> 都还不熟悉，只好看一些源代码来摸索如何做。其中主要查看
+了 <code>xbindkeys</code> 和 <code>pypanel</code> 两个程序的源代码，大概搞清楚了几个重要的地方如
+何实现。</p>
+
+<h3><a name="sec3" id="sec3"></a>
+截获全局快捷键</h3>
+
+<p class="first">X 被设计于可以在网络上运行，为了不被大量的事件传输阻塞，通常 X 在你明
+确要求某些事件之后才会将事件发送给你。我通过注册 <code>root</code> 窗口的
+<code>KeyPress</code> 事件来收取全局快捷键的信息：</p>
+
+<pre class="example">
+root.change_attributes(event_mask=(X.KeyPressMask|X.KeyReleaseMask))
+</pre>
+
+<p>但是并不是所有的按键都会被截获，还必须告诉 X 你对哪些快捷键感兴趣：</p>
+
+<pre class="example">
+root.grab_key(keycode, modifier, False, X.GrabModeAsync, X.GrabModeAsync)
+</pre>
+
+<p>这样就可以截获带 <code>modifier</code> 修饰的 <code>keycode</code> 按键了。通常在按下快捷键的时
+候不会关心 <code>CapsLock</code> 、 <code>NumLock</code> 等键的状态，但是在 X 里面这是有区别的，
+于是需要把他们分别按下、同时按下以及没有按下的情况都进行捕获。而这几个
+<code>Lock</code> 键的值又是可以经过映射的，所以需要动态获取，具体可以参见下面所附
+的源代码。</p>
+
+
+<h3><a name="sec4" id="sec4"></a>
+列出所有任务</h3>
+
+<p class="first">因为要查找是否有已经存在的窗口，所以需要列出所有的正在运行的任务的窗
+口，通过查看 <code>pypanel</code> 的源代码，我发现这段代码可以列出这些窗口：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #eedd82;
+      }
+    --></style><span class="variable-name">tasks</span> = root.get_full_property(disp.intern_atom(<span class="string">"_NET_CLIENT_LIST"</span>),Xatom.WINDOW).value
+<span class="keyword">for</span> task <span class="keyword">in</span> tasks:
+    wind = disp.create_resource_object(<span class="string">"window"</span>, task)
+    name = wind.get_wm_name()
+</pre></div></div></div></div></div></div></div>
+
+
+<h3><a name="sec5" id="sec5"></a>
+将一个窗口切换到前台</h3>
+
+<p class="first">如果找到对应的窗口，就把它切换到前台，这段代码可以完成这个工作：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--     --></style>wind.configure(stack_mode=X.Above)
+wind.set_input_focus(X.RevertToNone, X.CurrentTime)
+</pre></div></div></div></div></div></div></div>
+
+<p>但是当窗口是最小化的时候并不能正常工作，而是要特殊处理，先用 <code>map</code> 函数
+让窗口显示出来。但是由于 X 是异步的， <code>map</code> 并不是立即有效果，而设置输入
+焦点又必须是在窗口显示出来的时候才有用，于是通常在 <code>map</code> 后面的设置焦点
+的调用都没有任何效果，导致虽然窗口切换到前面了，但是还是没有输入焦点。
+我试了一下 <code>pypanel</code> 发现它确实也是有这个问题的。不过这也并不是不能解决，我
+只要登记这个窗口的显示事件，在窗口显示出来的时候再设置焦点就可以了。</p>
+
+<p>为了避免同时有多个窗口要设置焦点的情况，我设置了一个标识，用于标识下一
+个需要设置焦点的窗口，我想一个窗口应该有唯一标识符，但是 <a href="Python.html">Python</a> 的
+Xlib 文档好像东西实在太少了，于是我就用窗口的类名称来标识吧，反正这个
+也不需要太精确。</p>
+
+<p>如果窗口没有最小化，那么直接升到前台，并设置焦点，如果是最小化了，那么
+就订阅这个窗口的显示事件，并设置下一个等待设置焦点的窗口为它。在事件循
+环里面捕捉到窗口显示的事件并且标识对应的时候，再设置焦点，同时退订该窗
+口的显示事件。具体可以参考下面给出的源代码。</p>
+
+
+<h3><a name="sec6" id="sec6"></a>
+构造快捷键值</h3>
+
+<p class="first">修饰键不多，可以建立一个对应关系表，比如 &quot;Control&quot; 对应到
+<code>ControlMask</code> ，多个修饰键的时候按位或一下就可以了。而键值可以使用 Xlib
+里面的 <code>string_to_keysym</code> 转换为 <code>keysym</code> 然后由 <code>keysym_to_keycode</code> 转换为
+可以用于截获快捷键的 <code>keycode</code> 。其中 <code>CapsLock</code> 、 <code>NumLock</code> 和
+<code>ScrollLock</code> 这三个键是要自己计算一下的。</p>
+
+
+<h3><a name="sec7" id="sec7"></a>
+提示窗口</h3>
+
+<p class="first">如果要达到 <a href="Sawfish.html">Sawfish</a> 里面那种效果，在没有找到窗口，启动一个新程序的时候，显
+示一个气泡提示窗口，说正在启动某某程序，而避免让用户以为是没有反应了，
+那么需要手工画一个窗口，这好像又好涉及到字体等一系列的问题，而且要这个
+窗口在几秒钟之后自动消失的话，还要用定时器吧，在 google 了一下没有发现
+Xlib 的定时器相关的特别有用的资料之后，我决定放弃这个功能了。或者留到
+以后来实现吧。</p>
+
+
+<h3><a name="sec8" id="sec8"></a>
+代码</h3>
+
+<p class="first">最后写出来的代码就是这样子了。为了避免再解析配置文件而添加更多的代码，
+配置就直接在代码里面了，但是配置仍然是很直观的：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .function-name {
+        /* font-lock-function-name-face */
+        color: #87cefa;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #98fb98;
+      }
+    --></style><span class="comment">#!/usr/bin/python
+</span>
+<span class="comment">######################################################################
+## file:   jump-or-exec.py
+## author: pluskid &lt;pluskid.zju@gmail.com&gt;
+## date:   2007-01-25
+######################################################################
+</span>
+<span class="keyword">import</span> re
+<span class="keyword">import</span> subprocess
+<span class="keyword">from</span> Xlib <span class="keyword">import</span> X, display, Xatom, XK, Xutil, protocol
+
+<span class="keyword">class</span> <span class="type">JumpOrExec</span>:
+    modifiers =  {
+        <span class="string">'Control'</span>:X.ControlMask,
+        <span class="string">'Shift'</span>:X.ShiftMask,
+        <span class="string">'Mod1'</span>:X.Mod1Mask,
+        <span class="string">'Alt'</span>:X.Mod1Mask,
+        <span class="string">'Mod2'</span>:X.Mod2Mask,
+        <span class="string">'Mod3'</span>:X.Mod3Mask,
+        <span class="string">'Mod4'</span>:X.Mod4Mask,
+        <span class="string">'Mod5'</span>:X.Mod5Mask
+        }
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="keyword">self</span>):
+        <span class="keyword">self</span>.display = display.Display()
+        <span class="keyword">self</span>.root = <span class="keyword">self</span>.display.screen().root
+        (<span class="keyword">self</span>.capslock_mask, <span class="keyword">self</span>.numlock_mask, <span class="keyword">self</span>.scrolllock_mask) = \
+            <span class="keyword">self</span>.get_lock_masks()
+        <span class="keyword">self</span>.jobs = {}
+    <span class="keyword">def</span> <span class="function-name">get_lock_masks</span>(<span class="keyword">self</span>):
+        <span class="string">"""Get the value of capslock_mask, numlock_mask and scrolllock_mask."""</span>
+        mask_table = [X.ShiftMask, X.LockMask, X.ControlMask,
+                      X.Mod1Mask, X.Mod2Mask, X.Mod3Mask,
+                      X.Mod4Mask, X.Mod5Mask]
+        nlock = <span class="keyword">self</span>.display.keysym_to_keycode(XK.XK_Num_Lock)
+        slock = <span class="keyword">self</span>.display.keysym_to_keycode(XK.XK_Scroll_Lock)
+        modmap = <span class="keyword">self</span>.display.get_modifier_mapping()
+        slock_mask = 0
+        nlock_mask = 0
+        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(modmap)):
+            <span class="keyword">for</span> key <span class="keyword">in</span> modmap[i]:
+                <span class="keyword">if</span> key != 0 <span class="keyword">and</span> key == nlock:
+                    nlock_mask = mask_table[i]
+                <span class="keyword">elif</span> key != 0 <span class="keyword">and</span> key == slock:
+                    slock_mask = mask_table[i]
+        <span class="keyword">return</span> (X.LockMask, nlock_mask, slock_mask)
+    <span class="keyword">def</span> <span class="function-name">install_job</span>(<span class="keyword">self</span>, key_string, job):
+        <span class="string">"""
+        Install the job with key_string.
+
+        key_string's format is just like that used by `xbindkeys'. But
+        the syntax is more restrictly here. Keys should be seperated
+        EXACTLY by ' + ', thus 'Control + +' is valid while 'Control++'
+        is invalid.
+
+        job is an instance of the Job class.
+
+        If the key is detected, first we will ask the job object to
+        find an existing window (See the document for the class Job
+        for more information), if found, we will raise it, otherwise
+        we will tell the job to start a new process.
+        """</span>
+        (key_code, modifier) = <span class="keyword">self</span>.decode_key(key_string)
+        <span class="keyword">self</span>.jobs[(key_code, modifier)] = job
+        <span class="keyword">self</span>.grab_key(key_code, modifier)
+    <span class="keyword">def</span> <span class="function-name">decode_key</span>(<span class="keyword">self</span>, key_string):
+        <span class="string">"""Decode key_string into (key_code, modifier)"""</span>
+        modifier = 0
+        the_key = <span class="keyword">None</span>
+        <span class="keyword">for</span> key <span class="keyword">in</span> key_string.split(<span class="string">' + '</span>):
+            mod = <span class="keyword">self</span>.modifiers.get(key)
+            <span class="keyword">if</span> mod:
+                modifier |= mod
+            <span class="keyword">else</span>:
+                the_key = <span class="keyword">self</span>.display.keysym_to_keycode(XK.string_to_keysym(key))
+        <span class="keyword">return</span> (the_key, <span class="keyword">self</span>.escape_lock_mask(modifier))
+    <span class="keyword">def</span> <span class="function-name">escape_lock_mask</span>(<span class="keyword">self</span>, modifier):
+        <span class="string">"""
+        Mask off numlock_mask, capslock_mask and scrolllock_mask. Otherwise
+        you may find your key doesn't work only because the capslock(or anything)
+        is open. That's not what we needed, so we mask it off.
+        """</span>
+        <span class="keyword">return</span> modifier &amp; ~(<span class="keyword">self</span>.scrolllock_mask | \
+                               <span class="keyword">self</span>.capslock_mask | \
+                               <span class="keyword">self</span>.numlock_mask)
+    <span class="keyword">def</span> <span class="function-name">grab_key</span>(<span class="keyword">self</span>, key_code, modifier):
+        <span class="string">"""
+        Grab key press event of key_code+modifier.
+        This will enable the X to send us a KeyPress event when the
+        key is pressed.
+        """</span>
+        <span class="keyword">self</span>.do_grab_key(key_code, modifier)
+        <span class="keyword">if</span> <span class="keyword">self</span>.numlock_mask:
+            <span class="keyword">self</span>.do_grab_key(key_code, modifier|<span class="keyword">self</span>.numlock_mask)
+        <span class="keyword">if</span> <span class="keyword">self</span>.capslock_mask:
+            <span class="keyword">self</span>.do_grab_key(key_code, modifier|<span class="keyword">self</span>.capslock_mask)
+        <span class="keyword">if</span> <span class="keyword">self</span>.scrolllock_mask:
+            <span class="keyword">self</span>.do_grab_key(key_code, modifier|<span class="keyword">self</span>.scrolllock_mask)
+        <span class="keyword">if</span> <span class="keyword">self</span>.numlock_mask <span class="keyword">and</span> <span class="keyword">self</span>.capslock_mask:
+            <span class="keyword">self</span>.do_grab_key(key_code, modifier|<span class="keyword">self</span>.capslock_mask \
+                                 |<span class="keyword">self</span>.numlock_mask)
+        <span class="keyword">if</span> <span class="keyword">self</span>.numlock_mask <span class="keyword">and</span> <span class="keyword">self</span>.scrolllock_mask:
+            <span class="keyword">self</span>.do_grab_key(key_code, modifier|<span class="keyword">self</span>.scrolllock_mask \
+                                 |<span class="keyword">self</span>.numlock_mask)
+        <span class="keyword">if</span> <span class="keyword">self</span>.scrolllock_mask <span class="keyword">and</span> <span class="keyword">self</span>.capslock_mask:
+            <span class="keyword">self</span>.do_grab_key(key_code, modifier|<span class="keyword">self</span>.capslock_mask \
+                                 |<span class="keyword">self</span>.scrolllock_mask)
+        <span class="keyword">if</span> <span class="keyword">self</span>.numlock_mask <span class="keyword">and</span> \
+                <span class="keyword">self</span>.capslock_mask <span class="keyword">and</span> <span class="keyword">self</span>.scrolllock_mask:
+            <span class="keyword">self</span>.do_grab_key(key_code, modifier|<span class="keyword">self</span>.capslock_mask \
+                                 | <span class="keyword">self</span>.numlock_mask | <span class="keyword">self</span>.scrolllock_mask)
+    <span class="keyword">def</span> <span class="function-name">do_grab_key</span>(<span class="keyword">self</span>, key_code, modifier):
+        <span class="string">"""Helper function of grab_key."""</span>
+        <span class="keyword">self</span>.root.grab_key(key_code, modifier, <span class="keyword">False</span>, X.GrabModeAsync, X.GrabModeAsync)
+    <span class="keyword">def</span> <span class="function-name">event_loop</span>(<span class="keyword">self</span>):
+        <span class="string">"""Start an infinity loop and handle the incoming events."""</span>
+        <span class="keyword">self</span>.root.change_attributes(event_mask=X.KeyPressMask)
+        <span class="keyword">while</span> 1:
+            event = <span class="keyword">self</span>.display.next_event()
+            <span class="keyword">if</span> event.type == X.KeyPress:
+                <span class="keyword">self</span>.handle_key_press(event)
+            <span class="keyword">elif</span> event.type == X.VisibilityNotify:
+                <span class="keyword">self</span>.handle_visibility_notify(event)
+    <span class="keyword">def</span> <span class="function-name">handle_key_press</span>(<span class="keyword">self</span>, event):
+        <span class="string">"""Key pressed means we will Jump or Exec now."""</span>
+        key_code = event.detail
+        modifier = <span class="keyword">self</span>.escape_lock_mask(event.state)
+        job = <span class="keyword">self</span>.jobs.get((key_code, modifier))
+        <span class="keyword">if</span> job:
+            wind = job.search_existing(<span class="keyword">self</span>.display, <span class="keyword">self</span>.root)
+            <span class="keyword">if</span> wind:
+                <span class="keyword">self</span>.raise_window(wind)
+            <span class="keyword">else</span>:
+                job.start_new()
+    <span class="keyword">def</span> <span class="function-name">raise_window</span>(<span class="keyword">self</span>, wind):
+        <span class="string">"""
+        Raise the window.
+
+        If it is not in iconic state, we just raise it and
+        give it input focus. But if it is in iconic state,
+        we have to invoke map to show it first. And since
+        map doesn't show the window immediately, we can not
+        set the focus immediately (setting the focus to a
+        window not viewable have no effect). What we can do
+        is to record the window(class name) and start
+        listening the visibility notify event of this window,
+        when the event arrive and the window(class name)
+        matches, we set focus to it and remove the listener.
+        """</span>
+        <span class="keyword">if</span> wind.get_wm_state()[<span class="string">'state'</span>] == Xutil.IconicState:
+            wind.map()
+            <span class="comment"># install a event listener
+</span>            wind.change_attributes(event_mask=X.VisibilityChangeMask)
+            <span class="keyword">self</span>.to_be_focus = (<span class="string">"%s.%s"</span> % wind.get_wm_class())
+        <span class="keyword">else</span>:
+            <span class="keyword">self</span>.raise_and_focus_window(wind)
+    <span class="keyword">def</span> <span class="function-name">raise_and_focus_window</span>(<span class="keyword">self</span>, wind):
+        wind.configure(stack_mode=X.Above)
+        wind.set_input_focus(X.RevertToNone, X.CurrentTime)
+
+    <span class="keyword">def</span> <span class="function-name">handle_visibility_notify</span>(<span class="keyword">self</span>, event):
+        <span class="string">"""
+        Visibility notify normally can only received from the window
+        we will give focus. But to avoid accidently received event
+        from other window(e.g. the user switchs to one another window
+        very very very quickly), we compare the window class name
+        before giving it focus.
+        """</span>
+        wind = event.window
+        <span class="keyword">if</span> (<span class="string">"%s.%s"</span> % wind.get_wm_class()) == <span class="keyword">self</span>.to_be_focus:
+            <span class="keyword">self</span>.raise_and_focus_window(wind)
+            <span class="keyword">self</span>.to_be_focus = <span class="keyword">None</span>
+            <span class="comment"># uninstall the listener
+</span>            wind.change_attributes(event_mask=0)
+
+<span class="keyword">class</span> <span class="type">Job</span>:
+    <span class="string">"""
+    A Job is consist of a Matcher and a Command. A Matcher is
+    an object of the class Matcher, which is used to match against
+    the window name and window class name to search for existing
+    window. A Command is just a string, which is invoked to start
+    a new process if no existing window is found.
+    """</span>
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="keyword">self</span>, matcher, command):
+        <span class="keyword">self</span>.matcher = matcher
+        <span class="keyword">self</span>.command = command
+    <span class="keyword">def</span> <span class="function-name">search_existing</span>(<span class="keyword">self</span>, disp, root):
+        tasks = root.get_full_property(
+            disp.intern_atom(<span class="string">"_NET_CLIENT_LIST"</span>), Xatom.WINDOW).value
+        <span class="keyword">for</span> task <span class="keyword">in</span> tasks:
+            wind = disp.create_resource_object(<span class="string">"window"</span>, task)
+            <span class="keyword">if</span> <span class="keyword">self</span>.matcher.match(wind):
+                <span class="keyword">return</span> wind
+        <span class="keyword">return</span> <span class="keyword">None</span>
+    <span class="keyword">def</span> <span class="function-name">start_new</span>(<span class="keyword">self</span>):
+        subprocess.Popen(<span class="keyword">self</span>.command, shell=<span class="keyword">True</span>)
+
+<span class="keyword">class</span> <span class="type">Matcher</span>:
+    <span class="string">"""
+    Matcher is used to match against window. The window name and window
+    class name is to be matched use the regexp given.
+    """</span>
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="keyword">self</span>, wm_name = <span class="keyword">None</span>, wm_class = <span class="keyword">None</span>):
+        <span class="keyword">self</span>.wm_name = re.compile(wm_name <span class="keyword">or</span> <span class="string">".*"</span>)
+        <span class="keyword">self</span>.wm_class = re.compile(wm_class <span class="keyword">or</span> <span class="string">".*"</span>)
+    <span class="keyword">def</span> <span class="function-name">match</span>(<span class="keyword">self</span>, window):
+        <span class="keyword">return</span> <span class="keyword">self</span>.wm_name.search(window.get_wm_name()) <span class="keyword">and</span> \
+            <span class="keyword">self</span>.wm_class.search(<span class="string">"%s.%s"</span> % window.get_wm_class())
+
+<span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:
+    jobs = [
+    (<span class="string">"Mod4 + t"</span>, Job(Matcher(wm_class=<span class="string">"urxvt.URxvt"</span>), <span class="string">"urxvt -e screen -xRRS terminal"</span>)),
+    (<span class="string">"Mod4 + f"</span>, Job(Matcher(wm_class=<span class="string">"Gecko.Firefox-bin"</span>), <span class="string">"firefox"</span>)),
+    (<span class="string">"Mod4 + e"</span>, Job(Matcher(wm_name=<span class="string">"emacs@.*"</span>), <span class="string">"/home/kid/bin/emacs -f server-start"</span>)),
+    (<span class="string">"Mod4 + g"</span>, Job(Matcher(wm_name=<span class="string">"gnus@.*"</span>),
+                     <span class="string">"/home/kid/bin/gnus --eval \'(setq frame-title-format \"gnus@%b\")\' -f gnus"</span>)),
+    (<span class="string">"Mod4 + q"</span>, Job(Matcher(wm_class=<span class="string">"qterm.Qterm"</span>), <span class="string">"qterm"</span>)),
+    (<span class="string">"Mod4 + c"</span>, Job(Matcher(wm_class=<span class="string">"konqueror.Konqueror"</span>), <span class="string">"kfmclient openProfile filemanagement"</span>))
+    ]
+    joe = JumpOrExec()
+    <span class="keyword">for</span> job <span class="keyword">in</span> jobs:
+        joe.install_job(job[0], job[1])
+    joe.event_loop()
+</pre></div></div></div></div></div></div></div>
+
+
+
+<h2><a name="sec9" id="sec9"></a>
+在 FVWM 中实现</h2>
+
+<p class="first">众所周知 FVWM 是可扩展性非常强的窗口管理器。不过我并没有仔细研究这个窗
+口管理器，我觉得它那个配置实在是太难读了，哈哈。但是 danran 最近告诉我
+在 FVWM 里面也可以很方便地实现 JOE 的功能，类似于这样：</p>
+
+<pre class="example">
+DestroyFunc RaiseAndFocus
+AddToFunc RaiseAndFocus
++ I Focus
++ I Raise
+
+DestroyFunc JOE
+AddToFunc JOE
++ I All ($0) RaiseAndFocus
++ I TestRc (NoMatch) Exec exec $1 &amp;
+</pre>
+
+<p>JOE 函数需要两个参数，一个是 <code>window class</code> ，另一个是要执行的命令。
+其中 <code>window class</code> 一定要有引号，命令有没有都可以。</p>
+
+<p>例如：</p>
+
+<pre class="example">
+Key V A 4 JOE &quot;Gvim&quot; gvim
+</pre>
+
+
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

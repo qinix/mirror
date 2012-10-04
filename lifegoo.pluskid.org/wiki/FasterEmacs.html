@@ -1,0 +1,651 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>加速你的 Emacs</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>加速你的 Emacs</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here--><div class="contents"><h2>Contents</h2>
+<dl>
+<dt>
+<a href="#sec1">不加载任何配置文件进行启动</a>
+</dt>
+<dt>
+<a href="#sec2">用 emacsclient 来连接 emacs server</a>
+</dt>
+<dt>
+<a href="#sec3">使用 multi-tty 补丁</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec4">简介</a>
+</dt>
+<dt>
+<a href="#sec5">获取和安装</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec6">使用 Debian 的 apt-get 直接安装</a>
+</dt>
+<dt>
+<a href="#sec7">获取 emacs&mdash;multi-tty 的源代码</a>
+</dt>
+<dt>
+<a href="#sec8">获取 emacs 22 的代码和 multi-tty 的补丁文件</a>
+</dt>
+<dt>
+<a href="#sec9">修改与编译</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec10">PURESIZE</a>
+</dt>
+<dt>
+<a href="#sec11">输入法问题导致的段错误</a>
+</dt>
+<dt>
+<a href="#sec12">编译</a>
+</dt>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt>
+<a href="#sec13">配置与使用</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec14">试用</a>
+</dt>
+<dt>
+<a href="#sec15">一次启动随处运行</a>
+</dt>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt>
+<a href="#sec16">配合窗口管理器</a>
+</dt>
+</dl>
+</div>
+
+
+    <!-- Page published by Emacs Muse begins here -->
+<p><a href="Emacs.html">Emacs</a> 会随着你定制的内容增多而启动速度越来越慢，当然，在很多服务器上是
+启动之后就一直不会关闭的，但是自己的电脑不做服务器，会经常关机，而且有
+些时候会临时启动一下编辑器，比如说环境变量里面的 EDITOR 就是很多程序经
+常会调用的。那么，如何来加速自己的 Emacs 呢？下面给出了几个解决办法：</p>
+
+<ul>
+<li><a href="#LOADNOTHING">不加载任何配置文件进行启动</a></li>
+<li><a href="#SERVERSTART">用 emacsclient 来连接 emacs server</a></li>
+<li><a href="#MULTITTY">使用 multi-tty 补丁</a></li>
+<li><a href="#WINDMGR">配合窗口管理器</a></li>
+</ul>
+
+<p><a name="LOADNOTHING" id="LOADNOTHING"></a></p>
+
+<h2><a name="sec1" id="sec1"></a>
+不加载任何配置文件进行启动</h2>
+
+<p class="first">用 <code>emacs -q</code> 命令启动可以跳过加载自己的 <code>~/.emacs</code> 而进行启动，如果版本比
+较新的 Emacs ，还支持 <code>-Q</code> 选项，表示快速启动，其实这个选项是等价于这样
+启动： <code>emacs -q --no-site-file --no-splash</code> 。这样一般就能够达到比较快
+的速度了，不足的地方就是跳过了所有定制的部分，自己熟悉的定制的功能都没
+有了，见到的只是一个陌生的朋友而已。</p>
+
+<p><a name="SERVERSTART" id="SERVERSTART"></a></p>
+
+<h2><a name="sec2" id="sec2"></a>
+用 emacsclient 来连接 emacs server</h2>
+
+<p class="first">这个方法首先要有一个启动好了的 Emacs ，并且要已经启动了 server 模式，
+你可以用 <code>M-x server-start</code> 来启动 server 模式，或者在自己的 <code>~/.emacs</code> 里
+面加入 <code>(server-start)</code> 来自动启动 server 。</p>
+
+<p>然后，你就可以通过 <code>emacsclient filename</code> 来快速使用 Emacs 打开文件了！
+事实上，文件是在作为 server 的那个 Emacs 里面打开的，而 emacsclient 将
+等待 server 编辑文件。这个时候你可以转到 server 那里去编辑文件，编辑好
+之后用 <code>C-x #</code> 来关闭文件并通知 emacsclient 文件已经编辑完成。现在，你就
+可以把自己的 EDITOR 变量设置成 emacsclient 而不用怕启动速度慢了：</p>
+
+<pre class="example">
+EDITOR=&quot;emacsclient +%d %s&quot;
+</pre>
+
+<p>不过如果没有事先启动了一个 emacs server 的话，这个命令就会失败，他提供
+的一个解决办法就是 <code>--alternate-editor</code> 参数，表示连接失败的时候调用的命
+令，你可以把他设置成 vi 或者是其他小巧的编辑器，或者，你也可以在这儿直
+接设置成 emacs ，不过这也许并不如想象中的那么美妙，也许你认为如果没有
+启动 emacs ，那么在这儿就启动它，然后后面就可以顺利地调用 emacsclient
+了！但是如果这儿是其他程序比如 mutt 或者 svn 之类的使用 EDITOR 环境变
+量来调用的编辑器，他会等待编辑器退出来表示编辑完成，这个时候看着刚刚启
+动的 emacs 马上又要关闭了，实在是不忍心呀！:) <sup><a name="fnr.1" href="#fn.1">1</a></sup> 不过这个也有个不爽的
+地方就是打开文件都是在 server 里面打开的，还不能自动跳转到 server 那里
+去，比较麻烦。</p>
+
+
+<p><a name="MULTITTY" id="MULTITTY"></a></p>
+
+<h2><a name="sec3" id="sec3"></a>
+使用 multi-tty 补丁</h2>
+
+<h3><a name="sec4" id="sec4"></a>
+简介</h3>
+
+<p class="first">引用作者的一句话： <sup><a name="fnr.2" href="#fn.2">2</a></sup></p>
+
+<blockquote>
+<p class="quoted">My goal is to allow opening multiple, different tty devices and
+simultaneous X (graphical) and tty frames from a single Emacs
+session.</p>
+</blockquote>
+
+<p>这里是扩展了 emacs server 的这种方法。使用 emacsclient 的时候可以另外
+打开一个 X 窗口或者是 tty 窗口进行编辑，而不是简单地把编辑任务发送到
+emacs server 那里。</p>
+
+
+<h3><a name="sec5" id="sec5"></a>
+获取和安装</h3>
+
+<h4><a name="sec6" id="sec6"></a>
+使用 Debian 的 apt-get 直接安装</h4>
+
+<p class="first">要使用这个补丁版本的 <a href="Emacs.html">Emacs</a> ，如果是 <a href="Debian.html">Debian</a> 系统的话，可以直接使用他提
+供的源下载安装或者下载源代码包自己编译：</p>
+
+<pre class="example">
+# Multi-tty Emacs
+deb http://aszt.inf.elte.hu/~lorentey/mirror/apt unstable multi-tty
+deb-src http://aszt.inf.elte.hu/~lorentey/mirror/apt unstable multi-tty
+</pre>
+
+
+<h4><a name="sec7" id="sec7"></a>
+获取 emacs&mdash;multi-tty 的源代码</h4>
+
+<p class="first">其他系统可以直接下载源代码进行编译。作者提供了一个仓库，可以用 bazzar
+软件来获取仓库中的源代码，他有好几个镜像，具体可以参见<a href="http://lorentey.hu/downloads/emacs/multi-tty/README.multi-tty">他的 README 文件</a>
+，我使用其中一个仓库：</p>
+
+<pre class="example">
+baz register-archive -f http://lorentey.hu/arch/2004/
+baz get lorentey@elte.hu--2004/emacs--multi-tty emacs-multi-tty
+</pre>
+
+<p>在我这里速度很慢，不知道是为什么，连接上去以后接近半个小时才开始真正下
+载文件，几分钟之后就下载完毕了，我开始还一直以为是根本无法下载呢。</p>
+
+
+<h4><a name="sec8" id="sec8"></a>
+获取 emacs 22 的代码和 multi-tty 的补丁文件</h4>
+
+<p class="first">另外，也可以用 cvs 来获取的 <a href="Emacs.html">Emacs</a> 22 的源码，并打上最新的multi-tty 给的
+补丁，可以在 <a href="http://lorentey.hu/downloads/emacs/multi-tty">这里</a> 找到补丁文件，然后把他们打到 check out 出来的 emacs
+的源码树上面去。这样也许速度会快一些，但是需要注意的是，最好是先下载补
+丁文件，看是哪个日期的，再去获取对应那天的 <a href="Emacs.html">Emacs</a> 的源代码，不过，即使是
+同一天的源代码，也可能会有巨大变动的，所以还是直接获取
+emacs&mdash;multi-tty 的源代码安全一点。</p>
+
+<pre class="example">
+cvs -z3 -d:pserver:anonymous@cvs.savannah.gnu.org:/cvsroot/emacs co emacs
+</pre>
+
+<p>然后到 emacs 的目录里面去，打上补丁：</p>
+
+<pre class="example">
+cd emacs
+patch -p 1 &lt; ../emacs--multi-tty--0--patch-555.2006-05-05.patch
+</pre>
+
+
+<h4><a name="sec9" id="sec9"></a>
+修改与编译</h4>
+
+<h5><a name="sec10" id="sec10"></a>
+PURESIZE</h5>
+
+<p>编译之后尝试运行一下，有可能会出现 warning 说 ``Building Emacs
+overflow pure space'' <sup><a name="fnr.3" href="#fn.3">3</a></sup> 。事实上，因为 emacs 启动的时候有一部分只读的
+不可扩展的内存，因为这儿用了 multi-tty 补丁，导致预先定义的那些内存无法
+容纳下所有的预加载库，于是只有动态分配，所以会在启动的时候产生 warning
+。</p>
+
+<p>要解决这个问题，需要修改一下 <code>src/pursize.h</code> 文件，找到里面定义
+<code>PURESIZE_RATION</code> 的地方，把值改大一点就可以了。我是把</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .preprocessor {
+        /* font-lock-preprocessor-face */
+        color: #b0c4de;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #eedd82;
+      }
+    --></style><span class="preprocessor">#define</span> <span class="variable-name">PURSIZE_RATIO</span> 1
+</pre></div></div></div></div></div></div></div>
+
+<p>改成了</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .preprocessor {
+        /* font-lock-preprocessor-face */
+        color: #b0c4de;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #eedd82;
+      }
+    --></style><span class="preprocessor">#define</span> <span class="variable-name">PURSIZE_RATIO</span> 4
+</pre></div></div></div></div></div></div></div>
+
+
+<h5><a name="sec11" id="sec11"></a>
+输入法问题导致的段错误</h5>
+
+<p>这样可以重现这个问题：</p>
+
+<ol>
+<li>以非 X 方式启动 <a href="Emacs.html">Emacs</a> ： <code>emacs -nw</code></li>
+<li>在 <a href="Emacs.html">Emacs</a> 里面启动 server ： <code>M-x server-start</code></li>
+<li>以 X 方式启动一个 emacsclient 连接到 server ： <code>emacsclient</code></li>
+<li>退出这个 emacsclient ： <code>C-x 5 0</code></li>
+</ol>
+
+<p>这个时候可以看到 server 已经 Segment fault 退出了。galilette@Linuxsir
+指出这是由于对 server 的不存在的 XIM 对象进行释放而造成的。如果不使用
+X 下的输入法作为 <a href="Emacs.html">Emacs</a> 的输入的话，这个问题很好解决，在 <code>~/.Xresources</code>
+里面加入</p>
+
+<pre class="example">
+emacs*UseXIM: false
+</pre>
+
+<p>就可以了。但是通常 <a href="Emacs.html">Emacs</a> 内置的输入法不如 X 下的输入法好用，这个问题已
+经发送到 emacs&mdash;multi-tty 的邮件列表，可是至今还没有得到很好的解决。
+galilette@Linuxsir 提供了一个解决办法，有些 dirty ，而且可能会导致资源
+泄漏，但还是可以忍受的。除了心里面觉得不舒服以外，我还没有真正因为这个
+碰到任何问题，即使一直开着 X 几个月后也许会发现可用资源越来越少，系统会
+越来越慢，重新起动一下 X 也应该并不是件很难办的事情吧。</p>
+
+<p>galilette@Linuxsir 的方法是这样的，打开 <code>src/xterm.c</code> ，定位到这里</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+    --></style><span class="keyword">if</span> (dpyinfo-&gt;display)
+  XCloseIM (dpyinfo-&gt;xim);
+</pre></div></div></div></div></div></div></div>
+
+<p>并把这两行注释掉。</p>
+
+
+<h5><a name="sec12" id="sec12"></a>
+编译</h5>
+
+<p>接下来就可以编译了<sup><a name="fnr.4" href="#fn.4">4</a></sup>：</p>
+
+<pre class="example">
+$ ./configure --without-gtk
+$ make bootstrap
+$ make
+# make install
+</pre>
+
+
+
+
+<h3><a name="sec13" id="sec13"></a>
+配置与使用</h3>
+
+<h4><a name="sec14" id="sec14"></a>
+试用</h4>
+
+<p class="first">启动 <a href="Emacs.html">Emacs</a> (可以以 X 或者非 X 方式启动)，并启动 server ： <code>M-x
+server-start</code> 。现在可以去另外一个地方使用 emacsclient 了。扩展后的
+emacsclient 支持更多选项，例如， <code>-t</code> 选项告诉 emacsclient 直接在终端里
+面打开，而不是建立一个 X 窗口。启动之后会有提示，如果是有文件名作为参
+数，编辑完成之后可以使用 <code>C-x #</code> 退出，否则可以使用 <code>C-x 5 0</code> 退出。</p>
+
+<p><a name="OneInitPerStartup" id="OneInitPerStartup"></a></p>
+
+<h4><a name="sec15" id="sec15"></a>
+一次启动随处运行</h4>
+
+<p class="first">在 emacs&mdash;multi-tty 的 <a href="http://lorentey.hu/downloads/emacs/multi-tty/README.multi-tty">README</a> 文件中提供了一个很 cool 的脚本，使用
+<a href="Screen.html">Screen</a> 把 <a href="Emacs.html">Emacs</a> 服务器隐藏起来，事实上，只需要在计算机启动的时候启动
+<a href="Emacs.html">Emacs</a> 的 server ，之后就可以一直使用 emacsclient 进行连接，甚至在不同
+的 X 会话中，甚至在重新登陆以后。非常舒服。</p>
+
+<p>galilette@Linuxsir 提议说仅仅为了一个从来不会切换到前台进行使用的
+<a href="Emacs.html">Emacs</a> 的 server 而启动一个 <a href="Screen.html">Screen</a> 会话对其进行维护太浪费了。使用更轻量
+级的 <a href="http://dtach.sourceforge.net/">dtach</a> 更舒服一些<sup><a name="fnr.5" href="#fn.5">5</a></sup>。下面就是相关脚本。</p>
+
+<p>首先是 <code>preload-emacs</code> ，用于检查是否有指定的 server 在运行，如果没有，
+则启动它。</p>
+
+<p>首先是 emacs&mdash;multi-tty README 里面提到的脚本，使用 <a href="Screen.html">Screen</a> ：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .builtin {
+        /* font-lock-builtin-face */
+        color: #b0c4de;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .negation-char {
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #eedd82;
+      }
+    --></style><span class="comment-delimiter">#</span><span class="comment">!/bin/bash
+</span><span class="comment-delimiter"># </span><span class="comment">Usage: preload-emacs &lt;name&gt; [&lt;waitp&gt;]
+</span><span class="comment-delimiter">#</span><span class="comment">
+</span><span class="comment-delimiter"># </span><span class="comment">Preloads the Emacs instance called NAME in a detached screen
+</span><span class="comment-delimiter"># </span><span class="comment">session. Does nothing if the instance is already running. If WAITP
+</span><span class="comment-delimiter"># </span><span class="comment">is non-empty, the function waits until the server starts up and
+</span><span class="comment-delimiter"># </span><span class="comment">creates its socket; otherwise it returns immediately.
+</span>
+<span class="variable-name">name</span>=<span class="string">"$1"</span>
+<span class="variable-name">waitp</span>=<span class="string">"$2"</span>
+<span class="variable-name">screendir</span>=<span class="string">"/var/run/screen/S-$USER"</span>
+<span class="variable-name">serverdir</span>=<span class="string">"/tmp/emacs$UID"</span>
+<span class="variable-name">emacs</span>=<span class="string">"/usr/local/bin/emacs"</span> <span class="comment-delimiter"># </span><span class="comment">Or wherever you installed your multi-tty Emacs
+</span>
+<span class="keyword">if</span> [ -z <span class="string">"$name"</span> ]; <span class="keyword">then</span>
+    <span class="builtin">echo</span> <span class="string">"Usage: preload_emacs &lt;name&gt; [&lt;waitp&gt;]"</span> &gt;&amp;2
+    <span class="keyword">exit</span> 1
+<span class="keyword">fi</span>
+
+<span class="keyword">if</span> [ <span class="negation-char">!</span> -e <span class="string">"$screendir"</span>/*.<span class="string">"$name"</span> ]; <span class="keyword">then</span>
+    <span class="keyword">if</span> [ -e <span class="string">"$serverdir/$name"</span> ]; <span class="keyword">then</span>
+<span class="comment-delimiter"># </span><span class="comment">Delete leftover socket (for the wait option)
+</span>        rm <span class="string">"$serverdir/$name"</span>
+    <span class="keyword">fi</span>
+ screen -dmS <span class="string">"$name"</span> <span class="string">"$emacs"</span> -nw --no-splash --eval <span class="string">"(setq server-name \"$name\")"</span> -f server-start
+<span class="keyword">fi</span>
+<span class="keyword">if</span> [ <span class="negation-char">!</span> -z <span class="string">"$waitp"</span> ]; <span class="keyword">then</span>
+    <span class="keyword">while</span> [ <span class="negation-char">!</span> -e <span class="string">"$serverdir/$name"</span> ]; <span class="keyword">do</span> sleep 0.1; <span class="keyword">done</span>
+<span class="keyword">fi</span>
+</pre></div></div></div></div></div></div></div>
+
+<p>这是 galilette@Linuxsir 提议使用 dtach 的脚本。</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .builtin {
+        /* font-lock-builtin-face */
+        color: #b0c4de;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .negation-char {
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #eedd82;
+      }
+    --></style><span class="comment-delimiter">#</span><span class="comment">!/bin/bash
+</span><span class="comment-delimiter"># </span><span class="comment">Usage: preload-emacs &lt;name&gt; [&lt;waitp&gt;]
+</span><span class="comment-delimiter">#</span><span class="comment">
+</span><span class="comment-delimiter"># </span><span class="comment">Preloads the Emacs instance called NAME in a detached screen
+</span><span class="comment-delimiter"># </span><span class="comment">session. Does nothing if the instance is already running. If WAITP
+</span><span class="comment-delimiter"># </span><span class="comment">is non-empty, the function waits until the server starts up and
+</span><span class="comment-delimiter"># </span><span class="comment">creates its socket; otherwise it returns immediately.
+</span>
+<span class="variable-name">name</span>=<span class="string">"$1"</span>
+<span class="variable-name">waitp</span>=<span class="string">"$2"</span>
+<span class="variable-name">dtachdir</span>=~/.dtach_socks <span class="comment-delimiter">#</span><span class="comment">pick up your own
+</span><span class="variable-name">serverdir</span>=<span class="string">"/tmp/emacs$UID"</span>
+<span class="variable-name">emacs</span>=<span class="string">"/usr/local/bin/emacs"</span> <span class="comment-delimiter"># </span><span class="comment">Or wherever you installed your multi-tty Emacs
+</span>
+<span class="keyword">if</span> [ -z <span class="string">"$name"</span> ]; <span class="keyword">then</span>
+    <span class="builtin">echo</span> <span class="string">"Usage: preload_emacs &lt;name&gt; [&lt;waitp&gt;]"</span> &gt;&amp;2
+    <span class="keyword">exit</span> 1
+<span class="keyword">fi</span>
+
+<span class="keyword">if</span> [ <span class="negation-char">!</span> -e <span class="string">"$dtachdir"</span>/<span class="string">"$name"</span> ]; <span class="keyword">then</span>
+    <span class="keyword">if</span> [ -e <span class="string">"$serverdir/$name"</span> ]; <span class="keyword">then</span>
+<span class="comment-delimiter"># </span><span class="comment">Delete leftover socket (for the wait option)
+</span>        rm <span class="string">"$serverdir/$name"</span>
+    <span class="keyword">fi</span>
+    dtach -n <span class="string">"$dtachdir"</span>/<span class="string">"$name"</span> <span class="string">"$emacs"</span> -nw --no-splash --eval <span class="string">"(setq server-name \"$name\")"</span> -f server-start
+<span class="keyword">fi</span>
+<span class="keyword">if</span> [ <span class="negation-char">!</span> -z <span class="string">"$waitp"</span> ]; <span class="keyword">then</span>
+    <span class="keyword">while</span> [ <span class="negation-char">!</span> -e <span class="string">"$serverdir/$name"</span> ]; <span class="keyword">do</span> sleep 0.1; <span class="keyword">done</span>
+<span class="keyword">fi</span>
+</pre></div></div></div></div></div></div></div>
+
+<p>然后是 <code>connect-emacs</code></p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .builtin {
+        /* font-lock-builtin-face */
+        color: #b0c4de;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #eedd82;
+      }
+    --></style><span class="comment-delimiter">#</span><span class="comment">!/bin/bash
+</span><span class="comment-delimiter"># </span><span class="comment">Usage: connect-emacs &lt;name&gt; &lt;args&gt;...
+</span><span class="comment-delimiter">#</span><span class="comment">
+</span><span class="comment-delimiter"># </span><span class="comment">Connects to the Emacs instance called NAME. Starts up the instance
+</span><span class="comment-delimiter"># </span><span class="comment">if it is not already running. The rest of the arguments are passed
+</span><span class="comment-delimiter"># </span><span class="comment">to emacsclient.
+</span>
+<span class="variable-name">name</span>=<span class="string">"$1"</span>
+<span class="builtin">shift</span>
+
+<span class="keyword">if</span> [ -z <span class="string">"$name"</span> ]; <span class="keyword">then</span>
+    <span class="builtin">echo</span> <span class="string">"Usage: connect_emacs &lt;name&gt; &lt;args&gt;..."</span> &gt;&amp;2
+    <span class="keyword">exit</span> 1
+<span class="keyword">fi</span>
+preload-emacs <span class="string">"$name"</span> wait
+/usr/local/bin/emacsclient -s <span class="string">"$name"</span> <span class="string">"$@"</span>
+</pre></div></div></div></div></div></div></div>
+
+<p>然后分别是 <code>e</code> 与 <code>et</code> ：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #eedd82;
+      }
+    --></style><span class="comment-delimiter">#</span><span class="comment">!/bin/bash
+</span>connect-emacs editor $<span class="variable-name">@</span>
+</pre></div></div></div></div></div></div></div>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #eedd82;
+      }
+    --></style><span class="comment-delimiter">#</span><span class="comment">!/bin/bash
+</span>connect-emacs editor -t $<span class="variable-name">@</span>
+</pre></div></div></div></div></div></div></div>
+
+<p>在把 <code>EDITOR</code> 环境变量设置成 <code>et</code> 就可以了。</p>
+
+<p><a name="WINDMGR" id="WINDMGR"></a></p>
+
+<h2><a name="sec16" id="sec16"></a>
+配合窗口管理器</h2>
+
+<p class="first">有很多可定制性很高的窗口管理器，比如 fvwm 、<a href="Sawfish.html">Sawfish</a> 之类的，可以写一个
+脚本，调用 emacsclient 的同时叫窗口管理器切换到 <a href="Emacs.html">Emacs</a> 窗口处，就非常方
+便了，使用 <a href="Sawfish.html">Sawfish</a> 的一个例子可以在<a href="Sawfish.html#SmarterEmacsClient">这里</a>找到。</p>
+
+<h2>Footnote</h2>
+<p class="footnote"><a name="fn.1" href="#fnr.1">1.</a> 有关 emacs 的 server 模式的更多内容，请参见 <a href="http://www.gnu.org/software/emacs/manual/html_node/Emacs-Server.html">Emacs 的手册</a>。</p>
+
+<p class="footnote"><a name="fn.2" href="#fnr.2">2.</a> emacs multi-tty 的扩展主页在<a href="http://lorentey.hu/project/emacs.html.en">这里</a>。</p>
+
+<p class="footnote"><a name="fn.3" href="#fnr.3">3.</a> 关于此的详细内容请参见 elisp 的手册： <code>C-h i m elisp RET m Pure
+Storage RET</code> 。</p>
+
+<p class="footnote"><a name="fn.4" href="#fnr.4">4.</a> 注意这儿要选择 <code>--without-gtk</code> ，因为作者说了，目前对于编译为 gtk 的
+模式还有问题，不过 x-toolkit 用什么都无所谓吧，因为平时使用的时候
+用到 x-toolkit 的东西并不多嘛。</p>
+
+<p class="footnote"><a name="fn.5" href="#fnr.5">5.</a> 当我在 <a href="Sawfish.html">Sawfish</a> 里面直接调用(例如使用 <code>run-shell-command</code>) dtach 的时
+候，dtach 会报错，说“tcgetattr: inappropriate ioctl for device” ，
+应该是没有通过一个真正的终端来运行而造成的原因吧。因为我总是使用
+<a href="Sawfish.html">Sawfish</a> 的 <code>jump-or-exec</code> 来调用我常用的程序，而且我平时也一直在使用
+<a href="Screen.html">Screen</a> ，所以我还是使用<a href="Screen.html">Screen</a> 的那个脚本而不是 dtach 的那个。</p>
+
+
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

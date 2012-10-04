@@ -1,0 +1,316 @@
+/* stylesheet for pluskid's wiki pages */
+
+body
+{
+  margin: 10px 10px 10px 10px;
+  padding: 0;
+  font: 12px sans-serif, Verdana, Tahoma, helvetica;
+}
+
+/* style of navmenu */
+#navmenu
+{
+  clear: left;
+  float: left;
+  width: 150px;
+  margin: 0 0 20px 0;
+  padding: 0;
+  font-size: 0.9em;
+  border: solid 1px #9AB7C2;
+}
+
+#navmenu h2
+{
+  font-size: 1em;
+  margin: 0 0 0.2em 0;
+  padding: 2px 0 2px 5px;
+  color:black;
+  background-color: #D5E2E6;
+}
+
+#navmenu ul
+{
+  width: 150px;
+  font-size: 1em;
+  padding-left: 25px;
+  margin: 5px 2px 5px 0;
+}
+
+#navmenu li
+{
+  list-style: disc;
+  color: black;
+}
+
+#navmenu li a
+{
+  font-weight: bold;
+  height: 18px;
+  text-decoration: none;
+  color: grey;
+}
+
+#navmenu li a:hover
+{
+  color: black;
+  text-decoration: underline;
+}
+
+/* style of content */
+#content
+{
+/*   min-height: 550px; */
+  margin: 0 0 0 160px;
+  line-height: 1.4em;
+  text-align: left;
+  color: black;
+  border: solid 1px #9AB7C2;
+}
+
+#content .example
+{
+  margin: 5px 25px 5px 25px;
+  padding: 2px 5px 2px 5px;
+  font-family: monospace, "Bitstream Vera Sans Mono","Courier New",  Courier;
+  line-height: 1.2em;
+  overflow: auto;
+
+}
+#content  .src
+{
+  margin: 0;
+  padding-left: 0;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 3px;
+  font-family: monospace, "Bitstream Vera Sans Mono","Courier New",  Courier;
+  line-height: 1.2em;
+  max-height: 3in;
+  overflow: auto;
+}
+
+h1
+{
+  margin: 5px 0 10px 0;
+  padding: 3px;
+  background-color: #1B1B1B;
+  background-image: url(../image/top_bg.jpg);
+  color: black;
+  border: 1px solid #9AB7C2;
+  text-align: center;
+  font-family:  楷体,华文行楷, Sans, "Sans Serif";
+}
+
+#content h2
+{
+  color: black;
+  margin: 0;
+  padding: 3px 0 7px 5px;
+  font-size:1.5em;
+  color:black;
+  background-color: #D5E2E6;
+/*   font-variant: small-caps; */
+}
+#content h3
+{
+  color: black;
+  margin: 0px 0px 5px 0;
+  padding: 5px 5px 5px 10px;
+  font-size:1.2em;
+  border-top: solid 1px #9AB7C2;
+  border-bottom: solid 1px #9AB7C2;
+  font-variant: small-caps;
+}
+#content h4
+{
+  color: black;
+  margin: 3px 0px 5px 0px;
+  padding: 3px 5px 3px 15px;
+  font-size: 1em;
+}
+#content h5
+{
+  color: black;
+  margin: 3px 0px 3px 0px;
+  padding: 3px 5px 3px 25px;
+  font-size: 1em;
+}
+
+#content p
+{
+  margin: 8px 15px 8px 15px;
+  text-indent: 1em;
+}
+#content a
+{
+  text-decoration: none;
+  color: grey;
+}
+
+#content a:hover
+{
+  color: black;
+/*   text-decoration: underline; */
+  background-color: #F4FCE5;
+  outline: #E6F2CF solid 1px;
+}
+#content a:visited
+{
+  color: grey;
+}
+#content code
+{
+  font-family: monospace;
+  color: #00A6A6;
+  font-weight: bold;
+}
+#content dt
+{
+  margin-left: 15px;
+}
+#content p.footnote
+{
+  margin-top: 0;
+  margin-bottom: 5px;
+  text-indent: 0px;
+}
+#content table.muse-table
+{
+  border-collapse: collapse;
+  border: solid 1px #9AB7C2;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  color:  black;
+}
+#content tr
+{
+  border: solid 1px #9AB7C2;
+}
+#content td
+{
+  font-size: 0.7em;
+  border: solid 1px #9AB7C2;
+  color: black;
+  padding: 5px 10px 5px 10px;
+}
+#content th
+{
+  color: black;
+  background-color: #585858;
+}
+
+#content img.latex-inline
+{
+  vertical-align: center;
+}
+
+#content blockquote
+{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin: 8px 40px 8px 40px;
+  border-top: solid 1px #9AB7C2;
+  border-bottom: solid 1px #9AB7C2;
+  background-image: url(../image/blockquote.png);
+  background-repeat: repeat-y;
+  background-position: right;
+}
+
+/* table of contents */
+div.contents h2
+{
+  margin-bottom: 0;
+  background-image: url(../image/contents_h2.gif);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+div.contents
+{
+  border-bottom: solid 1px #9AB7C2;
+  background-image: url(../image/contents.jpg);
+  background-position: right top;
+  background-repeat: no-repeat;
+  padding: 0 0 5px 0;
+}
+div.contents dl
+{
+  margin: 2px 0 2px 0;
+  padding: 0;
+}
+div.contents dd
+{
+  margin: 0 0 0 16px;
+  padding: 0 0 0 10px;
+  border-left: dotted 1px;
+}
+#content div.contents a
+{
+  padding-left: 12px;
+  background-image: url(../image/mark-grey.png);
+  background-position: left;
+  background-repeat: no-repeat;
+}
+#content div.contents a:hover
+{
+  background-image: url(../image/mark-blue.png);
+}
+img.latex-display
+{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* The cool emacs border */
+.emacs-outer {
+  padding: 0px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 5px;
+}
+.emacs-title-left {
+  background-image: url(../image/title-left.png);
+  background-position: top left;
+  background-repeat: no-repeat;
+  padding: 0;
+  padding-top: 45px;
+}
+
+.emacs-title-right {
+  background-image: url(../image/title-right.png);
+  background-position: top right;
+  background-repeat: no-repeat;
+  padding: 0;
+}
+
+.emacs-cont-left {
+  background-image: url(../image/cont-left.png);
+  background-position: top left;
+  background-repeat: no-repeat;
+  padding: 0;
+}
+
+.emacs-cont-right {
+  background-image: url(../image/cont-right.png);
+  background-position: top right;
+  background-repeat: no-repeat;
+  padding: 0;
+}
+
+.emacs-footer-right {
+  background-image: url(../image/footer-right.png);
+  background-position: bottom right;
+  background-repeat: no-repeat;
+  padding: 0;
+}
+
+.emacs-footer-left {
+  background-image: url(../image/footer-left.png);
+  background-position: bottom left;
+  background-repeat: no-repeat;
+  padding: 0;
+  padding-bottom: 29px;
+  padding-left: 15px;
+  padding-right: 3px;
+}

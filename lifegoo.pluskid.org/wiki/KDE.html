@@ -1,0 +1,212 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>KDE</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>KDE</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here--><div class="contents"><h2>Contents</h2>
+<dl>
+<dt>
+<a href="#sec1">加速 Konqueror 的启动</a>
+</dt>
+<dt>
+<a href="#sec2">Konqueror 里面的 “狗皮膏药”</a>
+</dt>
+<dt>
+<a href="#sec3">Konqueror 的速搜</a>
+</dt>
+<dt>
+<a href="#sec4">鼠标手势</a>
+</dt>
+<dt>
+<a href="#sec5">让 Konqueror 也中键点击关闭标签</a>
+</dt>
+<dt>
+<a href="#sec6">便捷的终端 yakuake</a>
+</dt>
+<dt>
+<a href="#sec7">加速 KDE</a>
+</dt>
+<dt>
+<a href="#sec8">用 qtconfig 来实现字体替换</a>
+</dt>
+<dt>
+<a href="#sec9">在 Konqueror 里面通过 ssh 进行远程文件管理</a>
+</dt>
+</dl>
+</div>
+
+
+    <!-- Page published by Emacs Muse begins here -->
+<p>KDE 是 Linux 下主流的桌面系统之一，集成性非常好，我非常喜欢这个桌面系统。
+在 KDE 下面有数量众多的软件，几乎能够完成你需要的任何事情，通常，在
+<a href="http://www.kde-apps.org">http://www.kde-apps.org</a> 就可以找到他们。而在 <a href="http://www.kde-look.org">http://www.kde-look.org</a> 则
+收集了大量漂亮的主题、壁纸、皮肤等。</p>
+
+<p>KDE 使用 Kwallet 来管理你的用户名密码等信息，在各个 KDE 程序(例如
+Konqueror、Kmail 等)之间共享使用，非常方便。而 Konqueror 则是一个非常
+强大的文件管理器，整合在 KDE 环境里面，通过 kio 直接操纵压缩包、系统帮
+助文档、FTP 甚至是通过 ssh 进行连接的远程文件管理，并且配合 Kwrite 、
+Kpdf 等程序直接嵌入查看文档、图片以及影片等。另外，还和 Konsole 完美集
+成，可以在面板里面直接打开 Konsole 进行命令行操作。右键 arK 集成，方便
+地操作各种压缩包文件。集成 amaroK 面板，直接操作音乐播放器。多标签、窗
+口分割……各种功能可以说是应有尽有，在加上漂亮的界面，并在 KDE 里面获得
+预加载之后启动速度飞快，可以算是最舒适的文件管理器了！同时， Konqueror
+作为一个网页浏览器也是非常不错的。</p>
+
+<p>其他各种常用的程序，如方便的终端 yakuake ，小巧便捷的 pdf 查看器 Kpdf
+，chm 文件查看器 kchmviewer ，管理方便的音乐播放器 amaroK ，小巧的邮件
+客户端 Kmail ，方便实用的截图工具 ksnapshot 以及面板 Kicker 里面各种实
+用的小插件等等，都是非常 cool 的了。</p>
+
+<p>另外，这了搜集了一些 KDE 相关的小技巧：</p>
+
+<h2><a name="sec1" id="sec1"></a>
+加速 Konqueror 的启动</h2>
+
+<p class="first">在菜单里面：设置 -&gt; 配置 Konqueror -&gt; 性能 -&gt; 预加载 这一项里面，把保
+留预加载的实例数设为 2 ，并选中“KDE 启动之后预加载实例”和“必须有一个预
+加载实例”。这样 Konqueror 的启动速度就会变得飞快了。</p>
+
+
+<h2><a name="sec2" id="sec2"></a>
+Konqueror 里面的 “狗皮膏药”</h2>
+
+<p class="first">按一下 Ctrl 键，屏幕上会出现一些莫名其妙的黄颜色的像狗皮膏药一样的东
+西，其实那是为了笔记本电脑用户方便而专门设计的快捷按钮，那些膏药里面显
+示一些字母对应键盘上的按键，此时按下那个键就等于用鼠标点击了对应的地
+方，本来是一个相当人性化的设置，不过，通常情况下这个并不需要，可以在
+<code>~/.kde/share/config/konquerorrc</code> 里面加入：</p>
+
+<pre class="example">
+[Access Keys]
+Enabled=false
+</pre>
+
+<p>来禁用这个功能。</p>
+
+
+<h2><a name="sec3" id="sec3"></a>
+Konqueror 的速搜</h2>
+
+<p class="first">在地址栏输入 <code>gg:Konqueror</code> 就会连接到 <a href="http://www.google.com">google</a> 去搜索 Konqueror ，在菜单
+设置 -&gt; 配置 Konqueror -&gt; 速搜 一项里面就可以配置自己喜欢的速搜项目了。</p>
+
+
+<h2><a name="sec4" id="sec4"></a>
+鼠标手势</h2>
+
+<p class="first">KDE 里面并不只是 Konqueror 里面可以使用鼠标手势。配置是在控制中心里面区
+域和辅助功能 -&gt; 输入动作 那里。默认情况下鼠标手势是没有启用的，在“全局
+配置”里面“手势设置”一栏里面把“全局禁用鼠标手势”选项去掉就可以启用了。</p>
+
+
+<h2><a name="sec5" id="sec5"></a>
+让 Konqueror 也中键点击关闭标签</h2>
+
+<p class="first">只要在 <code>~/.kde/share/config/konquerorrc</code> 里的 <code>[FMSettings]</code> 一节里面加入：</p>
+
+<pre class="example">
+MouseMiddleClickClosesTab=true
+</pre>
+
+<p>就可以了。</p>
+
+<p><a name="yakuake" id="yakuake"></a></p>
+
+<h2><a name="sec6" id="sec6"></a>
+便捷的终端 yakuake</h2>
+
+<p class="first">yakuake 来源于经典游戏 Quake 里面的那个 cool 的下拉终端。可以说是非常
+方便，安装之后建立一个链接到 KDE 的自启动目录里面：</p>
+
+<pre class="example">
+ln -s /usr/bin/yakuake ~/.kde/Autostart/
+</pre>
+
+<p>以后要使用终端的时候只需要按一下 <code>F12</code> 即可呼唤出来，这个终端基于
+Konsole ，当然也同时具有了 Konsole 的多标签等功能，所以就不用再开多余
+的终端窗口。不需要他的时候，他就可以自动隐藏起来，简直是方便极了！</p>
+
+
+<h2><a name="sec7" id="sec7"></a>
+加速 KDE</h2>
+
+<p class="first">KDE 目前在字体处理方面由于 Bug 的原因有时候会导致程序非常的慢。如果给
+系统设置了像 Serif、Sans Serif 这类由 fontconfig 虚拟出来的字体，会造
+成性能严重下降，不过目前只要替换成真正的字体(如，使用 Courier 而不是
+Monospace 作为终端字体)即可解决这个问题。</p>
+
+
+<h2><a name="sec8" id="sec8"></a>
+用 qtconfig 来实现字体替换</h2>
+
+<p class="first">安装 qtconfig 并运行之后可以看到有 Fonts 一栏，在这里就可以设置 Qt 程
+序的字体替换问题。例如，在 Tahoma 字体的列表里面加上 Simsun ，那么，Qt
+程序如果被设置为使用 Tahoma 字体(这是一个英文字体)而碰到了 Tahoma 里面
+找不到的中文字符，就会去 Simsun 字体里面找。这就有点类似于 fontconfig
+的一个功能了。</p>
+
+
+<h2><a name="sec9" id="sec9"></a>
+在 Konqueror 里面通过 ssh 进行远程文件管理</h2>
+
+<p class="first">在地址栏输入 <code>fish://user@host</code> 即可通过 ssh 连接到远程主机进行文件管理，图
+像、文档预览等操作让你完全感觉不到是在操作远程文件，并且，对于能够使用
+kio 的 kwrite、kate 等程序，还可以直接打开远程文件进行编辑。</p>
+
+
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

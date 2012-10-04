@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>Autotoolset 学习笔记</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>Autotoolset 学习笔记</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here-->
+
+    <!-- Page published by Emacs Muse begins here -->
+<p>我还是觉得，从一个例子入手来学习比直接看一个详尽全面的功能说明文档要舒
+服得多，但是这个文档又是必不可少的，在例子里面遇到不能自明的情况下就需
+要查阅文档了。</p>
+
+<p>下面我们就来看一个例子，用于创建《C++ Primer》里面的那个 word_search
+的一个不完整的例子的工程。首先使用 acmkdir 来创建一个默认框架：</p>
+
+<pre class="example">
+acmkdir word_search
+</pre>
+
+<p>回答一系列问题之后默认框架就创建好了。现在打开 configure.ac ，因为我们
+要编译 C++ 文件，所以需要检查 C++ 编译器，在里面加入一行：</p>
+
+<pre class="example">
+AC_PROG_CXX
+</pre>
+
+<p>然后把源文件拷贝到 src 目录里面去：</p>
+
+<pre class="example">
+src
+ +---- main.cpp
+ |
+ +---- filter.h
+ |
+ +---- types.h
+ |
+ `---- filter
+        +---- word.cpp
+        |
+        `---- line.cpp
+</pre>
+
+<p>由于我们还需要在 filter 子目录下放 Makefile ，所以我们还需要修改
+configure.ac ，添加那个子目录：</p>
+
+<pre class="example">
+AC_CONFIG_FILES([
+   Makefile
+   README
+   doc/Makefile
+   m4/Makefile
+   src/Makefile
+   src/filter/Makefile
+])
+</pre>
+
+<p>然后在 src/Makefile.am 里面添加子目录 filter 并写入要创建的程序的信息 ：</p>
+
+<pre class="example">
+SUBDIRS = filter
+
+bin_PROGRAMS = word_search
+word_search_SOURCES = main.cpp types.h filter.h
+word_search_LDADD = $(top_builddir)/src/filter/libfilter.a
+</pre>
+
+<p>当然也需要在 src/filter 里面建立 Makefile.am ：</p>
+
+<pre class="example">
+noinst_LIBRARIES = libfilter.a
+libfilter_a_SOURCES = word.cpp line.cpp
+INCLUDES = -I$(top_srcdir)/src
+</pre>
+
+<p>现在可以在工程的根目录下面执行重新建立的脚本了：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--     --></style>chmod 755 reconf
+./reconf
+</pre></div></div></div></div></div></div></div>
+
+<p>没有出错的话，接下来可以 configure &amp;&amp; make 了。</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--     --></style>./configure
+make
+</pre></div></div></div></div></div></div></div>
+
+<p>测试过程序正常之后就可以通过</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--     --></style>make distcheck
+</pre></div></div></div></div></div></div></div>
+
+<p>会创建出 word_search-0.0.1.tar.gz 和 word_search-0.0.1.tar.bz2 两个文
+件来，他们就可以作为可发布的打包文件了。当然，发布之前事先填好 README 、
+ChangeLog 等文件的内容是最好的了。</p>
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

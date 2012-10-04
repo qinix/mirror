@@ -1,0 +1,490 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>Emacs 小技巧</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>Emacs 小技巧</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here--><div class="contents"><h2>Contents</h2>
+<dl>
+<dt>
+<a href="#sec1">输入特殊字符</a>
+</dt>
+<dt>
+<a href="#sec2">补全输入</a>
+</dt>
+<dt>
+<a href="#sec3">rot13</a>
+</dt>
+<dt>
+<a href="#sec4">查看单个 info 文档</a>
+</dt>
+<dt>
+<a href="#sec5">矩形操作</a>
+</dt>
+<dt>
+<a href="#sec6">DontZap</a>
+</dt>
+<dt>
+<a href="#sec7">获取帮助</a>
+</dt>
+<dt>
+<a href="#sec8">Hippie Expand</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec9">配置</a>
+</dt>
+<dt>
+<a href="#sec10">一个例子</a>
+</dt>
+</dl>
+</dd>
+<dt>
+<a href="#sec11">对付重名 buffer</a>
+</dt>
+<dt>
+<a href="#sec12">快速切换到 shell 并 cd 到当前文件所在的目录</a>
+</dt>
+<dt>
+<a href="#sec13">高亮显示特殊内容</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec14">高亮当前行</a>
+</dt>
+<dt>
+<a href="#sec15">高亮过于长的行</a>
+</dt>
+</dl>
+</dd>
+<dt>
+<a href="#sec16">Footnotes</a>
+</dt>
+</dl>
+</div>
+
+
+    <!-- Page published by Emacs Muse begins here -->
+<h2><a name="sec1" id="sec1"></a>
+输入特殊字符</h2>
+
+<p class="first">按 <code>C-x 8 R</code> 可以输入 ® ，按 <code>C-x 8 o</code> 可以输入 ° ，等等。按 <code>C-x 8 C-h</code> 可
+以得到一份完整的列表。</p>
+
+
+<h2><a name="sec2" id="sec2"></a>
+补全输入</h2>
+
+<p class="first">按 <code>M-&lt;TAB&gt;</code> 可以进行补全，不过，通常 <code>M-&lt;TAB&gt;</code> 被绑定到窗口管理器的遍历窗
+口的功能上，这个时候可以使用 <code>C-M-i</code> 或者 <code>&lt;ESC&gt; &lt;TAB&gt;</code> 来代替。还有另外一
+个办法，因为 Emacs 使用的是 Meta 键，他通常被绑定到 Alt 键，而窗口管理
+器则明确地使用 Alt 键，所以，只要把 Emacs 里的 Meta 键绑定到其他键比如
+Win 键上就不会冲突了(不过 Win 键的位置不如 Alt 按着方便，哈哈！)。</p>
+
+
+<h2><a name="sec3" id="sec3"></a>
+rot13</h2>
+
+<p class="first">rot13 是一种很简单的凯撒位移加密方法，普遍用于各种迷题后面所附的答案等
+的加密上，目的是让你并不能一下子“不小心”看到了答案，同时又让你在需要知
+道答案的时候能够方便地进行解密。</p>
+
+<p>rot13 的加密和解密的方法都非常简单，就是把每个字母往后移动 13 个即可。
+因为刚好二十六个字母，所以加密和解密都使用同样的方法。虽然也可以采用手
+工加解密的方法，但是自动完成通常更方便。在 UNIX 系统上，可以直接用
+<code>tr</code> 实用程序来完成这个工作：</p>
+
+<pre class="example">
+tr A-Za-z N-ZA-Mn-za-m
+</pre>
+
+<p>大多数新闻阅读器都带有自动加解密的功能，<a href="Emacs.html">Emacs</a> 也有一个 <code>rot13-region</code> 的
+命令可以方便地使用。</p>
+
+<p>不过，当然，这种只对英文字母进行转换的加密，对于中文来说没有任何作用呢。</p>
+
+
+<h2><a name="sec4" id="sec4"></a>
+查看单个 info 文档</h2>
+
+<p class="first">有时候下载的一些软件包里面有 foo.info 文件，本来安装之后可以查看的，但
+是有时后想在不安装的情况下临时看一看。在终端下面用 <code>info -f foo.info</code> 就
+可以看了，在 <a href="Emacs.html">Emacs</a> 里面可以通过 <code>C-u C-h i</code> 来指定要打开的 info 文档。</p>
+
+<p><a name="Rectangle" id="Rectangle"></a></p>
+
+<h2><a name="sec5" id="sec5"></a>
+矩形操作</h2>
+
+<p class="first">在 <a href="Emacs.html">Emacs</a> 里面可以进行方便的矩形操作，复制、剪切、粘贴以及一个矩形块等。
+<a href="Emacs.html">Emacs</a> 里面的矩形块一开始看上去也许不太直观，其实熟悉之后是很简单的，上
+下和左右边界都分别有 pointer 和 mark 限制起来的就是一个矩形，如图：</p>
+
+<center>
+<p><img src="image/EmacsTipRectangle.png" alt=""></p>
+</center>
+
+<p>如果不习惯，可以使用 <a href="http://www.emacswiki.org/cgi-bin/wiki/rect-mark.el">rect-mark.el</a> ，它可以直观地把矩形显示出来。例如，
+上面的这个区域，使用 rect-mark.el 的 <code>rm-exchange-point-and-mark</code> 命令
+(作为和绑定到 <code>C-x C-x</code> 的 <code>exchange-point-and-mark</code> 对应起来，我们可以把
+他绑定到 <code>C-x r C-x</code> 上)把他变成一个直观的矩形区域：</p>
+
+<center>
+<p><img src="image/EmacsTipRectangle1.png" alt=""></p>
+</center>
+
+<p>还可以使用 <code>rm-set-mark</code> 命令标记 mark 然后随着光标移动动态显示出来当前
+的矩形块。不过熟悉之后，就几乎不会用到这个东西了。</p>
+
+<p><a name="DontZap" id="DontZap"></a></p>
+
+<h2><a name="sec6" id="sec6"></a>
+DontZap</h2>
+
+<p class="first">这个事故发生在几乎所有 X 下的 <a href="Emacs.html">Emacs</a> 的用户身上，如果在你身上发生了这个
+事故，那么，恭喜你，这是一个里程碑，从这里开始，你已经对 <a href="Emacs.html">Emacs</a> 的常用
+快捷键有一定的熟练程度了，而且你已经习惯了 <a href="Emacs.html">Emacs</a> 的思维方式，懂得自己
+猜测可能的快捷键了。幸运的是，在使用了一年的 <a href="Emacs.html">Emacs</a> 之后，我自己也终于
+达到了这个里程碑。</p>
+
+<p>在 <a href="Emacs.html">Emacs</a> 里，我们用 <code>&lt;backspace&gt;</code> 来删除一个字符，用 <code>&lt;C-backspace&gt;</code> 来删除
+一个词，用 <code>C-x &lt;backspace&gt;</code> 来删除一个句子，如果你足够聪明，你应该想到，
+用 <code>&lt;C-M-backspace&gt;</code> 来删除一个 s-expression 吧？没错，我今天
+(2006-10-05) 就聪明了一次，然后我的屏幕一下子就黑了……是的，Xorg 捕获了
+这个命令，然后直接退出了，所有的 X 下的程序被强制关闭……</p>
+
+<p>我在 freecity 抱怨的时候，adoal 提示我 <code>DontZap</code> ，于是我 google 了一下，才
+发现这是几乎所有 <a href="Emacs.html">Emacs</a> 用户都会经历的一件事。不过这个东西并不是特别好
+玩，这样的事情一生中只能有一次，那么，让我们为这个东西来打个疫苗吧，把
+这段话加到 <code>/etc/X11/xorg.conf</code> 里面，禁用掉 <code>Ctrl+Alt+Backspace</code> 退出 X
+的这个功能：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #eedd82;
+      }
+    --></style><span class="variable-name">Section</span> <span class="string">"ServerFlags"</span>
+        <span class="comment-delimiter"># </span><span class="comment">When this option is enabled, C-M-backspace
+</span>        <span class="comment-delimiter"># </span><span class="comment">has no special meaning and is passed to clients.
+</span>        <span class="variable-name">Option</span>      <span class="string">"DontZap"</span> <span class="string">"True"</span>
+<span class="variable-name">EndSection</span>
+</pre></div></div></div></div></div></div></div>
+
+<p>可以猜测设计这个快捷键的人肯定不是用 <a href="Emacs.html">Emacs</a> 的。</p>
+
+
+<h2><a name="sec7" id="sec7"></a>
+获取帮助</h2>
+
+<p><a href="Emacs.html">Emacs</a> 有非常强大的帮助系统，它通常能够帮助你解决很大一部分问题。大部分
+命令绑定到 <code>C-h</code> 这个前缀上。一个很重要但是通常被很多人忽视的一个功能是：
+在键入了一个前缀之后，按 <code>C-h</code> 会列出所有这个前缀的快捷键以及对应的命令。
+这个功能非常有用<sup><a name="fnr.1" href="#fn.1">1</a></sup>，例如，现在按 <code>C-h C-h</code> 就可以得到许多有用的获取帮助
+的命令，这里列举一些常用命令：</p>
+
+<ul>
+<li><code>C-h f</code> 查看某个函数的文档。</li>
+<li><code>C-h v</code> 查看某个变量的文档。</li>
+<li><code>C-h a</code> 使用正则表达式来查找命令。</li>
+<li><code>C-h k</code> 描述我接下来的键入动作。</li>
+<li><code>C-h l</code> 显示最近的 100 个键入动作。</li>
+<li><code>C-h m</code> 描述当前的 mode 。</li>
+<li><code>C-h i</code> 查看 info 文档。</li>
+</ul>
+
+<p>另外， <code>C-h a</code> 只能查找命令，对于一些不是命令的函数或者变量，可以使用
+<code>M-x apropos</code> 来查找。</p>
+
+
+<h2><a name="sec8" id="sec8"></a>
+Hippie Expand</h2>
+
+<p class="first">hippie-expand 是 <a href="Emacs.html">Emacs</a> 的一个非常方便的东西，用于补全输入，舒服极了。
+它通过一个函数列表来提供多重补全方式，这个变量是
+<code>hippie-expand-try-functions-list</code> 。</p>
+
+<h3><a name="sec9" id="sec9"></a>
+配置</h3>
+
+<p class="first">我把这个功能绑定到 <code>M-/</code> 上：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>(global-set-key (kbd <span class="string">"M-/"</span>) 'hippie-expand)
+</pre></div></div></div></div></div></div></div>
+
+<p>对于那个函数列表，它默认提供了许多有用的可选函数<sup><a name="fnr.2" href="#fn.2">2</a></sup>：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+    --></style>(setq hippie-expand-try-functions-list
+      '(try-expand-dabbrev                 <span class="comment-delimiter">; </span><span class="comment">&#25628;&#32034;&#24403;&#21069; buffer
+</span>        try-expand-dabbrev-visible         <span class="comment-delimiter">; </span><span class="comment">&#25628;&#32034;&#24403;&#21069;&#21487;&#35265;&#31383;&#21475;
+</span>        try-expand-dabbrev-all-buffers     <span class="comment-delimiter">; </span><span class="comment">&#25628;&#32034;&#25152;&#26377; buffer
+</span>        try-expand-dabbrev-from-kill       <span class="comment-delimiter">; </span><span class="comment">&#20174; kill-ring &#20013;&#25628;&#32034;
+</span>        try-complete-file-name-partially   <span class="comment-delimiter">; </span><span class="comment">&#25991;&#20214;&#21517;&#37096;&#20998;&#21305;&#37197;
+</span>        try-complete-file-name             <span class="comment-delimiter">; </span><span class="comment">&#25991;&#20214;&#21517;&#21305;&#37197;
+</span>        try-expand-all-abbrevs             <span class="comment-delimiter">; </span><span class="comment">&#21305;&#37197;&#25152;&#26377;&#32553;&#20889;&#35789;
+</span>        try-expand-list                    <span class="comment-delimiter">; </span><span class="comment">&#34917;&#20840;&#19968;&#20010;&#21015;&#34920;
+</span>        try-expand-line                    <span class="comment-delimiter">; </span><span class="comment">&#34917;&#20840;&#24403;&#21069;&#34892;
+</span>        try-complete-lisp-symbol-partially <span class="comment-delimiter">; </span><span class="comment">&#37096;&#20998;&#34917;&#20840; elisp symbol
+</span>        try-complete-lisp-symbol))         <span class="comment-delimiter">; </span><span class="comment">&#34917;&#20840; lisp symbol
+</span></pre></div></div></div></div></div></div></div>
+
+<p>关于它提供的可选的函数，可以参见 <code>hippie-exp.el</code> 里面的注释。当然你也可
+以提供自己的函数，<a href="http://www.emacswiki.org/cgi-bin/wiki/MicheleBini">EmacsWiki</a> 上有一个人弄了一个函数，可以对数学表达式进
+行补全，例如 <code>11^9 = </code> 可以扩展为 <code>11^9 =
+2,357,947,691</code> 。如果你懂 elisp 又想像力足够丰富的话，还可以搞出
+花样更多的补全出来！</p>
+
+
+<h3><a name="sec10" id="sec10"></a>
+一个例子</h3>
+
+<p class="first">使用起来非常方便，按 <code>M-/</code> 就可以补全了，如果对补全不满意，则继续按，它
+会依次尝试各个补全函数。例如，我现在输入&quot;补全&quot;，补全一下会得到&quot;补全当</p>
+
+<p>前行&quot;，这是使用 <code>try-expand-dabbrev</code> 向前搜索得到的，不够满意，再按一下，得
+到&quot;补全一个列表&quot;，这仍然是 <code>try-expand-dabbrev</code> 的结果，它继续往前搜索，
+如果继续按，按照我设定的函数的顺序，会搜索完当前 buffer ，然后搜索所有
+可见的 buffer ，最后是所有 buffer 以及 kill-ring (这就包括以前复制或剪
+切的东西了)。</p>
+
+<p>比较有趣吧？还有更方便的，比如文件名补全，现在输入 <code>/tmp/g</code> ，然后补全，
+会得到 <code>/tmp/gconfd-</code> ，这是部分文件名补全的结果，继续按 <code>M-/</code> ，得到
+<code>/tmp/gconfd-kid/</code> 这回补全了整个文件名，继续， <code>/tmp/gconfd-moonykily/</code>
+得到了下一个文件名，很舒服吧？特别是在写文档或者笔记什么的时候，要说明
+某个配置文件的路径，但是只记得个大概，就可以这样来补全，对于 elisp 的
+symbol 也是有效的，比如我在写这个介绍的时候不太记得控制函数列表的那个
+变量名了，我就输入 <code>hippie-</code> ，然后经过几次扩展就能找到我要的东西：
+<code>hippie-expand-try-functions-list</code> ！</p>
+
+
+
+<h2><a name="sec11" id="sec11"></a>
+对付重名 buffer</h2>
+
+<p class="first">默认情况下，<a href="Emacs.html">Emacs</a> 对重名 buffer 加上序号，加以区别，例如，打开了
+<code>/home/kid/.emacs</code> 和 <code>/home/pluskid/.emacs</code> 就会出现 <code>.emacs</code> 和
+<code>.emacs&lt;2&gt;</code> 这两个 buffer 。这样并不能很好的区别，<a href="Emacs.html">Emacs</a> 提供了一种更好的
+方法，查看 <code>uniquify-buffer-names</code> 变量的文档可以看到，可以为重名的
+buffer 在前面加上其父目录的名字来让 buffer 的名字区分开来，而不是单纯
+的加一个没有太多意义的序号：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .constant {
+        /* font-lock-constant-face */
+        color: #7fffd4;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+    --></style>(<span class="keyword">require</span> '<span class="constant">uniquify</span>)
+(setq uniquify-buffer-name-style 'forward)
+</pre></div></div></div></div></div></div></div>
+
+<p>这样，两个 buffer 就会被命名为 <code>kid/.emacs</code> 和 <code>pluskid/.emacs</code> ，方便多了。</p>
+
+
+<h2><a name="sec12" id="sec12"></a>
+快速切换到 shell 并 cd 到当前文件所在的目录</h2>
+
+<p class="first">有时候需要快速切换到 shell ，并 cd 到当前 buffer 所对应的文件所在的目
+录，比如是在写一些小程序，用 <code>F9</code> 使用 <a href="EmacsSmartCompile.html">SmartCompile</a> 可以快速编译，如果还
+能用 <code>C-F9</code> 快速运行就好了。最后我并没有想弄一个去运行程序的东西，因为也
+许还要处理参数传递、重定向、输入输出之类的东西，写起来麻烦用起来也许更
+麻烦，直接打开 shell 并 cd 到当前目录，然后要怎么运行程序就很方便了：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .function-name {
+        /* font-lock-function-name-face */
+        color: #87cefa;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style><span class="comment-delimiter">;;  </span><span class="comment">&#24555;&#36895;&#20999;&#25442;&#21040; shell &#24182; cd &#21040;&#24403;&#21069; buffer &#25152;&#22312;&#30340;&#30446;&#24405;
+</span>(<span class="keyword">defun</span> <span class="function-name">kid-switch-to-shell</span> ()
+  (interactive)
+  (<span class="keyword">when</span> (null (cdr (window-list)))
+    (split-window-vertically))
+  (<span class="keyword">let</span> ((file buffer-file-name))
+    (other-window 1)
+    (shell)
+    (<span class="keyword">when</span> file
+      (end-of-buffer)
+      (<span class="keyword">when</span> (looking-back shell-prompt-pattern)
+        (insert <span class="string">"cd "</span> (file-name-directory file))
+        (call-interactively 'comint-send-input)))))
+(global-set-key (kbd <span class="string">"&lt;C-f9&gt;"</span>) 'kid-switch-to-shell)
+</pre></div></div></div></div></div></div></div>
+
+<p>后来我又发现一个已经存在的扩展(<a href="http://user.it.uu.se/~mic/shell-toggle.el">shell-toggle.el</a>)实现这个功能，并且用起
+来更方便一点。</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .doc {
+        /* font-lock-doc-face */
+        color: #ffa07a;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .underline {
+        /* underline */
+        text-decoration: underline;
+      }
+    --></style>(autoload 'shell-toggle <span class="string">"shell-toggle"</span>
+ <span class="doc">"Toggles between the *shell* buffer and whatever buffer you are editi</span><span class="doc"><span class="underline">ng."</span></span><span class="underline">
+</span> t)
+(autoload 'shell-toggle-cd <span class="string">"shell-toggle"</span>
+ <span class="doc">"Pops up a shell-buffer and insert a \"cd &lt;file-dir&gt;\" command."</span> t)
+(global-set-key (kbd <span class="string">"&lt;C-f9&gt;"</span>) 'shell-toggle-cd)
+</pre></div></div></div></div></div></div></div>
+
+
+<h2><a name="sec13" id="sec13"></a>
+高亮显示特殊内容</h2>
+
+<h3><a name="sec14" id="sec14"></a>
+高亮当前行</h3>
+
+<p class="first">有时候想要高亮显示当前行，可以使用 <code>M-x hl-line-mode</code> 来打开高亮。</p>
+
+
+<h3><a name="sec15" id="sec15"></a>
+高亮过于长的行</h3>
+
+<p class="first">一般写代码把列数控制在一定范围内代码会比较好看，太长的行看起来极不方便。
+使用 <code>highlight-beyond-fill-column.el</code> 可以把超出 <code>fill-column</code> 的文本高亮
+显示出来，避免写出太长的行。</p>
+
+
+
+<h2><a name="sec16" id="sec16"></a>
+Footnotes</h2>
+
+<p class="footnote"><a name="fn.1" href="#fnr.1">1.</a>  当然也可以通过重新绑定使得这个功能在某些情况下失效，但是这不是推
+荐的做法。</p>
+
+<p class="footnote"><a name="fn.2" href="#fnr.2">2.</a> 其中 &quot;expand-dabbrev&quot; 是指搜索匹配你当前输入的头部的词语进行补全。</p>
+
+
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

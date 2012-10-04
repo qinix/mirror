@@ -1,0 +1,312 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>Exim4</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>Exim4</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here--><div class="contents"><h2>Contents</h2>
+<dl>
+<dt>
+<a href="#sec1">简介</a>
+</dt>
+<dt>
+<a href="#sec2">配置脚本</a>
+</dt>
+<dt>
+<a href="#sec3">运行测试</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec4">测试 Exim4</a>
+</dt>
+<dt>
+<a href="#sec5">测试 SMTP 服务器</a>
+</dt>
+<dt>
+<a href="#sec6">重新配置</a>
+</dt>
+</dl>
+</dd>
+</dl>
+</div>
+
+
+    <!-- Page published by Emacs Muse begins here -->
+<h2><a name="sec1" id="sec1"></a>
+简介</h2>
+
+<p class="first">Exim4 是 <a href="Debian.html">Debian</a> 默认的 MTA (Message Transfer Agent) ，连基本系统里面都
+有它，用他自然是和系统兼容性最好的了。在 <a href="Debian.html">Debian</a> 下配置 Exim 很方便，系
+统提供了一个配置脚本，可以通过回答问题的方式来进行配置。</p>
+
+<p>这里我要把 Exim4 配置为可以连接到学校的 SMTP 服务器进行发信，这样就可
+以在 <a href="Mutt.html">Mutt</a> 里面使用 Exim4 来发信了。</p>
+
+
+<h2><a name="sec2" id="sec2"></a>
+配置脚本</h2>
+
+<p><a href="Debian.html">Debian</a> 里面提供了 Exim4 的配置脚本，其实在安装系统的时候就已经运行过他
+了，不过那个时候我选择仅在本地投递。随时可以运行 <code>dpkg-reconfigure
+exim4-config</code> 来进行重新配置。</p>
+
+<p>它会向你提一些问题，关于这些问题的详细解释可以查看系统里面的
+<code>/usr/share/doc/exim4/README.Debian.html</code> ：</p>
+
+<dl>
+<dt><strong>Split configuration into small files?</strong></dt>
+<dd>配置文件可以存放成一个单一文
+件，也可以分类存放，各有各的好处，因为后面我们还要手工修改配置文件，这
+里就选择不分割了。</dd>
+
+<dt><strong>General type of mail configuration</strong></dt>
+<dd>这里选择 <code>mail sent by smarthost;
+recieved via SMTP or fetchmail</code> ，就是我们要配置的类型。</dd>
+
+<dt><strong>System mail name</strong></dt>
+<dd>这里就让他是 <code>localhost.localdomain</code> 吧。乱填的话有可
+能导致本地投递的邮件投递失败。</dd>
+
+<dt><strong>IP-address to listen on for incoming SMTP connections</strong></dt>
+<dd>我只是自己使用
+用，所以这里就是默认的 <code>127.0.0.1</code> 就可以了。</dd>
+
+<dt><strong>Other destinations for which mail is accepted</strong></dt>
+<dd>这里也只填
+<code>localhost.localdomain</code> 。</dd>
+
+<dt><strong>Machines to relay mail for</strong></dt>
+<dd>这里我留空了。</dd>
+
+<dt><strong>Machine handling outgoing mail for this host (smarthost)</strong></dt>
+<dd>这里就是填
+要用来发送邮件的 SMTP 服务器的地址。我这里填上了 <code>zjuem.zju.edu.cn</code> 。</dd>
+
+<dt><strong>Hide local mail name in outgoing mail?</strong></dt>
+<dd>这个随便了。我这里选择了是。</dd>
+
+<dt><strong>Visible domain name for local users</strong></dt>
+<dd>由于我上一个选项选了是，它让我填
+这个内容，我就胡乱填了一个 <code>kid.org</code> 。</dd>
+
+<dt><strong>Keep number of DNS-queries minimal (Dial-on-Demand)?</strong></dt>
+<dd>这里我选择了他
+默认选中的 <code>No</code> 。</dd>
+</dl>
+
+<p>这样就算基本配置完毕，更复杂的配置任务还需要手工修改配置文件。比如，SMTP
+的验证问题，为了避免垃圾邮件泛滥，现在很多 SMTP 服务器都需要经过验证才
+能发邮件，查看 <code>/usr/share/doc/exim4/README.Debian.html</code> 知道配置 Exim4
+作为 SMTP 客户端的时候的用户名和密码在 <code>/etc/exim4/passwd.client</code> 文件里
+面配置，语法为：从左到由分别是服务器、用户名、密码，中间用冒号隔开。因
+为我只配置了一个 Smarthost 作为 SMTP 服务器，这里直接用通配符星号表示
+了：</p>
+
+<pre class="example">
+*:pluskid:password
+</pre>
+
+
+<h2><a name="sec3" id="sec3"></a>
+运行测试</h2>
+
+<h3><a name="sec4" id="sec4"></a>
+测试 Exim4</h3>
+
+<p class="first">用系统自带的 <code>mail</code> 命令来尝试发送一下邮件：</p>
+
+<pre class="example">
+mail pluskid@mstczju.org
+</pre>
+
+<p>提示输入主题，然后是邮件内容。邮件内容一一行唯一的 <code>.</code> 标记结束。发送邮
+件之后，可以登陆到邮箱中，发现并没有收到邮件。可以通过查看 Exim4 的日
+志看到底出了什么问题：</p>
+
+<pre class="example">
+tail /var/log/exim4/mainlog
+</pre>
+
+<p>发现 SMTP 服务器提示 550 mailbox unavailable 。</p>
+
+
+<h3><a name="sec5" id="sec5"></a>
+测试 SMTP 服务器</h3>
+
+<p class="first">为了弄清楚到底是怎么回事，我们 telnet 到 SMTP 服务器上。以下“&gt;”开头的
+表示我们的输入，其他的则表示服务器的反馈。</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+    --></style><span class="comment-delimiter">&gt; </span><span class="comment">telnet zjuem.zju.edu.cn 25</span>
+Trying 10.10.2.41...
+Connected to zjuem.zju.edu.cn.
+Escape character is '^]'.
+220 smtp ready
+<span class="comment-delimiter">&gt; </span><span class="comment">helo</span>
+250 eyou.net HELO, pleased to meet
+<span class="comment-delimiter">&gt; </span><span class="comment">ehlo</span>
+250-eyou.net HELO, pleased to meet
+250-AUTH=LOGIN PLAIN
+250-AUTH LOGIN PLAIN
+250-PIPELINING
+250 8BITMIME
+<span class="comment-delimiter">&gt; </span><span class="comment">mail from: &lt;pluskid@zju.edu.cn&gt;</span>
+250 OK
+<span class="comment-delimiter">&gt; </span><span class="comment">rcpt to: &lt;pluskid@mstczju.org&gt;</span>
+550 mailbox unavailable. (&#37038;&#31665;&#19981;&#23384;&#22312;)
+Connection closed by foreign host.
+</pre></div></div></div></div></div></div></div>
+
+<p>可以看到什么情况下会出现这个错误了，错误是因为没有经过认证的步骤。下面
+我们再尝试一次，并加上认证的过程。认证中需要输入用户名和密码，都是经过
+base64 编码的，在 <a href="Emacs.html">Emacs</a> 里面可以通过 <code>M-x base64-encode-region</code> 来对选中
+的区域进行 base64 编码。</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+    --></style><span class="comment-delimiter">&gt; </span><span class="comment">telnet zjuem.zju.edu.cn 25</span>
+Trying 10.10.2.41...
+Connected to zjuem.zju.edu.cn.
+Escape character is '^]'.
+220 smtp ready
+<span class="comment-delimiter">&gt; </span><span class="comment">helo</span>
+250 eyou.net HELO, pleased to meet
+<span class="comment-delimiter">&gt; </span><span class="comment">ehlo</span>
+250-eyou.net HELO, pleased to meet
+250-AUTH=LOGIN PLAIN
+250-AUTH LOGIN PLAIN
+250-PIPELINING
+250 8BITMIME
+<span class="comment-delimiter">&gt; </span><span class="comment">auth login</span>
+334 VXNlcm5hbWU6
+<span class="comment-delimiter">&gt; </span><span class="comment">cGx1c2tpZA==</span>
+334 UGFzc3dvcmQ6
+<span class="comment-delimiter">&gt; </span><span class="comment">cGFzc3dvcmQ=</span>
+235 go ahead
+<span class="comment-delimiter">&gt; </span><span class="comment">mail from: &lt;pluskid@zju.edu.cn&gt;</span>
+250 OK
+<span class="comment-delimiter">&gt; </span><span class="comment">rcpt to: &lt;pluskid@mstczju.org&gt;</span>
+250 OK
+<span class="comment-delimiter">&gt; </span><span class="comment">data</span>
+354 go ahead
+<span class="comment-delimiter">&gt; </span><span class="comment">From: pluskid@zju.edu.cn</span>
+<span class="comment-delimiter">&gt; </span><span class="comment">To: pluskid@mstczju.org</span>
+<span class="comment-delimiter">&gt; </span><span class="comment">Subject: have a test</span>
+<span class="comment-delimiter">&gt;</span>
+<span class="comment-delimiter">&gt; </span><span class="comment">This is the mail data</span>
+<span class="comment-delimiter">&gt;</span>
+<span class="comment-delimiter">&gt; </span><span class="comment">.</span>
+250 OK:has queued
+<span class="comment-delimiter">&gt; </span><span class="comment">quit</span>
+221 close connection
+Connection closed by foreign host.
+</pre></div></div></div></div></div></div></div>
+
+<p>可以看出确实是没有经过认证才出现那个问题的。通过查看
+<code>README.Debian.html</code> 可以看出，由于 SMTP 服务器不支持 TLS 加密和 CRAM
+MD5 认证方式，密码都是明文传递(虽然经过了 base64 编码)，这是非常不安全
+的，因此默认被禁止使用这种认证方式。要打开这个选项，需要在配置文件里面
+修改。</p>
+
+
+<h3><a name="sec6" id="sec6"></a>
+重新配置</h3>
+
+<p><a href="Debian.html">Debian</a> 系统提供一个配置模板，并使用一个脚本动态生成配置文件公 Exim4 使
+用。模板取决于前面对配置文件的选择，如果选择了单一配置文件，那么这个模
+板就是 <code>/etc/exim4/exim4.conf.template</code> 文件。打开并搜索
+<code>AUTH_CLIENT_ALLOW_NOTLS_PASSWORDS</code> ，这就类似于 c 语言的宏那样，在前面
+的适当位置定义一下这个变量就可以了：</p>
+
+<pre class="example">
+AUTH_CLIENT_ALLOW_NOTLS_PASSWORDS = true
+</pre>
+
+<p>修改了模板之后，我们重新运行一下脚本，重新生成一下配置文件</p>
+
+<pre class="example">
+/usr/sbin/update-exim4.conf
+</pre>
+
+<p>这下终于可以正常使用了。</p>
+
+
+
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

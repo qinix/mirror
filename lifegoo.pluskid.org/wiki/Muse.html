@@ -1,0 +1,326 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>Muse</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>Muse</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here--><div class="contents"><h2>Contents</h2>
+<dl>
+<dt>
+<a href="#sec1">简介</a>
+</dt>
+<dt>
+<a href="#sec2">输出格式定制</a>
+</dt>
+<dt>
+<a href="#sec3">编辑技巧</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec4">结构化显示</a>
+</dt>
+<dt>
+<a href="#sec5">缩写词功能</a>
+</dt>
+<dt>
+<a href="#sec6">TAB 键跳转</a>
+</dt>
+<dt>
+<a href="#sec7">引进 org-mode 的舒服的地方</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec8">标题的显示</a>
+</dt>
+<dt>
+<a href="#sec9">TAB 键行使 outline 操作</a>
+</dt>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</div>
+
+
+    <!-- Page published by Emacs Muse begins here -->
+<h2><a name="sec1" id="sec1"></a>
+简介</h2>
+
+<p class="first">引用 <a href="http://www.emacswiki.org/cgi-bin/wiki/MuseMode">EmacsWiki</a> 上的一句话来说：</p>
+
+<blockquote>
+<p class="quoted">Emacs Muse is an authoring and publishing environment for Emacs. It
+simplifies the process of writing documents and publishing them to
+various output formats (HTML, PDF, DocBook, LaTeX, and more).</p>
+</blockquote>
+
+<p>用 Muse 来写笔记是非常方便的，简易方便又实用的语法规则，并且在 <a href="Emacs.html">Emacs</a> 里
+面能够达到一定的``所见即所得''的效果，可以输出为 TeX 、 pdf 、 html 等
+多种格式。固然，他的简易的语法不能像 html 那样的灵活性，也不会有LaTeX
+那么强大，但是关键的地方是他的易用性，对于日常的笔记工作，不会有太多的
+复杂的要求，用 Muse 来完成是最合适不过的了！而且，Muse 还提供了一个
+<code>&lt;literal&gt;</code> 标签，里面的东西是不归 Muse 来解释，而由输出后的文档格式来解
+释。例如，现在 Muse 对表格的支持还很有限，你可以通过在 <code>&lt;literal&gt;</code> 标签里
+面插入 html 表格的办法来产生复杂的表格，你也可以在 <code>&lt;literal&gt;</code> 标签里面输
+入 TeX 格式的数学公式，这样产生的 TeX 或者 pdf 文档也是可以有漂亮的数学
+公式的。</p>
+
+<p>总之， Muse 为你省去了平日重复输入繁琐的 html 标签或者 LaTeX 命令的工
+作，为你提供了一个清爽的环境，同时又不失灵活性，可以在必要的时候使用输
+出格式所专有的语法<sup><a name="fnr.1" href="#fn.1">1</a></sup>。它甚至有一个 <code>&lt;lisp&gt;</code> 标签可以嵌入 <a href="Elisp">Elisp</a> 执行的结
+果！</p>
+
+
+<h2><a name="sec2" id="sec2"></a>
+输出格式定制</h2>
+
+<p class="first">我一般是把自己的笔记输出为 html 格式，这样就得弄一些漂亮的 css 属性，
+于是在学习 css 的过程中我慢慢收集了一些<a href="CssTip.html">实用的小技巧</a>，以把自己的笔记妆
+点得漂亮一点。 :)</p>
+
+<p>不过 Muse 由于支持多种格式，所以目前很多功能还不如 emacs-wiki ，比如
+fancy table 功能，以及格式化源代码的功能。我模仿 emacs-wiki 里面的扩展
+弄了一个 <a href="MuseSrctag.html">src-tag</a> 功能，使用就像 emacs-wiki 里面那样方便，不过这只是针
+对 html 一类的输出格式有用而已。</p>
+
+<p>另外，Muse 还借鉴了 latex2png.el 在 html 输出格式中可以嵌入 latex 的公
+式。在<a href="MuseLatex2Png.html">这里</a>有介绍和我的配置。</p>
+
+
+<h2><a name="sec3" id="sec3"></a>
+编辑技巧</h2>
+
+<p><a name="OutlineMode" id="OutlineMode"></a></p>
+
+<h3><a name="sec4" id="sec4"></a>
+结构化显示</h3>
+
+<p class="first">如果是一个比较大的 Muse 文档的话，结构会越来越不清楚，定位也会有困难，
+这个时候可以打开 <a href="EmacsOutlineMode.html">outline-minor-mode</a> ，可以只显示一个骨干结构或者是只显
+示某个部分，结构非常清晰，编辑也非常方便。在把 <code>TAB</code> 键<a href="#TabOutline">绑定到 org-cycle</a>
+就更加方便了。</p>
+
+<p>另外，默认在 <code>muse-mode</code> 里面识别 outline 标题的正则表达式是 <code>&quot;\\*+&quot;</code> ，这
+有时候会识别错误，因为在 Muse 里面 <code>*</code> 还可以用于表示强调，如果强调的那个
+词刚好在行首的话就会识别错误了。事实上，如果是标题的话， <code>*</code> 后面应该至少
+还要有一个空格，所以这里可以修改一下这个正则表达式。这是一个buffer 局部
+变量，所以可以在 <code>muse-mode</code> 的 hook 里面修改而不用担心影响到全局的值。另
+外，打开文档的时候就使用 <code>hide-body</code> 来让他只显示框架是很不错的一个选择：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>(add-hook 'muse-mode-hook
+          '(<span class="keyword">lambda</span> ()
+             (setq outline-regexp <span class="string">"\\*+ "</span>)
+             (outline-minor-mode)
+             (hide-body)))
+</pre></div></div></div></div></div></div></div>
+
+
+<h3><a name="sec5" id="sec5"></a>
+缩写词功能</h3>
+
+<p class="first">另外，在编辑 Muse 文档的时候经常要输入类似 <code>[[Emacs]]</code> 这类的东西，有时
+候很麻烦，可以使用<a href="EmacsAbbrev.html">缩写词</a>功能来解决这个问题。</p>
+
+<p>如果平时在使用缩写词功能，那么只要定义 <code>muse-mode</code> 里面的缩写词，并保存
+到文件，启动的时候加载就行了。如果平时并没有使用什么缩写词功能，只是在
+<code>muse-mode</code> 里面才使用的话，也可以在 <code>~/.emacs</code> 里面加入定义缩写词的语句：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>(define-abbrev-table 'muse-mode-abbrev-table
+    '((<span class="string">"Emacs"</span> <span class="string">"[[Emacs]] "</span> nil 0)
+      (<span class="string">"Debian"</span> <span class="string">"[[Debian]] "</span> nil 0)
+      (<span class="string">"CL"</span> <span class="string">"[[CommonLisp][Common Lisp]] "</span> nil 0)))
+<span class="comment-delimiter">;; </span><span class="comment">&#31105;&#29992;&#33258;&#21160;&#20445;&#23384;&#32553;&#20889;&#35789;
+</span>(setq save-abbrevs nil)
+</pre></div></div></div></div></div></div></div>
+
+<p>并在 <code>muse-mode</code> 的 hook 里面打开 <code>abbrev-mode</code> 就可以了。</p>
+
+<p>当然，直接使用 <a href="EmacsAbbrev.html#msf">msf-abbrev.el</a> 更方便了。需要注意一点的是，muse 绑定了
+<code>&lt;tab&gt;</code> 键，而 <a href="EmacsAbbrev.html#msf">msf-abbrev.el</a> 是绑定的 <code>TAB</code> 键，在 X 下面的话就无法使用
+<code>TAB</code> 在各个域之间切换了<sup><a name="fnr.2" href="#fn.2">2</a></sup>，这个时候可以使用 <code>C-i</code> 。</p>
+
+
+<p><a name="TabIndent" id="TabIndent"></a></p>
+
+<h3><a name="sec6" id="sec6"></a>
+TAB 键跳转</h3>
+
+<p class="first">默认情况下 <code>TAB</code> 键会在各个链接之间跳转，我觉得这没有什么用处，而且很烦
+人，我更喜欢让 <code>TAB</code> 键帮我缩进到正确的位置，于是我做了下面的绑定：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--     --></style>(define-key muse-mode-map [tab] 'indent-for-tab-command)
+</pre></div></div></div></div></div></div></div>
+
+<p>或者，使用更舒服的 <a href="#TabOutline">org-cycle</a> 的绑定。</p>
+
+
+<h3><a name="sec7" id="sec7"></a>
+引进 org-mode 的舒服的地方</h3>
+
+<p><code>org-mode</code> 和 <code>muse-mode</code> 有很多相似的地方，但是，可以说，他们的起源不同：
+<code>muse-mode</code> 主要是来源于 <code>emacs-wiki-mode</code> ，主要侧重于发布，因此在支持的
+发布格式以及发布格式的可定制性方面远胜于 <code>org-mode</code> ；而 <code>org-mode</code> 最初设
+置的目的是用于记事、维护 TODO 列表以及制作日程、计划等，侧重于编辑和交
+互，因此 <code>org-mode</code> 在交互(例如方便的 <code>TAB</code> 键行使 <a href="EmacsOutlineMode.html">outline</a> 操作)和编辑(例
+如方便强大的表格编辑功能)方面比 <code>muse-mode</code> 要舒服很多。</p>
+
+<p>现在有一些人也在考虑融合两者之间的优点，只是还没有什么明显的进展。我在
+这里介绍一些我自己的一些经验。</p>
+
+<h4><a name="sec8" id="sec8"></a>
+标题的显示</h4>
+
+<p><code>muse-mode</code> 默认是把标题按照比例放大来显示的，我更喜欢 <code>org-mode</code> 那种(其
+实是来源于最初的 <a href="EmacsOutlineMode.html">outline-mode</a> )不放大字体，而以不同的颜色来显示的方式。
+其实 Muse 已经有这个选项了：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--     --></style>(setq muse-colors-autogen-headings 'outline)
+</pre></div></div></div></div></div></div></div>
+
+<p><a name="TabOutline" id="TabOutline"></a></p>
+
+<h4><a name="sec9" id="sec9"></a>
+TAB 键行使 outline 操作</h4>
+
+<p><code>muse-mode</code> 里面 <code>TAB</code> 键默认被绑定到了 <code>muse-next-reference</code> 上，我基本上从
+来没有用过这个功能，而且还经常按错。因此我一般是<a href="#TabIndent">把他绑定到缩进的命令上</a>。
+后来我发现 <code>org-mode</code> 里面的 <code>TAB</code> 说绑定的 <code>org-cycle</code> 命令不在 <code>org-mode</code> 里
+面也可以使用。于是便绑定了过来：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .constant {
+        /* font-lock-constant-face */
+        color: #7fffd4;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+    --></style>(<span class="keyword">require</span> '<span class="constant">org</span>)
+(define-key muse-mode-map (kdb <span class="string">"&lt;tab&gt;"</span>) 'org-cycle)
+(define-key muse-mode-map (kbd <span class="string">"&lt;S-iso-lefttab&gt;"</span>) 'org-shifttab)
+</pre></div></div></div></div></div></div></div>
+
+<p><code>org-mode</code> 的这个 <code>org-cycle</code> 命令非常方便，在标题的地方会执行相应的
+<a href="EmacsOutlineMode.html">outline</a> 操作，其他地方则是相应的缩进操作。当然，也需要在 <code>muse-mode</code> 里
+面<a href="#OutlineMode">打开 outline-mode</a> ，否则 Muse 自己的一些颜色显示等有时候会混乱起来。</p>
+
+<h2>Footnote</h2>
+<p class="footnote"><a name="fn.1" href="#fnr.1">1.</a> 通常，如果你想要保证自己的 Muse 代码是可以通用地转换到任何格式，那
+么在里面使用某一种输出格式专有的语句通常是不被推荐的。</p>
+
+<p class="footnote"><a name="fn.2" href="#fnr.2">2.</a> 在 ASCII 码里面， <code>C-i</code> 和 <code>TAB</code> 是相同的字符。如果终端能够把两者区分
+开(如果在 X 窗口下运行，通常是可以区分开的)，<a href="Emacs.html">Emacs</a> 将两者分别解释
+作整数 9 和 symbol `tab' 。通常情况下，区分这两者并没有什么用处，
+因此默认情况下 <code>function-key-map</code> 被设置为把 `tab' 映射到 9 上。这里
+muse 重新绑定了 `tab' ，不再映射到 9 上，所以再这里无效了。但是可
+以直接使用 <code>C-i</code> (即 ASCII 码的 9)。</p>
+
+
+
+
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>

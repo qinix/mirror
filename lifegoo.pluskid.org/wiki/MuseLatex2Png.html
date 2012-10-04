@@ -1,0 +1,352 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head>
+    <title>在 Muse 输出的 HTML 文档里面使用 LaTeX 公式</title>
+    <meta name="generator" content="muse.el">
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <LINK REL=StyleSheet HREF="css/style.css" TYPE="text/css">
+
+    <script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      _uacct = "UA-2502495-1";
+      urchinTracker();
+    </script>
+
+  </head>
+  <body>
+    <a id="top"></a>
+    <h1>在 Muse 输出的 HTML 文档里面使用 LaTeX 公式</h1>
+<div id="wrap">
+<div id="navmenu">
+  <h2>Favourite</h2>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+  </ul>
+
+  <h2>Unix</h2>
+  <ul>
+    <li><a href="Linux.html">Linux</a></li>
+    <li><a href="Debian.html">Debian</a></li>
+  </ul>
+
+  <h2>Software</h2>
+  <ul>
+    <li><a href="Emacs.html">Emacs</a></li>
+    <li><a href="Sawfish.html">Sawfish</a></li>
+    <li><a href="Screen.html">Screen</a></li>
+  </ul>
+
+  <h2>Programming</h2>
+  <ul>
+    <li><a href="CAndCPlusPlus.html">C/C++</a></li>
+    <li><a href="CommonLisp.html">Common Lisp</a></li>
+    <li><a href="Scheme.html">Scheme</a></li>
+    <li><a href="Python.html">Python</a></li>
+  </ul>
+
+</div>
+
+<div id="content">
+<!-- end header -->
+
+<!--contents goes here--><div class="contents"><h2>Contents</h2>
+<dl>
+<dt>
+<a href="#sec1">简介</a>
+</dt>
+<dt>
+<a href="#sec2">配置</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec3">公式的大小</a>
+</dt>
+<dt>
+<a href="#sec4">Inline formula</a>
+</dt>
+<dt>
+<a href="#sec5">公式的颜色</a>
+</dt>
+<dt>
+<a href="#sec6">代码</a>
+</dt>
+</dl>
+</dd>
+<dt>
+<a href="#sec7">修改</a>
+</dt>
+<dd>
+<dl>
+<dt>
+<a href="#sec8">公式的大小</a>
+</dt>
+</dl>
+</dd>
+</dl>
+</div>
+
+
+    <!-- Page published by Emacs Muse begins here -->
+<h2><a name="sec1" id="sec1"></a>
+简介</h2>
+
+<p><a href="Muse.html">Muse</a> 借鉴了 latex2png.el 的功能，在它的源代码里面可以找到一个
+muse-latex2png.el 就是用来实现这个功能的。加载这个文件之后，就可以在
+<a href="Muse.html">Muse</a> 文档里面使用一个 <code>latex</code> 标签，标签里面可以写 LaTeX 代码，最后会
+转换成 png 图片插入到输出的 HTML 文档中。</p>
+
+<p>默认情况下所有图片被放到发布目录里面的 ./latex/latex2png-MuseLatex2Png_242150247.pngtex</code> 子目录下面，文件名是对公
+式内容取 <code>sxhash</code> 的绝对值再加上可配置的前缀而得到的，这样的好处就是对于
+内容相同的公式不用生成重复的图片。</p>
+
+<p>其实生成图片的功能是调用 LaTeX 系统来完成的，要使用这个功能，必须保证系
+统里面正确安装并配置好了 LaTeX 系统，以及 <code>dvipng</code> 程序。</p>
+
+<p>配置好以后可以生成像这样的漂亮公式：</p>
+
+<p>This is inline euqation <!-- $E=mc^2$--><img src="./latex/latex2png-MuseLatex2Png_242150247.png" alt="latex2png equation" class="latex-inline"> and there is a big one</p>
+
+<!-- 
+\[
+E = mc^2
+\]
+--><img src="./latex/latex2png-MuseLatex2Png_219634986.png" alt="latex2png equation" class="latex-display">
+
+<p>and a even bigger one</p>
+
+<!-- 
+\[
+E = mc^2
+\]
+--><img src="./latex/latex2png-MuseLatex2Png_219634988.png" alt="latex2png equation" class="latex-display">
+
+<p>只需要在 <a href="Muse.html">Muse</a> 文档里面这样写就行了：</p>
+
+<pre class="example">
+This is inline euqation $E=mc^2$ and there is a big one
+
+&lt;latex&gt;
+\[
+E = mc^2
+\]
+&lt;/latex&gt;
+
+and a even bigger one
+
+&lt;latex scale=&quot;3&quot;&gt;
+\[
+E = mc^2
+\]
+&lt;/latex&gt;
+</pre>
+
+
+<h2><a name="sec2" id="sec2"></a>
+配置</h2>
+
+<h3><a name="sec3" id="sec3"></a>
+公式的大小</h3>
+
+<p class="first">有一个变量 <code>muse-latex2png-scale-factor</code> 可以控制公式默认缩放的大小，但
+是通常可能会需要不同大小的公式。特别是嵌入文字的公式应该和文字差不多大，
+而单独显示出来的公式一般是比较大才比较漂亮。</p>
+
+<p>所以我自己定义了一个函数来处理 <code>latex</code> 标签，先处理一下属性里面的
+<code>scale</code> 属性再传递给 <a href="Muse.html">Muse</a> 继续处理。</p>
+
+
+<h3><a name="sec4" id="sec4"></a>
+Inline formula</h3>
+
+<p class="first">有时候需要在文本里面嵌入一些小公式，可以用</p>
+
+<pre class="example">
+&lt;latex inline=&quot;true&quot; scale=&quot;1&quot;&gt;$a^2$&lt;/latex&gt;
+</pre>
+
+<p>这种方式来书写，但是确实太麻烦了，所以我添加了一个正则匹配，可以直接在
+<a href="Muse.html">Muse</a> 文档里面使用 <code>$a^2$</code> 这样的方式来书写公式。</p>
+
+
+<h3><a name="sec5" id="sec5"></a>
+公式的颜色</h3>
+
+<p class="first">默认情况下公式是黑色透明背景的，不过有时候如果把输出的 HTML 页面背景设
+为深色的话，这样就极不协调了。好在 LaTeX 可以方便地使用颜色，因此我们可
+以设定一下 <code>muse-latex2png-template</code> 这个变量的值并在里面指定前景色即可
+达到这个目的。</p>
+
+
+<h3><a name="sec6" id="sec6"></a>
+代码</h3>
+
+<p class="first">这里是我的配置代码：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .comment {
+        /* font-lock-comment-face */
+        color: #ff7f24;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #ff7f24;
+      }
+      .constant {
+        /* font-lock-constant-face */
+        color: #7fffd4;
+      }
+      .doc {
+        /* font-lock-doc-face */
+        color: #ffa07a;
+      }
+      .function-name {
+        /* font-lock-function-name-face */
+        color: #87cefa;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #00ffff;
+      }
+      .negation-char {
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #ffa07a;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #eedd82;
+      }
+    --></style><span class="comment-delimiter">;;;; </span><span class="comment">my extension and customization to muse-latex2png.el
+</span>(<span class="keyword">require</span> '<span class="constant">muse-latex2png</span>)
+
+<span class="comment-delimiter">;; </span><span class="comment">muse-latex2png.el add `</span><span class="comment"><span class="constant">latex</span></span><span class="comment">' tag to muse-publish-markup-tags, I
+</span><span class="comment-delimiter">;; </span><span class="comment">only use this tag in html format, so I add this to
+</span><span class="comment-delimiter">;; </span><span class="comment">muse-html-markup-tags and made my own customization.
+</span><span class="comment-delimiter">;; </span><span class="comment">I define a new function `</span><span class="comment"><span class="constant">kid-muse-latex</span></span><span class="comment">' in case I want to do some
+</span><span class="comment-delimiter">;; </span><span class="comment">customization before pass it to `</span><span class="comment"><span class="constant">muse-publish-latex-tag</span></span><span class="comment">' .
+</span><span class="comment-delimiter">;;</span><span class="comment">
+</span><span class="comment-delimiter">;; </span><span class="comment">here's my customization:
+</span><span class="comment-delimiter">;; </span><span class="comment">* support for a scale attributes for latex tag
+</span>(add-to-list 'muse-html-markup-tags
+             '(<span class="string">"latex"</span> t t nil kid-muse-html-latex))
+<span class="comment-delimiter">;; </span><span class="comment">I also want to use regexp to markup inline latex equations of the
+</span><span class="comment-delimiter">;; </span><span class="comment">form `$\alpha$' because I'm too lazy to write
+</span><span class="comment-delimiter">;; </span><span class="comment">&lt;latex inline="t"&gt;$\alpha$&lt;/latex&gt;
+</span>(add-to-list 'muse-html-markup-regexps
+             '(1600 <span class="string">"\\$[</span><span class="string"><span class="negation-char">^</span></span><span class="string">$]*\\$"</span> 0 kid-muse-html-latex-inline))
+(<span class="keyword">defvar</span> <span class="variable-name">kid-muse-html-latex-inline-default-scale</span> <span class="string">"1"</span>
+  <span class="doc">"default scale for inline formular"</span>)
+
+<span class="comment-delimiter">;; </span><span class="comment">the color of the equation is defined in case that I use a
+</span><span class="comment-delimiter">;; </span><span class="comment">background other than white in my HTML page.
+</span>(setq muse-latex2png-template
+      <span class="string">"\\documentclass{article}
+\\usepackage{fullpage}
+\\usepackage{amssymb}
+\\usepackage[usenames]{color}
+\\usepackage{amsmath}
+\\usepackage{latexsym}
+\\usepackage[mathscr]{eucal}
+%preamble%
+\\pagestyle{empty}
+\\begin{document}
+{%code%}
+\\end{document}\n"</span>)
+
+(<span class="keyword">defun</span> <span class="function-name">kid-muse-html-latex</span> (beg end attrs)
+  (<span class="keyword">let*</span> ((scale (cdr (assoc <span class="string">"scale"</span> attrs)))
+         (muse-latex2png-scale-factor
+          (<span class="keyword">if</span> scale
+              (string-to-number scale)
+              muse-latex2png-scale-factor)))
+    (muse-publish-latex-tag beg end attrs)))
+(<span class="keyword">defun</span> <span class="function-name">kid-muse-html-latex-inline</span> ()
+  (<span class="keyword">let</span> ((attrs `((<span class="string">"scale"</span> . ,kid-muse-html-latex-inline-default-scale)
+                 (<span class="string">"inline"</span> . <span class="string">"true"</span>))))
+    (kid-muse-html-latex (match-beginning 0) (match-end 0) attrs)))
+
+(setq muse-latex2png-scale-factor 1.5)
+(<span class="keyword">require</span> '<span class="constant">muse-colors</span>)
+(add-to-list 'muse-colors-tags
+             '(<span class="string">"latex"</span> t t nil muse-colors-example-tag))
+</pre></div></div></div></div></div></div></div>
+
+
+
+<h2><a name="sec7" id="sec7"></a>
+修改</h2>
+
+<h3><a name="sec8" id="sec8"></a>
+公式的大小</h3>
+
+<p class="first">前面提到生成的图片的文件名是以公式的内容取 <code>sxhash</code> 而得到的，这样有一个
+问题，因为我已经进行扩展，可以定制公式的大小。如果我在不同的地方出现了
+相同的一个公式，那么后一次发布的文档会重新生成这个公式的图片，特别是两
+个公式大小不一样的话，就会出现问题了。所以，需要修改一下
+<code>muse-latex2png.el</code> 里面生成文件名的地方，把公式的大小也作为计算的一个因
+素考虑进去就好了。这里是 patch ：</p>
+
+<div class="emacs-outer"><div class="emacs-title-right">
+<div class="emacs-title-left">
+<div class="emacs-cont-left">
+<div class="emacs-cont-right">
+<div class="emacs-footer-right">
+<div class="emacs-footer-left"><pre class="src" style="background-color:#1f1f1f;color:#00ff00;"><style type="text/css"><!--       .diff-added {
+      }
+      .diff-context {
+        /* diff-context */
+        color: #b3b3b3;
+      }
+      .diff-file-header {
+        /* diff-file-header */
+        background-color: #999999;
+        font-weight: bold;
+      }
+      .diff-header {
+        /* diff-header */
+        background-color: #737373;
+      }
+      .diff-hunk-header {
+        /* diff-hunk-header */
+        background-color: #737373;
+      }
+      .diff-indicator-added {
+      }
+      .diff-indicator-removed {
+      }
+      .diff-removed {
+      }
+    --></style><span class="diff-header">--- </span><span class="diff-header"><span class="diff-file-header">muse-latex2png.el</span></span><span class="diff-header">   2006-09-16 13:44:38.000000000 +0800
++++ </span><span class="diff-header"><span class="diff-file-header">muse-latex2png.el.1</span></span><span class="diff-header"> 2006-09-16 13:46:38.000000000 +0800
+</span><span class="diff-hunk-header">@@ -153,7 +153,11 @@</span>
+<span class="diff-context">                         (temp-directory))
+                        (t "/tmp")))
+          (texfile (expand-file-name
+</span><span class="diff-indicator-removed">-</span><span class="diff-removed">                   (concat prefix "_"  (format "%d" (abs (sxhash code))))
+</span><span class="diff-indicator-added">+</span><span class="diff-added">                   (concat prefix "_"  (format "%d"
+</span><span class="diff-indicator-added">+</span><span class="diff-added">                                              (abs (sxhash
+</span><span class="diff-indicator-added">+</span><span class="diff-added">                                                    (concat code
+</span><span class="diff-indicator-added">+</span><span class="diff-added">                                                            (format "%d"
+</span><span class="diff-indicator-added">+</span><span class="diff-added">                                                                    muse-latex2png-scale-factor))))))
+</span><span class="diff-context">                    tmpdir))
+          (defalt-directory default-directory))
+     (with-temp-file (concat texfile ".tex")
+</span></pre></div></div></div></div></div></div></div>
+
+
+
+<!-- Page published by Emacs Muse ends here -->
+  </div>
+  </div>
+  </body>
+</html>
