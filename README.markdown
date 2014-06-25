@@ -1,8 +1,8 @@
 #**Mirrors of my favorite sites**
 
-> * <http://mirror.qinix.com/lifegoo.pluskid.org/wiki/>
+> * <http://qinix.github.io/mirror/lifegoo.pluskid.org/wiki/>
 
-> * <http://mirror.qinix.com/linuxc/>
+> * <http://qinix.github.io/mirror/linuxc/>
 
 *Powered By Qinix.*
 
